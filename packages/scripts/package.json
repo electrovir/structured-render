@@ -1,0 +1,37 @@
+{
+    "name": "@evir/scripts",
+    "version": "0.0.1",
+    "private": true,
+    "homepage": "https://github.com/electrovir/structured-render",
+    "bugs": {
+        "url": "https://github.com/electrovir/structured-render/issues"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/electrovir/structured-render.git"
+    },
+    "license": "(MIT or CC0 1.0)",
+    "author": {
+        "name": "electrovir",
+        "url": "https://github.com/electrovir"
+    },
+    "sideEffects": false,
+    "type": "module",
+    "scripts": {
+        "build": "tsx src/build.script.ts",
+        "compile": "virmator compile",
+        "test": "exit 0"
+    },
+    "dependencies": {
+        "@augment-vir/common": "^31.67.0",
+        "@augment-vir/node": "^31.67.0",
+        "element-vir": "^26.14.4",
+        "tsx": "^4.21.0"
+    },
+    "devDependencies": {
+        "@types/node": "^25.3.3"
+    },
+    "engines": {
+        "node": ">=22"
+    }
+}

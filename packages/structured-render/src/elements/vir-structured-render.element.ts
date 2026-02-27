@@ -1,0 +1,378 @@
+import {type PartialWithUndefined} from '@augment-vir/common';
+import {colorCss} from '@electrovir/color';
+import {css, defineElement, html, listen, unsafeCSS} from 'element-vir';
+import {themeDefaultKey} from 'theme-vir';
+import {noNativeFormStyles, ViraIcon, ViraTag, viraTheme} from 'vira';
+import {insertStyleSheet} from '../augments/shadow-styles.js';
+import {renderStructuredHtml, SourceExpansionEvent} from '../render/render-html.js';
+import {contentDivClass, defaultMarkdownRenderStyles} from '../render/render-markdown-styles.js';
+import {type RenderHtmlOptions, type RenderInput} from '../render/render-types.js';
+import {StructuredRenderTextStyle} from '../structured-render-data/sections/text.section.js';
+
+/**
+ * Used to render Structured Render data to the DOM. This is the easiest way, if you use
+ * element-vir, to include Structured Render data in your web app. You can also use
+ * {@link renderStructuredHtml} to render Structured Render data to raw HTML.
+ *
+ * @category Elements
+ */
+export const VirStructuredRender = defineElement<{
+    data: Readonly<RenderInput>;
+    options?:
+        | Readonly<
+              PartialWithUndefined<
+                  RenderHtmlOptions & {
+                      isTableSize: boolean;
+                      isPhoneSize: boolean;
+                  }
+              >
+          >
+        | undefined;
+}>()({
+    tagName: 'vir-structured-render',
+    state() {
+        return {
+            currentlyExpanded: {} as Record<string, boolean>,
+            lastStyleString: '',
+        };
+    },
+    cssVars: {
+        'vir-structured-render-h1-font-size': '24px',
+        'vir-structured-render-h2-font-size': '18px',
+        'vir-structured-render-h3-font-size': '16px',
+        'vir-structured-render-small-font-size': '12px',
+    },
+    hostClasses: {
+        'vir-structured-render-phone-size': ({inputs}) => !!inputs.options?.isPhoneSize,
+        'vir-structured-render-tablet-size': ({inputs}) => !!inputs.options?.isTableSize,
+    },
+    styles: ({cssVars, hostClasses}) => css`
+        :host {
+            ${colorCss(viraTheme.colors[themeDefaultKey])}
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+        }
+
+        ${ViraIcon} {
+            flex-shrink: 0;
+        }
+
+        .view-header {
+            display: flex;
+            flex-grow: 1;
+            justify-content: space-between;
+
+            & .title-wrapper {
+                display: flex;
+                gap: 32px;
+                align-items: center;
+                text-align: left;
+
+                & h2 {
+                    font-size: ${cssVars['vir-structured-render-h2-font-size'].value};
+                }
+            }
+
+            & ${ViraTag} {
+                font-size: 14px;
+            }
+
+            & .risk-counts {
+                display: flex;
+                gap: 4px;
+            }
+
+            & .header-risk {
+                flex-wrap: wrap;
+                margin-left: auto;
+                display: flex;
+                gap: 8px;
+            }
+
+            & .risk-count {
+                display: flex;
+                align-items: center;
+                gap: 4px;
+
+                & .risk-count-number {
+                    font-size: 16px;
+                    font-family: monospace;
+                    width: 3ch;
+                    text-align: left;
+                }
+            }
+        }
+
+        .text-style-${unsafeCSS(StructuredRenderTextStyle.Faint)}.text-style-${unsafeCSS(
+                StructuredRenderTextStyle.Faint,
+            )}.text-style-${unsafeCSS(StructuredRenderTextStyle.Faint)}.text-style-${unsafeCSS(
+                StructuredRenderTextStyle.Faint,
+            )} {
+            color: ${viraTheme.colors['vira-grey-foreground-non-body'].foreground.value};
+        }
+        .text-style-${unsafeCSS(StructuredRenderTextStyle.Bold)}.text-style-${unsafeCSS(
+                StructuredRenderTextStyle.Bold,
+            )}.text-style-${unsafeCSS(StructuredRenderTextStyle.Bold)}.text-style-${unsafeCSS(
+                StructuredRenderTextStyle.Bold,
+            )} {
+            font-weight: bold;
+        }
+        .text-style-${unsafeCSS(StructuredRenderTextStyle.Small)}.text-style-${unsafeCSS(
+                StructuredRenderTextStyle.Small,
+            )}.text-style-${unsafeCSS(StructuredRenderTextStyle.Small)}.text-style-${unsafeCSS(
+                StructuredRenderTextStyle.Small,
+            )} {
+            font-size: ${cssVars['vir-structured-render-small-font-size'].value};
+        }
+
+        ${ViraIcon} {
+            display: inline-flex;
+        }
+
+        table {
+            border-collapse: collapse;
+            max-width: 100%;
+
+            & th,
+            & td {
+                padding: 16px;
+                padding-left: 24px;
+
+                &:first-child {
+                    padding-left: 0;
+                }
+
+                &:has(+ .source-cell) {
+                    border-right: none;
+                }
+
+                &.source-cell {
+                    border: none !important;
+                    padding: 0;
+                }
+            }
+
+            & td {
+                word-break: break-word;
+            }
+
+            & th {
+                text-align: left;
+                font-weight: normal;
+                white-space: nowrap;
+                vertical-align: top;
+            }
+
+            &.wide-table {
+                font-size: 14px;
+
+                & th,
+                & td {
+                    padding: 4px;
+                    padding-left: 8px;
+
+                    &:first-child {
+                        padding-left: 0;
+                    }
+                }
+            }
+
+            &.vertical {
+                & th {
+                    font-weight: bold;
+                }
+            }
+
+            &.horizontal {
+                align-self: flex-start;
+            }
+
+            & .source-row td {
+                border: none !important;
+                padding: 0 !important;
+            }
+
+            & tfoot {
+                font-size: ${cssVars['vir-structured-render-h2-font-size'].value};
+                font-weight: bold;
+
+                & td {
+                    border: none;
+                }
+
+                & td.right-aligned-footer-cell {
+                    text-align: right;
+                    & > .section-wrapper {
+                        display: inline-flex;
+                    }
+                }
+            }
+        }
+
+        .expanded-source {
+            margin: 8px 0 !important;
+        }
+
+        *::first-line {
+            /* this height must match the icon size */
+            line-height: 24px;
+        }
+
+        .processing-wrapper {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .section-wrapper {
+            display: flex;
+            flex-direction: column;
+
+            & .source-content-wrapper {
+                display: flex;
+            }
+
+            & .collapsible-source-wrapper {
+                border: none;
+            }
+
+            & .text-section-text-content {
+                flex-grow: 1;
+                vertical-align: middle;
+            }
+            & .source-icon-wrapper {
+                margin-left: auto;
+                width: 32px;
+                justify-content: flex-end;
+                display: flex;
+                flex-shrink: 0;
+                align-self: top;
+            }
+
+            & .source-icon-button {
+                ${noNativeFormStyles};
+                cursor: pointer;
+                color: ${viraTheme.colors['vira-grey-foreground-non-body'].foreground.value};
+            }
+
+            & ul {
+                margin: 0;
+                flex-grow: 1;
+                padding-left: 1em;
+                max-width: 100%;
+                display: flex;
+                flex-direction: column;
+                gap: 2px;
+            }
+
+            &.top-section-wrapper.text-section > .source-content-wrapper,
+            &.top-section-wrapper > .source-content-wrapper > ul {
+                & .source-icon-wrapper {
+                    margin-left: unset;
+                }
+            }
+        }
+
+        .icon-section {
+            display: inline-flex;
+            vertical-align: middle;
+        }
+
+        .text-section {
+            display: inline-block;
+        }
+        .tag-section {
+            display: inline-flex;
+            vertical-align: middle;
+        }
+        .processing-section {
+            display: inline-flex;
+            vertical-align: middle;
+            flex-direction: row;
+            gap: 4px;
+        }
+
+        ${hostClasses['vir-structured-render-phone-size'].selector} {
+            font-size: ${cssVars['vir-structured-render-small-font-size'].value};
+
+            & h2 {
+                font-size: ${cssVars['vir-structured-render-h3-font-size'].value};
+            }
+
+            .view-header {
+                flex-direction: column;
+            }
+
+            & th,
+            & td {
+                padding: 4px;
+            }
+
+            & ul {
+                padding-left: 1em;
+            }
+
+            & ${ViraIcon} {
+                width: 18px;
+                height: 18px;
+            }
+
+            & li::marker {
+                font-size: 0.7em;
+            }
+        }
+
+        ${hostClasses['vir-structured-render-tablet-size'].selector} {
+            .view-header {
+                flex-wrap: wrap;
+            }
+        }
+
+        @media print {
+            .source-icon-wrapper {
+                display: none !important;
+            }
+        }
+    `,
+    render({inputs, state, updateState, host}) {
+        const styles = String(inputs.options?.markdownStyles || defaultMarkdownRenderStyles);
+
+        if (
+            insertStyleSheet({
+                maintainFirstStylesheet: true,
+                newStyles: styles,
+                oldStyles: state.lastStyleString,
+                shadowRoot: host.shadowRoot,
+            })
+        ) {
+            updateState({
+                lastStyleString: styles,
+            });
+        }
+
+        const templates = renderStructuredHtml(inputs.data, {
+            ...inputs.options,
+            currentlyExpanded: {
+                ...inputs.options?.currentlyExpanded,
+                ...state.currentlyExpanded,
+            },
+        });
+
+        return html`
+            <div
+                ${listen(SourceExpansionEvent, (event) => {
+                    updateState({
+                        currentlyExpanded: {
+                            ...state.currentlyExpanded,
+                            [event.detail.key]: event.detail.expanded,
+                        },
+                    });
+                })}
+                class=${contentDivClass}
+            >
+                ${templates}
+            </div>
+        `;
+    },
+});

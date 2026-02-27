@@ -1,0 +1,167 @@
+import {type MaybeArray} from '@augment-vir/common';
+import {type CSSResult} from 'element-vir';
+import {
+    type ViraIconSvg,
+    allIconsByName,
+    DocumentSearch24Icon,
+    EyeOpen24Icon,
+    LoaderAnimated24Icon,
+} from 'vira';
+import {type StructuredRenderCard} from '../structured-render-data/structured-render-card.js';
+import {type StructuredRenderData} from '../structured-render-data/structured-render-data.js';
+import {type StructuredRenderSection} from '../structured-render-data/structured-render-section.js';
+import {defaultMarkdownRenderStyles} from './render-markdown-styles.js';
+
+/**
+ * All acceptable inputs for Structured Render rendering.
+ *
+ * @category Internal
+ */
+export type RenderInput = MaybeArray<
+    StructuredRenderData | StructuredRenderCard | StructuredRenderSection | null | undefined
+>;
+
+/**
+ * Base options for Structured Render rendering.
+ *
+ * @category Internal
+ */
+export type RenderOptions = Readonly<{
+    /**
+     * Override the default icon set. The default icon set is provided by
+     * [Vira](https://www.npmjs.com/package/vira).
+     */
+    icons: Readonly<{[IconKey in string]: ViraIconSvg}>;
+    /**
+     * The prefix used when rendering a source.
+     *
+     * @default 'Source'
+     */
+    sourceString: string;
+    /**
+     * The prefix used when rendering multiple sources.
+     *
+     * @default 'Sources'
+     */
+    pluralSourcesString: string;
+}>;
+
+/**
+ * Default base option values for Structured Render rendering.
+ *
+ * @category Internal
+ */
+export const defaultRenderOptions: Readonly<RenderOptions> = {
+    icons: allIconsByName,
+    sourceString: 'Source',
+    pluralSourcesString: 'Sources',
+};
+
+/**
+ * Option values for Structured Render rendering to Markdown.
+ *
+ * @category Internal
+ */
+export type RenderMarkdownOptions = RenderOptions & {
+    /**
+     * CSS styles for the rendering.
+     *
+     * @default
+     */
+    styles: string | CSSResult;
+};
+
+/**
+ * Default option values for Structured Render rendering to Markdown.
+ *
+ * @category Internal
+ */
+export const defaultRenderMarkdownOptions: Readonly<RenderMarkdownOptions> = {
+    ...defaultRenderOptions,
+    styles: defaultMarkdownRenderStyles,
+};
+
+/**
+ * Option values for Structured Render rendering to HTML.
+ *
+ * @category Internal
+ */
+export type RenderHtmlOptions = RenderOptions & {
+    /** Currently expanded sections and sources. */
+    currentlyExpanded: {[SectionKey in string]: boolean};
+    /**
+     * The string to use within the processing section.
+     *
+     * @default 'Processing'
+     */
+    processingString: string;
+    /**
+     * The icon shown for source expansion.
+     *
+     * @default DocumentSearch24Icon
+     */
+    sourceIcon: ViraIconSvg;
+    /**
+     * The icon shown next to processing text.
+     *
+     * @default LoaderAnimated24Icon
+     */
+    processingIcon: ViraIconSvg;
+    /**
+     * The icon used for "view on page" buttons.
+     *
+     * @default EyeOpen24Icon
+     */
+    viewOnPageIcon: ViraIconSvg;
+    /**
+     * If `true`, all sources will be expanded when printing.
+     *
+     * @default false
+     */
+    expandSourcesOnPrint: boolean;
+    /**
+     * If `true`, phone-size compatible rendering will be used where supported.
+     *
+     * @default false
+     */
+    isPhoneSize: boolean;
+    /**
+     * If `true`, the view-on-page eyeball buttons are not rendered.
+     *
+     * @default false
+     */
+    hideViewOnPageButtons: boolean;
+    /**
+     * Create a string for the source "view on page" buttons.
+     *
+     * This will only be used if `hideViewOnPageButtons` is not set to `true`.
+     */
+    createViewOnPageString(pageNumber: number): string;
+    /**
+     * CSS styles for rendering internal Markdown.
+     *
+     * @default
+     */
+    markdownStyles: string | CSSResult;
+};
+
+/**
+ * Default option values for Structured Render rendering to HTML.
+ *
+ * @category Internal
+ */
+export const defaultRenderHtmlOptions: Readonly<RenderHtmlOptions> = {
+    ...defaultRenderOptions,
+    processingString: 'Processing',
+    currentlyExpanded: {},
+    sourceIcon: DocumentSearch24Icon,
+    viewOnPageIcon: EyeOpen24Icon,
+    processingIcon: LoaderAnimated24Icon,
+    expandSourcesOnPrint: false,
+    hideViewOnPageButtons: false,
+    isPhoneSize: false,
+    markdownStyles: defaultMarkdownRenderStyles,
+    createViewOnPageString(pageNumber) {
+        return `View on page ${pageNumber}`;
+    },
+};
