@@ -3860,7 +3860,7 @@ Please report this to https://github.com/markedjs/marked.`,e){let n="<p>An error
             >
                 ${o}
             </div>
-        `}});async function Sj(){const e=await Qo(()=>import("./index-CZnDSppx.js").then(r=>r.i),[]);return e.default||e}function Jn(e,t){const r=ys(tb,t);return S3(e,r).filter(T.isTruthy).join(`
+        `}});async function Sj(){const e=await Qo(()=>import("./index-BCV4XC7p.js").then(r=>r.i),[]);return e.default||e}function Jn(e,t){const r=ys(tb,t);return S3(e,r).filter(T.isTruthy).join(`
 
 `)}const Tj={[_e.Bold]:"**"};function Mj(e,t,r){const n=e.entries.length+1,i=t.map(o=>{const s=o.text?Jn(o.text,r):o.key,a=e.entries.map(u=>Jn(u.data[o.key],r));return[s,...a]});return[ag(n,()=>""),...i]}function Fj(e,t,r){const n=t.map(o=>o.text?Jn(o.text,r):o.key),i=e.entries.map(o=>t.map(s=>Jn(o.data[s.key],r)));return[n,...i]}const Ij={[qt.Vertical]:Mj,[qt.Horizontal]:Fj},Pj={icon(e,t){const r=y3(e,t);return r?$a(r.svgTemplate):""},codeBlock(e){return`\`\`\`${e.syntax||""}
 ${e.code}
@@ -3986,7 +3986,7 @@ This is **bold** and _italic_ text.
             padding-bottom: 8px;
         }
     `,render(){return $`
-            <${k0.assign({pages:Jj,internalRouterConfig:{useInternalRouter:!0,basePath:""}})}>
+            <${k0.assign({pages:Jj,internalRouterConfig:{useInternalRouter:!0,basePath:"/structured-render/demo"}})}>
                 <p slot=${bi.NavHeader}>Structured<br>Render</p>
             </${k0}>
         `}});const Xj=Object.freeze(Object.defineProperty({__proto__:null},Symbol.toStringTag,{value:"Module"}));export{Qo as _,lz as a,Of as p};
