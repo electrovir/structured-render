@@ -12,11 +12,8 @@ import {existsSync} from 'node:fs';
 import {cp, readFile} from 'node:fs/promises';
 import {join, resolve} from 'node:path';
 import {noNativeSpacing} from 'vira';
+import {contentDivClass, renderToNodeImage, renderToNodePdf, type RenderInput} from '../index.js';
 import {exampleCard} from '../structured-render-data/structured-render-data.mock.js';
-import {renderToNodeImage} from './render-image.js';
-import {contentDivClass} from './render-markdown-styles.js';
-import {renderToNodePdf} from './render-pdf.js';
-import {type RenderInput} from './render-types.js';
 
 const monoRepoDirPath = resolve(import.meta.dirname, '..', '..', '..', '..');
 const notCommittedDirPath = join(monoRepoDirPath, '.not-committed');
