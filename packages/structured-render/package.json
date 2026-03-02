@@ -1,6 +1,6 @@
 {
     "name": "structured-render",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "description": "A library for safely rendering arbitrary data generated from any source.",
     "keywords": [
         "render",
@@ -39,22 +39,22 @@
         "test:web": "virmator test web"
     },
     "dependencies": {
-        "@augment-vir/assert": "^31.65.0",
-        "@augment-vir/common": "^31.65.0",
-        "@augment-vir/web": "^31.65.0",
+        "@augment-vir/assert": "^31.67.0",
+        "@augment-vir/common": "^31.67.0",
+        "@augment-vir/web": "^31.67.0",
         "@electrovir/color": "^1.7.8",
         "dompurify": "^3.3.1",
-        "element-vir": "^26.14.3",
+        "element-vir": "^26.14.4",
         "html2pdf.js": "^0.14.0",
         "lit-css-vars": "^3.5.0",
         "marked": "^17.0.3",
         "object-shape-tester": "^6.11.0",
         "theme-vir": "^28.22.0",
         "type-fest": "^5.4.4",
-        "vira": "^29.6.1"
+        "vira": "^29.7.2"
     },
     "devDependencies": {
-        "@augment-vir/test": "^31.65.0",
+        "@augment-vir/test": "^31.67.0",
         "@virmator/test": "^14.7.2",
         "@web/dev-server-esbuild": "^1.0.5",
         "@web/test-runner": "^0.20.2",
