@@ -86,17 +86,82 @@ export async function printPdf(
     })) as Blob;
 
     const blobUrl = URL.createObjectURL(pdfBlob);
+
+    /**
+     * Firefox uses PDF.js to render PDFs in iframes, which doesn't support printing via
+     * `contentWindow.print()` on blob URLs. Open a new window instead so Firefox's native PDF
+     * viewer handles it.
+     */
+    if (navigator.userAgent.toLowerCase().includes('firefox')) {
+        const printWindow = globalThis.window.open(blobUrl);
+
+        if (!printWindow) {
+            URL.revokeObjectURL(blobUrl);
+            throw new Error('Failed to open print window. Check your popup blocker settings.');
+        }
+
+        return;
+    }
+
     const printFrame = globalThis.document.createElement('iframe');
-    printFrame.style.display = 'none';
+    printFrame.style.position = 'fixed';
+    printFrame.style.left = '-10000px';
+    printFrame.style.top = '0';
+    printFrame.style.width = '1px';
+    printFrame.style.height = '1px';
+    printFrame.style.border = 'none';
+    printFrame.style.opacity = '0';
     printFrame.src = blobUrl;
     globalThis.document.body.append(printFrame);
 
-    return new Promise((resolve) => {
+    return new Promise<void>((resolve) => {
         printFrame.onload = () => {
-            printFrame.contentWindow?.print();
-            URL.revokeObjectURL(blobUrl);
-            resolve();
-            printFrame.remove();
+            const contentWindow = printFrame.contentWindow;
+
+            if (!contentWindow) {
+                URL.revokeObjectURL(blobUrl);
+                printFrame.remove();
+                resolve();
+                return;
+            }
+
+            function cleanup() {
+                URL.revokeObjectURL(blobUrl);
+                printFrame.remove();
+                resolve();
+            }
+
+            let resolved = false;
+
+            function resolveOnce() {
+                if (resolved) {
+                    return;
+                }
+                resolved = true;
+                globalThis.window.removeEventListener('focus', focusFallback);
+                cleanup();
+            }
+
+            /**
+             * Fallback: when the print dialog closes (print or cancel), focus returns to the main
+             * window. Some browsers don't fire `afterprint` on the iframe's contentWindow when the
+             * user cancels.
+             */
+            function focusFallback() {
+                resolveOnce();
+            }
+
+            contentWindow.addEventListener(
+                'afterprint',
+                () => {
+                    resolveOnce();
+                },
+                {once: true},
+            );
+
+            globalThis.window.addEventListener('focus', focusFallback, {once: true});
+
+            contentWindow.print();
         };
     });
 }

@@ -170,7 +170,17 @@ export async function renderInBrowser(
 
     if (outputType.pdf) {
         if (outputType.pdf === OutputPdfType.Download) {
-            return await instance.save(fileName);
+            const pdfBlob = (await instance.outputPdf(OutputPdfType.Blob)) as Blob;
+            const blobUrl = URL.createObjectURL(pdfBlob);
+            const anchor = globalThis.document.createElement('a');
+            anchor.href = blobUrl;
+            anchor.download = fileName.endsWith('.pdf') ? fileName : `${fileName}.pdf`;
+            anchor.style.display = 'none';
+            globalThis.document.body.append(anchor);
+            anchor.click();
+            anchor.remove();
+            URL.revokeObjectURL(blobUrl);
+            return;
         } else {
             return await instance.outputPdf(outputType.pdf, {
                 filename: fileName,
