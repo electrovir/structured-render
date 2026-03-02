@@ -6,6 +6,7 @@ import {
     stringify,
     type PartialWithUndefined,
 } from '@augment-vir/common';
+import {waitForAnimationFrame} from '@augment-vir/web';
 import DOMPurify from 'dompurify';
 import {convertTemplateToString, html} from 'element-vir';
 import {marked} from 'marked';
@@ -170,7 +171,26 @@ export async function renderInBrowser(
         <div class=${contentDivClass}>${DOMPurify.sanitize(dirtyHtml)}</div>
     `);
 
-    const instance = htmlToPdf().set(createHtml2PdfOptions(fileName)).from(htmlString);
+    /**
+     * Pre-render content in the DOM before passing it to html2pdf. This ensures the browser has
+     * fully computed styles and layout, preventing intermittent blank PDF output caused by
+     * html2pdf's insufficient 10ms rendering delay in its toContainer step.
+     */
+    const preRenderWrapper = globalThis.document.createElement('div');
+    preRenderWrapper.style.position = 'fixed';
+    preRenderWrapper.style.left = '-9999px';
+    preRenderWrapper.style.top = '0';
+    preRenderWrapper.style.opacity = '0';
+    preRenderWrapper.style.pointerEvents = 'none';
+    preRenderWrapper.innerHTML = htmlString;
+    globalThis.document.body.append(preRenderWrapper);
+
+    await globalThis.document.fonts.ready;
+    await globalThis.document.fonts.ready;
+    await waitForAnimationFrame(2);
+
+    const contentElement = assertWrap.instanceOf(preRenderWrapper.firstElementChild, HTMLElement);
+    const instance = htmlToPdf().set(createHtml2PdfOptions(fileName)).from(contentElement);
 
     try {
         if (outputType.pdf) {
@@ -194,6 +214,7 @@ export async function renderInBrowser(
         }
     } finally {
         styleElement.remove();
+        preRenderWrapper.remove();
     }
 }
 
@@ -247,13 +268,21 @@ export async function renderInNode(
     const browser = await chromium.launch();
     try {
         const page = await browser.newPage();
-        await page.setContent(baseHtmlString, {waitUntil: 'networkidle'});
-        await page.addScriptTag({content: html2pdfScript});
-        await page.addScriptTag({content: domPurifyScript});
+        await page.setContent(baseHtmlString, {
+            waitUntil: 'networkidle',
+        });
+        await page.addScriptTag({
+            content: html2pdfScript,
+        });
+        await page.addScriptTag({
+            content: domPurifyScript,
+        });
 
         const html2pdfOptions = createHtml2PdfOptions(basename(saveLocationPath));
         if (outputType.image) {
-            html2pdfOptions.image = {type: 'png'};
+            html2pdfOptions.image = {
+                type: 'png',
+            };
         }
 
         const pdfBase64 = await page.evaluate(
@@ -296,7 +325,9 @@ export async function renderInNode(
         );
 
         const base64Data = pdfBase64.split(',')[1];
-        await mkdir(dirname(saveLocationPath), {recursive: true});
+        await mkdir(dirname(saveLocationPath), {
+            recursive: true,
+        });
         await writeFile(saveLocationPath, Buffer.from(base64Data, 'base64'));
     } finally {
         await browser.close();
