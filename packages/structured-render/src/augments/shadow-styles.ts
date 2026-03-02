@@ -1,6 +1,11 @@
 import {assertWrap, check} from '@augment-vir/assert';
 
-/** @returns Whether the new styles were set or not. */
+/**
+ * Inserts a new stylesheet into a ShadowRoot.
+ *
+ * @category Internal
+ * @returns Whether the new styles were set or not.
+ */
 export function insertStyleSheet({
     newStyles,
     oldStyles,

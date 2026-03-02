@@ -28,7 +28,7 @@
         "element-book": "^26.16.1",
         "element-vir": "^26.14.4",
         "structured-render": "^0.0.4",
-        "vira": "^29.7.2"
+        "vira": "^29.8.0"
     },
     "devDependencies": {
         "typescript": "^5.9.3",

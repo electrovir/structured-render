@@ -25,6 +25,7 @@ import {
 } from 'element-vir';
 import {
     defineTable,
+    ViraCollapsibleCard,
     ViraCollapsibleWrapper,
     ViraColorVariant,
     ViraEmphasis,
@@ -478,7 +479,9 @@ function renderInternalStructuredHtml(
     options: Readonly<RenderHtmlOptions>,
     keyChain: ReadonlyArray<PropertyKey>,
 ) {
-    return structuredRenderToHtmlArray(data, options, keyChain).filter(check.isTruthy);
+    return structuredRenderToHtmlArray(data, options, keyChain, !keyChain.length).filter(
+        check.isTruthy,
+    );
 }
 
 /**
@@ -504,15 +507,21 @@ function structuredRenderToHtmlArray(
     data: Readonly<RenderInput>,
     options: Readonly<RenderHtmlOptions>,
     keyChain: ReadonlyArray<PropertyKey>,
+    isTopSection: boolean,
 ): HtmlInterpolation[] {
     if (!data) {
         return [];
     } else if (check.isArray(data)) {
         return data.flatMap((entry, index) =>
-            structuredRenderToHtmlArray(entry, options, [
-                ...keyChain,
-                index,
-            ]),
+            structuredRenderToHtmlArray(
+                entry,
+                options,
+                [
+                    ...keyChain,
+                    index,
+                ],
+                isTopSection,
+            ),
         );
     } else if ('type' in data) {
         const sectionTitle: string | undefined =
@@ -520,26 +529,46 @@ function structuredRenderToHtmlArray(
         const sectionTemplate = htmlRenderers[data.type](data, options, keyChain);
         const sources = ('sources' in data && data.sources) || undefined;
 
-        return [
-            sectionTitle
-                ? html`
-                      <h3>${sectionTitle}</h3>
-                  `
-                : undefined,
-            html`
-                <div
-                    class=${classMap({
-                        'section-wrapper': true,
-                        'top-section-wrapper': keyChain.length === 0,
-                        [structuredRenderSectionHtmlNames[data.type]]: true,
-                    })}
-                    ${testId(structuredRenderSectionHtmlTestId)}
-                    ${testId(structuredRenderSectionHtmlNames[data.type])}
-                >
-                    ${createSourceWrapper(sectionTemplate, options, keyChain, sources)}
-                </div>
-            `,
-        ];
+        const sectionContent = html`
+            <div
+                class=${classMap({
+                    'section-wrapper': true,
+                    'top-section-wrapper': isTopSection,
+                    [structuredRenderSectionHtmlNames[data.type]]: true,
+                })}
+                ${testId(structuredRenderSectionHtmlTestId)}
+                ${testId(structuredRenderSectionHtmlNames[data.type])}
+            >
+                ${createSourceWrapper(sectionTemplate, options, keyChain, sources)}
+            </div>
+        `;
+
+        console.log(keyChain, sectionTitle);
+
+        if (isTopSection) {
+            return [
+                html`
+                    <${ViraCollapsibleCard.assign({
+                        expandOnPrint: true,
+                        blockExpansion: options.blockSectionExpansion,
+                        hideHeader: !sectionTitle,
+                        startExpanded: options.expandAllSections || keyChain.at(-1) === 0,
+                    })}>
+                        <h3 slot=${ViraCollapsibleCard.slotNames.header}>${sectionTitle}</h3>
+                        ${sectionContent}
+                    </${ViraCollapsibleCard}>
+                `,
+            ];
+        } else {
+            return [
+                sectionTitle
+                    ? html`
+                          <h3>${sectionTitle}</h3>
+                      `
+                    : undefined,
+                sectionContent,
+            ];
+        }
     } else if ('sections' in data) {
         return [
             data.cardTitle
@@ -547,10 +576,15 @@ function structuredRenderToHtmlArray(
                       <h2>${data.cardTitle}</h2>
                   `
                 : undefined,
-            ...structuredRenderToHtmlArray(data.sections, options, [
-                ...keyChain,
-                'sections',
-            ]),
+            ...structuredRenderToHtmlArray(
+                data.sections,
+                options,
+                [
+                    ...keyChain,
+                    'sections',
+                ],
+                isTopSection,
+            ),
         ];
     } else {
         assert.tsType(data).equals<never>();

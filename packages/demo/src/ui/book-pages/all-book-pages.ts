@@ -1,6 +1,8 @@
 import {type BookPage} from 'element-book';
 import {cardsBookPage} from './cards.book.js';
+import {blockExpansionBookPage} from './cards/block-expansion.book.js';
 import {denseDataBookPage} from './cards/dense-data.book.js';
+import {expandAllBookPage} from './cards/expand-all.book.js';
 import {fullCardBookPage} from './cards/full-card.book.js';
 import {multiCardBookPage} from './cards/multi-card.book.js';
 import {examplesBookPage} from './examples.book.js';
@@ -34,6 +36,8 @@ export const allBookPages: ReadonlyArray<BookPage> = [
     fullCardBookPage,
     multiCardBookPage,
     denseDataBookPage,
+    blockExpansionBookPage,
+    expandAllBookPage,
 
     downloadAndPrintBookPage,
 

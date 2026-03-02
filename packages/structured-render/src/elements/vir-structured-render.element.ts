@@ -2,7 +2,7 @@ import {type PartialWithUndefined} from '@augment-vir/common';
 import {colorCss} from '@electrovir/color';
 import {css, defineElement, html, listen, unsafeCSS} from 'element-vir';
 import {themeDefaultKey} from 'theme-vir';
-import {noNativeFormStyles, ViraIcon, ViraTag, viraTheme} from 'vira';
+import {noNativeFormStyles, viraFormCssVars, ViraIcon, ViraTag, viraTheme} from 'vira';
 import {insertStyleSheet} from '../augments/shadow-styles.js';
 import {renderStructuredHtml, SourceExpansionEvent} from '../render/render-html.js';
 import {contentDivClass, defaultMarkdownRenderStyles} from '../render/render-markdown-styles.js';
@@ -22,8 +22,24 @@ export const VirStructuredRender = defineElement<{
         | Readonly<
               PartialWithUndefined<
                   RenderHtmlOptions & {
-                      isTableSize: boolean;
+                      /**
+                       * If `true`, smaller, tablet-compatible styles are used.
+                       *
+                       * @default false
+                       */
+                      isTabletSize: boolean;
+                      /**
+                       * If `true`, smaller, phone-compatible styles are used.
+                       *
+                       * @default false
+                       */
                       isPhoneSize: boolean;
+                      /**
+                       * If `true`, all sections will automatically be expanded at first.
+                       *
+                       * @default false
+                       */
+                      expandAllSections: boolean;
                   }
               >
           >
@@ -44,18 +60,22 @@ export const VirStructuredRender = defineElement<{
     },
     hostClasses: {
         'vir-structured-render-phone-size': ({inputs}) => !!inputs.options?.isPhoneSize,
-        'vir-structured-render-tablet-size': ({inputs}) => !!inputs.options?.isTableSize,
+        'vir-structured-render-tablet-size': ({inputs}) => !!inputs.options?.isTabletSize,
     },
     styles: ({cssVars, hostClasses}) => css`
         :host {
             ${colorCss(viraTheme.colors[themeDefaultKey])}
-            display: flex;
-            flex-direction: column;
-            align-items: stretch;
         }
 
         ${ViraIcon} {
             flex-shrink: 0;
+        }
+
+        :host,
+        .${unsafeCSS(contentDivClass)}.${unsafeCSS(contentDivClass)}.${unsafeCSS(contentDivClass)} {
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
         }
 
         .view-header {
@@ -245,6 +265,7 @@ export const VirStructuredRender = defineElement<{
                 margin-left: auto;
                 width: 32px;
                 justify-content: flex-end;
+                align-items: center;
                 display: flex;
                 flex-shrink: 0;
                 align-self: top;
@@ -253,7 +274,25 @@ export const VirStructuredRender = defineElement<{
             & .source-icon-button {
                 ${noNativeFormStyles};
                 cursor: pointer;
-                color: ${viraTheme.colors['vira-grey-foreground-non-body'].foreground.value};
+                color: ${viraTheme.colors['vira-grey-foreground-header'].foreground.value};
+                padding: 2px;
+                border-radius: 4px;
+
+                & ${ViraIcon} {
+                    display: flex;
+                }
+
+                &:hover {
+                    background-color: ${viraTheme.colors['vira-grey-behind-fg-small-body']
+                        .background.value};
+                    color: ${viraFormCssVars['vira-form-accent-primary-color'].value};
+                }
+
+                &:active {
+                    background-color: ${viraTheme.colors['vira-grey-behind-fg-body'].background
+                        .value};
+                    color: ${viraFormCssVars['vira-form-accent-primary-color'].value};
+                }
             }
 
             & ul {
