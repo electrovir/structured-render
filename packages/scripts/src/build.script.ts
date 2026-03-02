@@ -21,7 +21,7 @@ const builds: {
         buildName: 'Structured Render Docs',
         packageDirPath: packageDirPaths.structuredRender,
         finalOutputDirPath: join(distDirPath, 'docs'),
-        buildOutputDirPath: join(packageDirPaths.structuredRender, 'dist'),
+        buildOutputDirPath: join(packageDirPaths.structuredRender, 'dist-docs'),
         buildCommand: 'docs',
     },
     {
