@@ -156,10 +156,14 @@ export async function printPdf(
                 () => {
                     resolveOnce();
                 },
-                {once: true},
+                {
+                    once: true,
+                },
             );
 
-            globalThis.window.addEventListener('focus', focusFallback, {once: true});
+            globalThis.window.addEventListener('focus', focusFallback, {
+                once: true,
+            });
 
             contentWindow.print();
         };
