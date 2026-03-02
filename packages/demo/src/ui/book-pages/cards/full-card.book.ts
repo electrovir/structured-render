@@ -58,10 +58,18 @@ export const fullCardBookPage = defineBookPage({
                                         sectionTitle: 'Module Metrics',
                                         direction: StructuredRenderCellDirection.Horizontal,
                                         headers: [
-                                            {key: 'module'},
-                                            {key: 'coverage'},
-                                            {key: 'buildTime'},
-                                            {key: 'status'},
+                                            {
+                                                key: 'module',
+                                            },
+                                            {
+                                                key: 'coverage',
+                                            },
+                                            {
+                                                key: 'buildTime',
+                                            },
+                                            {
+                                                key: 'status',
+                                            },
                                         ],
                                         entries: [
                                             {

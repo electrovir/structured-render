@@ -76,7 +76,9 @@ export const VirMarkdown = defineElement<{
                         class=${contentDivClass}
                         ${onDomCreated((element) => {
                             if (element instanceof HTMLElement) {
-                                updateState({renderedElement: element});
+                                updateState({
+                                    renderedElement: element,
+                                });
                             }
                         })}
                     >

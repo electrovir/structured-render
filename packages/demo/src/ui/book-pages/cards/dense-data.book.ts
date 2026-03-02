@@ -60,12 +60,24 @@ export const denseDataBookPage = defineBookPage({
                                         sectionTitle: 'Feature Usage Matrix',
                                         direction: StructuredRenderCellDirection.Horizontal,
                                         headers: [
-                                            {key: 'feature'},
-                                            {key: 'freeTier'},
-                                            {key: 'proTier'},
-                                            {key: 'enterpriseTier'},
-                                            {key: 'satisfaction'},
-                                            {key: 'trend'},
+                                            {
+                                                key: 'feature',
+                                            },
+                                            {
+                                                key: 'freeTier',
+                                            },
+                                            {
+                                                key: 'proTier',
+                                            },
+                                            {
+                                                key: 'enterpriseTier',
+                                            },
+                                            {
+                                                key: 'satisfaction',
+                                            },
+                                            {
+                                                key: 'trend',
+                                            },
                                         ],
                                         entries: [
                                             {
@@ -373,11 +385,21 @@ export const denseDataBookPage = defineBookPage({
                                         sectionTitle: 'Technical Debt Inventory',
                                         direction: StructuredRenderCellDirection.Horizontal,
                                         headers: [
-                                            {key: 'item'},
-                                            {key: 'severity'},
-                                            {key: 'age'},
-                                            {key: 'effort'},
-                                            {key: 'impact'},
+                                            {
+                                                key: 'item',
+                                            },
+                                            {
+                                                key: 'severity',
+                                            },
+                                            {
+                                                key: 'age',
+                                            },
+                                            {
+                                                key: 'effort',
+                                            },
+                                            {
+                                                key: 'impact',
+                                            },
                                         ],
                                         entries: [
                                             {

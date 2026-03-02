@@ -44,7 +44,9 @@ describe(createRenderDataTable.name, () => {
 
     it('creates a table with footer rows', () => {
         const headers: StructuredRenderTable['headers'] = [
-            {key: 'col1'},
+            {
+                key: 'col1',
+            },
         ];
 
         const footerRows: StructuredRenderTable['footerRows'] = [
@@ -76,7 +78,9 @@ describe(createRenderDataTable.name, () => {
 
     it('creates a table with sources on entries', () => {
         const headers: StructuredRenderTable['headers'] = [
-            {key: 'col1'},
+            {
+                key: 'col1',
+            },
         ];
 
         const result = createRenderDataTable(headers, [
@@ -103,7 +107,9 @@ describe(createRenderDataTable.name, () => {
 
     it('creates a table with empty entries', () => {
         const headers: StructuredRenderTable['headers'] = [
-            {key: 'col1'},
+            {
+                key: 'col1',
+            },
         ];
 
         const result = createRenderDataTable(headers, []);

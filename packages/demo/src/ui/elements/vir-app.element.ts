@@ -30,7 +30,7 @@ export const VirApp = defineElement()({
                 pages: allBookPages,
                 internalRouterConfig: {
                     useInternalRouter: true,
-                    basePath: '/structured-render/demo',
+                    basePath: 'structured-render/demo',
                 },
             })}>
                 <p slot=${ElementBookSlotName.NavHeader}>Structured<br>Render</p>

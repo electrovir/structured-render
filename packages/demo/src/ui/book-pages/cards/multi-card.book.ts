@@ -50,11 +50,21 @@ export const multiCardMock: StructuredRenderData = [
                     },
                 ],
                 headers: [
-                    {key: 'metric'},
-                    {key: 'p50'},
-                    {key: 'p95'},
-                    {key: 'target'},
-                    {key: 'status'},
+                    {
+                        key: 'metric',
+                    },
+                    {
+                        key: 'p50',
+                    },
+                    {
+                        key: 'p95',
+                    },
+                    {
+                        key: 'target',
+                    },
+                    {
+                        key: 'status',
+                    },
                 ],
                 entries: [
                     {
@@ -241,11 +251,21 @@ export const multiCardMock: StructuredRenderData = [
                 sectionTitle: 'Endpoint Latency (ms)',
                 direction: StructuredRenderCellDirection.Vertical,
                 headers: [
-                    {key: 'endpoint'},
-                    {key: 'getUsers'},
-                    {key: 'createUser'},
-                    {key: 'getReport'},
-                    {key: 'sendNotification'},
+                    {
+                        key: 'endpoint',
+                    },
+                    {
+                        key: 'getUsers',
+                    },
+                    {
+                        key: 'createUser',
+                    },
+                    {
+                        key: 'getReport',
+                    },
+                    {
+                        key: 'sendNotification',
+                    },
                 ],
                 entries: [
                     {
@@ -348,11 +368,21 @@ export const multiCardMock: StructuredRenderData = [
                     },
                 ],
                 headers: [
-                    {key: 'version'},
-                    {key: 'environment'},
-                    {key: 'date'},
-                    {key: 'duration'},
-                    {key: 'status'},
+                    {
+                        key: 'version',
+                    },
+                    {
+                        key: 'environment',
+                    },
+                    {
+                        key: 'date',
+                    },
+                    {
+                        key: 'duration',
+                    },
+                    {
+                        key: 'status',
+                    },
                 ],
                 entries: [
                     {

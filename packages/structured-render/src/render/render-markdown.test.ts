@@ -31,7 +31,14 @@ describe(renderStructuredMarkdown.name, () => {
                 .join('\n')
                 .trim();
 
-            assert.deepEquals({value: actual}, {value: expectedNoExtractWhiteSpace});
+            assert.deepEquals(
+                {
+                    value: actual,
+                },
+                {
+                    value: expectedNoExtractWhiteSpace,
+                },
+            );
         },
         [
             {
@@ -67,7 +74,10 @@ describe(renderStructuredMarkdown.name, () => {
                         },
                     } satisfies StructuredRenderText,
                 ],
-                expect: `${renderStructuredMarkdown({type: StructuredRenderSectionType.icon, iconKey: ArrowUp24Icon.name})} This is a text section`,
+                expect: `${renderStructuredMarkdown({
+                    type: StructuredRenderSectionType.icon,
+                    iconKey: ArrowUp24Icon.name,
+                })} This is a text section`,
             },
             {
                 it: 'handles a bold text section',
@@ -446,7 +456,9 @@ describe(renderStructuredMarkdown.name, () => {
                         type: StructuredRenderSectionType.table,
                         direction: StructuredRenderCellDirection.Horizontal,
                         headers: [
-                            {key: 'snippet'},
+                            {
+                                key: 'snippet',
+                            },
                         ],
                         entries: [
                             {
@@ -473,7 +485,9 @@ describe(renderStructuredMarkdown.name, () => {
                         type: StructuredRenderSectionType.table,
                         direction: StructuredRenderCellDirection.Horizontal,
                         headers: [
-                            {key: 'col1'},
+                            {
+                                key: 'col1',
+                            },
                         ],
                         entries: [
                             {
@@ -703,8 +717,12 @@ describe(renderStructuredMarkdown.name, () => {
                         type: StructuredRenderSectionType.table,
                         direction: StructuredRenderCellDirection.Vertical,
                         headers: [
-                            {key: 'name'},
-                            {key: 'value'},
+                            {
+                                key: 'name',
+                            },
+                            {
+                                key: 'value',
+                            },
                         ],
                         entries: [
                             {

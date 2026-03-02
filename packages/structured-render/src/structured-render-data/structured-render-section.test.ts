@@ -242,7 +242,9 @@ describe(doesSectionHaveContent.name, () => {
 
     it('throws for an unexpected section type', () => {
         assert.throws(() => {
-            doesSectionHaveContent({type: 'nonexistent'} as any);
+            doesSectionHaveContent({
+                type: 'nonexistent',
+            } as any);
         });
     });
 });

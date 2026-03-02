@@ -22,8 +22,12 @@ export const tableSectionBookPage = defineBookPage({
                             sectionTitle: 'Horizontal Table',
                             direction: StructuredRenderCellDirection.Horizontal,
                             headers: [
-                                {key: 'name'},
-                                {key: 'value'},
+                                {
+                                    key: 'name',
+                                },
+                                {
+                                    key: 'value',
+                                },
                             ],
                             entries: [
                                 {
@@ -67,8 +71,12 @@ export const tableSectionBookPage = defineBookPage({
                             sectionTitle: 'Vertical Table',
                             direction: StructuredRenderCellDirection.Vertical,
                             headers: [
-                                {key: 'feature'},
-                                {key: 'status'},
+                                {
+                                    key: 'feature',
+                                },
+                                {
+                                    key: 'status',
+                                },
                             ],
                             entries: [
                                 {
