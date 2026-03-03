@@ -543,8 +543,6 @@ function structuredRenderToHtmlArray(
             </div>
         `;
 
-        console.log(keyChain, sectionTitle);
-
         if (isTopSection) {
             return [
                 html`

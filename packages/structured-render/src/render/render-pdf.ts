@@ -1,4 +1,5 @@
-import {isRuntimeEnv, RuntimeEnv, type PartialWithUndefined} from '@augment-vir/common';
+import {isRuntimeEnv, RuntimeEnv, wait, type PartialWithUndefined} from '@augment-vir/common';
+import {waitForAnimationFrame} from '@augment-vir/web';
 import {OutputPdfType, renderInBrowser, renderInNode} from './browser-rendering.js';
 import {type RenderInput, type RenderOptions} from './render-types.js';
 
@@ -87,12 +88,24 @@ export async function printPdf(
 
     const blobUrl = URL.createObjectURL(pdfBlob);
 
+    const userAgent = navigator.userAgent.toLowerCase();
+
     /**
      * Firefox uses PDF.js to render PDFs in iframes, which doesn't support printing via
-     * `contentWindow.print()` on blob URLs. Open a new window instead so Firefox's native PDF
-     * viewer handles it.
+     * `contentWindow.print()` on blob URLs.
+     *
+     * IOS Safari renders PDFs in iframes constrained to the iframe's viewport, so a hidden 1x1
+     * iframe only prints the first page. iPadOS Safari reports as "Macintosh" in its user agent, so
+     * we also check `maxTouchPoints` to detect it.
+     *
+     * In both cases, open a new window so the platform's native PDF viewer handles all pages.
      */
-    if (navigator.userAgent.toLowerCase().includes('firefox')) {
+    const isFirefox = userAgent.includes('firefox');
+    const isIos =
+        /iphone|ipad|ipod/.test(userAgent) ||
+        (userAgent.includes('macintosh') && navigator.maxTouchPoints > 1);
+
+    if (isFirefox || isIos) {
         const printWindow = globalThis.window.open(blobUrl);
 
         if (!printWindow) {
@@ -114,58 +127,80 @@ export async function printPdf(
     printFrame.src = blobUrl;
     globalThis.document.body.append(printFrame);
 
-    return new Promise<void>((resolve) => {
-        printFrame.onload = () => {
-            const contentWindow = printFrame.contentWindow;
-
-            if (!contentWindow) {
-                URL.revokeObjectURL(blobUrl);
-                printFrame.remove();
+    await new Promise<void>((resolve) => {
+        printFrame.addEventListener(
+            'load',
+            () => {
                 resolve();
+            },
+            {
+                once: true,
+            },
+        );
+    });
+
+    const contentWindow = printFrame.contentWindow;
+
+    if (!contentWindow) {
+        URL.revokeObjectURL(blobUrl);
+        printFrame.remove();
+        return;
+    }
+
+    /**
+     * The iframe's `load` event fires when the blob data is fetched, but the browser's built-in PDF
+     * viewer still needs time to parse and paint the PDF. Without this wait, `print()` can capture
+     * a blank/grey frame roughly 50% of the time. Animation frames alone are insufficient because
+     * the PDF viewer renders asynchronously outside the normal DOM paint cycle, so an additional
+     * delay is needed to let it finish.
+     */
+    await waitForAnimationFrame(3);
+    await wait({
+        milliseconds: 250,
+    });
+    await waitForAnimationFrame(3);
+
+    return new Promise<void>((resolve) => {
+        function cleanup() {
+            URL.revokeObjectURL(blobUrl);
+            printFrame.remove();
+            resolve();
+        }
+
+        let resolved = false;
+
+        function resolveOnce() {
+            if (resolved) {
                 return;
             }
+            resolved = true;
+            globalThis.window.removeEventListener('focus', focusFallback);
+            cleanup();
+        }
 
-            function cleanup() {
-                URL.revokeObjectURL(blobUrl);
-                printFrame.remove();
-                resolve();
-            }
+        /**
+         * Fallback: when the print dialog closes (print or cancel), focus returns to the main
+         * window. Some browsers don't fire `afterprint` on the iframe's contentWindow when the user
+         * cancels.
+         */
+        function focusFallback() {
+            resolveOnce();
+        }
 
-            let resolved = false;
-
-            function resolveOnce() {
-                if (resolved) {
-                    return;
-                }
-                resolved = true;
-                globalThis.window.removeEventListener('focus', focusFallback);
-                cleanup();
-            }
-
-            /**
-             * Fallback: when the print dialog closes (print or cancel), focus returns to the main
-             * window. Some browsers don't fire `afterprint` on the iframe's contentWindow when the
-             * user cancels.
-             */
-            function focusFallback() {
+        contentWindow.addEventListener(
+            'afterprint',
+            () => {
                 resolveOnce();
-            }
-
-            contentWindow.addEventListener(
-                'afterprint',
-                () => {
-                    resolveOnce();
-                },
-                {
-                    once: true,
-                },
-            );
-
-            globalThis.window.addEventListener('focus', focusFallback, {
+            },
+            {
                 once: true,
-            });
+            },
+        );
 
-            contentWindow.print();
-        };
+        globalThis.window.addEventListener('focus', focusFallback, {
+            once: true,
+        });
+
+        contentWindow.print();
     });
 }

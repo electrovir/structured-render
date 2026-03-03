@@ -6,6 +6,7 @@ import {
     stringify,
     type PartialWithUndefined,
 } from '@augment-vir/common';
+import {waitForAnimationFrame} from '@augment-vir/web';
 import DOMPurify from 'dompurify';
 import {convertTemplateToString, html} from 'element-vir';
 import {marked} from 'marked';
@@ -256,6 +257,19 @@ async function renderHtmlToCanvas(
         const contentElement = assertWrap.isDefined(
             iframeDoc.body.firstElementChild,
         ) as unknown as HTMLElement;
+
+        /**
+         * Resize the iframe to match the content's natural height so the viewport is not clipped at
+         * 0px. Without this, html2canvas may read 0-height dimensions for the element.
+         */
+        iframe.style.height = `${iframeDoc.body.scrollHeight}px`;
+
+        /**
+         * Wait for the browser to finish layout before html2canvas reads element dimensions and
+         * computed styles. Uses the parent window's requestAnimationFrame because the iframe is
+         * positioned offscreen, and browsers skip animation frames for invisible iframes.
+         */
+        await waitForAnimationFrame(3);
 
         return await importHtml2Canvas()(contentElement, {
             ...(html2PdfOptions.html2canvas as Record<string, unknown>),

@@ -1,6 +1,6 @@
 {
     "name": "@evir/structured-render-root",
-    "version": "0.0.4",
+    "version": "0.0.5",
     "private": true,
     "homepage": "https://github.com/electrovir/structured-render",
     "bugs": {
@@ -25,7 +25,7 @@
         "compile": "virmator compile",
         "format": "virmator format",
         "lint": "virmator lint fix",
-        "publish": "virmator publish npm run test",
+        "publish": "virmator publish npm run test:all",
         "start": "npm start --workspace @evir/demo",
         "test": "mono-vir for-each-async npm run test",
         "test:all": "npm run compile && runstorm --names tests,spelling,format,docs,deps,lint \"npm run test\" \"npm run test:spelling\" \"npm run test:format\" \"npm run test:docs\" \"npm run test:deps\" \"npm run test:lint\"",
