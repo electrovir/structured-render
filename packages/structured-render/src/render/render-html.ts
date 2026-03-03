@@ -479,9 +479,7 @@ function renderInternalStructuredHtml(
     options: Readonly<RenderHtmlOptions>,
     keyChain: ReadonlyArray<PropertyKey>,
 ) {
-    return structuredRenderToHtmlArray(data, options, keyChain, !keyChain.length).filter(
-        check.isTruthy,
-    );
+    return structuredRenderToHtmlArray(data, options, keyChain, false).filter(check.isTruthy);
 }
 
 /**
@@ -581,7 +579,7 @@ function structuredRenderToHtmlArray(
                     ...keyChain,
                     'sections',
                 ],
-                isTopSection,
+                true,
             ),
         ];
     } else {

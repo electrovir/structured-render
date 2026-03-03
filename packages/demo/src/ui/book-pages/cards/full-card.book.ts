@@ -34,7 +34,6 @@ export const fullCardBookPage = defineBookPage({
                                         type: StructuredRenderSectionType.text,
                                         sectionTitle: 'Summary',
                                         text: 'Overall project health is good. Most metrics are within acceptable ranges, though a few areas require attention.',
-                                        style: StructuredRenderTextStyle.Bold,
                                     },
                                     {
                                         type: StructuredRenderSectionType.markdown,
