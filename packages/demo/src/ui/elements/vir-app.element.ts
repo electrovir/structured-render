@@ -1,4 +1,4 @@
-import {ElementBookApp, ElementBookSlotName} from 'element-book';
+import {ElementBookApp} from 'element-book';
 import {css, defineElement, html} from 'element-vir';
 import {noNativeSpacing} from 'vira';
 import {allBookPages} from '../book-pages/all-book-pages.js';
@@ -33,7 +33,7 @@ export const VirApp = defineElement()({
                     basePath: 'structured-render/demo',
                 },
             })}>
-                <p slot=${ElementBookSlotName.NavHeader}>Structured<br>Render</p>
+                <p slot=${ElementBookApp.slotNames.navHeader}>Structured<br>Render</p>
             </${ElementBookApp}>
         `;
     },
