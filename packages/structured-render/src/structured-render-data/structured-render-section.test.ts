@@ -255,7 +255,7 @@ describe(emptyStructuredRenderTableFallback.name, () => {
         text: 'No data',
     } as const;
 
-    it('returns the table when it has content', () => {
+    it('returns the table with sectionTitle when it has content', () => {
         const table: Omit<StructuredRenderTable, 'sectionTitle'> = {
             type: 'table',
             direction: StructuredRenderCellDirection.Horizontal,
@@ -276,11 +276,18 @@ describe(emptyStructuredRenderTableFallback.name, () => {
             ],
         };
 
-        const result = emptyStructuredRenderTableFallback(table, fallbackSection);
-        assert.deepEquals(result, table);
+        const result = emptyStructuredRenderTableFallback({
+            table,
+            fallback: fallbackSection,
+            sectionTitle: 'My Table',
+        });
+        assert.deepEquals(result, {
+            ...table,
+            sectionTitle: 'My Table',
+        });
     });
 
-    it('returns the fallback when the table has no content', () => {
+    it('returns the fallback with sectionTitle when the table has no content', () => {
         const table: Omit<StructuredRenderTable, 'sectionTitle'> = {
             type: 'table',
             direction: StructuredRenderCellDirection.Horizontal,
@@ -298,11 +305,18 @@ describe(emptyStructuredRenderTableFallback.name, () => {
             ],
         };
 
-        const result = emptyStructuredRenderTableFallback(table, fallbackSection);
-        assert.deepEquals(result, fallbackSection);
+        const result = emptyStructuredRenderTableFallback({
+            table,
+            fallback: fallbackSection,
+            sectionTitle: 'My Table',
+        });
+        assert.deepEquals(result, {
+            ...fallbackSection,
+            sectionTitle: 'My Table',
+        });
     });
 
-    it('returns the fallback when the table has empty entries', () => {
+    it('returns the fallback with sectionTitle when the table has empty entries', () => {
         const table: Omit<StructuredRenderTable, 'sectionTitle'> = {
             type: 'table',
             direction: StructuredRenderCellDirection.Horizontal,
@@ -314,7 +328,14 @@ describe(emptyStructuredRenderTableFallback.name, () => {
             entries: [],
         };
 
-        const result = emptyStructuredRenderTableFallback(table, fallbackSection);
-        assert.deepEquals(result, fallbackSection);
+        const result = emptyStructuredRenderTableFallback({
+            table,
+            fallback: fallbackSection,
+            sectionTitle: 'My Table',
+        });
+        assert.deepEquals(result, {
+            ...fallbackSection,
+            sectionTitle: 'My Table',
+        });
     });
 });

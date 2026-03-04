@@ -120,22 +120,23 @@ export function doesSectionHaveContent(
 
 /**
  * A helper for falling back to a different structured render section if the given structured render
- * table is empty.
+ * table is empty. Returns a full {@link StructuredRenderSection} with the given `sectionTitle`.
  *
  * @category Util
  */
 export function emptyStructuredRenderTableFallback<
-    Fallback extends Omit<StructuredRenderSection, 'sectionTitle'> = Omit<
-        StructuredRenderSection,
-        'sectionTitle'
-    >,
->(
-    table: Omit<StructuredRenderTable, 'sectionTitle'>,
-    fallback: Fallback,
-): Omit<StructuredRenderSection, 'sectionTitle'> | Fallback {
-    if (doesSectionHaveContent(table)) {
-        return table;
-    } else {
-        return fallback;
-    }
+    Fallback extends Omit<StructuredRenderSection, 'sectionTitle'>,
+>({
+    table,
+    fallback,
+    sectionTitle,
+}: {
+    table: Omit<StructuredRenderTable, 'sectionTitle'>;
+    fallback: Fallback;
+    sectionTitle: string;
+}): StructuredRenderSection {
+    return {
+        ...(doesSectionHaveContent(table) ? table : fallback),
+        sectionTitle,
+    } as StructuredRenderSection;
 }
