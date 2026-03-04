@@ -19,7 +19,7 @@ export enum StructuredRenderTextStyle {
  * @category Internal
  */
 export const structuredRenderTextShape = createStructuredRenderSection('text', {
-    text: primitiveShape(''),
+    text: nullableShape(primitiveShape()),
     style: nullableShape(enumShape(StructuredRenderTextStyle)),
     /** Rendered before the text. */
     icon: nullableShape(structuredRenderIconShape),

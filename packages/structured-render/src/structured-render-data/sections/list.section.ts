@@ -2,6 +2,7 @@ import {defineShape, nullableShape, unionShape} from 'object-shape-tester';
 import {createStructuredRenderSection} from '../create-section.js';
 import {structuredRenderEmptyShape} from './empty.section.js';
 import {structuredRenderIconShape} from './icon.section.js';
+import {structuredRenderSourceShape} from './source.section.js';
 import {structuredRenderTagShape} from './tag.section.js';
 import {structuredRenderTextShape} from './text.section.js';
 
@@ -19,6 +20,7 @@ export const structuredRenderListItemShape = defineShape({
      * ignored.
      */
     icon: nullableShape(structuredRenderIconShape),
+    sources: nullableShape([nullableShape(structuredRenderSourceShape)]),
 });
 
 /**

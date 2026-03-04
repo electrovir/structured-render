@@ -124,6 +124,19 @@ const htmlRenderers: Record<
             <pre>${section.code}</pre>
         `;
     },
+    collapsible(section, options, keyChain) {
+        return html`
+            <${ViraCollapsibleCard.assign({
+                rawCollapsible: true,
+            })}>
+                <span slot=${ViraCollapsibleCard.slotNames.header}>${String(section.header)}</span>
+                ${renderInternalStructuredHtml(section.content, options, [
+                    ...keyChain,
+                    'collapsible',
+                ])}
+            </${ViraCollapsibleCard}>
+        `;
+    },
     empty() {
         return undefined;
     },
@@ -139,24 +152,37 @@ const htmlRenderers: Record<
                 if (!item.icon && !item.content) {
                     return undefined;
                 }
+                const itemKeyChain = [
+                    ...keyChain,
+                    itemIndex,
+                ];
+
                 const itemTemplate = item.content
                     ? renderInternalStructuredHtml(item.content, options, [
-                          ...keyChain,
-                          itemIndex,
+                          ...itemKeyChain,
                           'content',
                       ])
                     : undefined;
 
                 const iconTemplate = item.icon
                     ? renderInternalStructuredHtml(item.icon, options, [
-                          ...keyChain,
-                          itemIndex,
+                          ...itemKeyChain,
                           'icon',
                       ])
                     : nothing;
 
+                const itemContent = html`
+                    ${iconTemplate}${itemTemplate}
+                `;
+
                 return html`
-                    <li class="list-item-with-icon">${iconTemplate}${itemTemplate}</li>
+                    <li
+                        class=${classMap({
+                            'list-item-with-icon': !!item.icon,
+                        })}
+                    >
+                        ${createSourceWrapper(itemContent, options, itemKeyChain, item.sources)}
+                    </li>
                 `;
             },
             check.isTruthy,
@@ -271,6 +297,7 @@ const htmlRenderers: Record<
                                     renderInternalStructuredHtml(innerContent, options, [
                                         ...keyChain,
                                         rowIndex,
+                                        key,
                                         contentIndex,
                                     ]),
                                 check.isTruthy,
@@ -338,12 +365,12 @@ const htmlRenderers: Record<
 
                         const rowSources = createCleanSources(row.data?.sources);
 
-                        const cells = row.cells.map((cell, index) => {
-                            const isLastCell = index === row.cells.length - 1;
+                        const cells = row.cells.map((cell, cellIndex) => {
+                            const isLastCell = cellIndex === row.cells.length - 1;
 
                             const cellTag =
                                 section.direction === StructuredRenderCellDirection.Vertical &&
-                                index === 0
+                                cellIndex === 0
                                     ? 'th'
                                     : 'td';
 
@@ -355,7 +382,15 @@ const htmlRenderers: Record<
                                 return html`
                                     ${cellTemplate}
                                     <td class="source-cell">
-                                        ${createSourceTrigger('', options, rowKeyChain, rowSources)}
+                                        ${createSourceTrigger(
+                                            '',
+                                            options,
+                                            [
+                                                ...rowKeyChain,
+                                                cellIndex,
+                                            ],
+                                            rowSources,
+                                        )}
                                     </td>
                                 `;
                             } else {
@@ -523,7 +558,11 @@ function structuredRenderToHtmlArray(
         );
     } else if ('type' in data) {
         const sectionTitle: string | undefined =
-            ('sectionTitle' in data && keyChain.length > 0 && data.sectionTitle) || undefined;
+            ('sectionTitle' in data &&
+                keyChain.length > 0 &&
+                !(isTopSection && keyChain.at(-1) === 0) &&
+                data.sectionTitle) ||
+            undefined;
         const sectionTemplate = htmlRenderers[data.type](data, options, keyChain);
         const sources = ('sources' in data && data.sources) || undefined;
 
@@ -541,46 +580,37 @@ function structuredRenderToHtmlArray(
             </div>
         `;
 
-        if (isTopSection) {
-            return [
-                html`
-                    <${ViraCollapsibleCard.assign({
-                        expandOnPrint: true,
-                        blockExpansion: options.blockSectionExpansion,
-                        hideHeader: !sectionTitle,
-                        startExpanded: options.expandAllSections || keyChain.at(-1) === 0,
-                    })}>
-                        <h3 slot=${ViraCollapsibleCard.slotNames.header}>${sectionTitle}</h3>
-                        ${sectionContent}
-                    </${ViraCollapsibleCard}>
-                `,
-            ];
-        } else {
-            return [
-                sectionTitle
-                    ? html`
-                          <h3>${sectionTitle}</h3>
-                      `
-                    : undefined,
-                sectionContent,
-            ];
-        }
-    } else if ('sections' in data) {
         return [
-            data.cardTitle
+            sectionTitle
                 ? html`
-                      <h2>${data.cardTitle}</h2>
+                      <h3>${sectionTitle}</h3>
                   `
                 : undefined,
-            ...structuredRenderToHtmlArray(
-                data.sections,
-                options,
-                [
-                    ...keyChain,
-                    'sections',
-                ],
-                true,
-            ),
+            sectionContent,
+        ];
+    } else if ('sections' in data) {
+        const cardSections = structuredRenderToHtmlArray(
+            data.sections,
+            options,
+            [
+                ...keyChain,
+                'sections',
+            ],
+            true,
+        );
+
+        return [
+            html`
+                <${ViraCollapsibleCard.assign({
+                    expandOnPrint: true,
+                    blockExpansion: options.blockCardExpansion,
+                    hideHeader: !data.cardTitle,
+                    startExpanded: options.expandAllCards || keyChain.at(-1) === 0,
+                })}>
+                    <h2 slot=${ViraCollapsibleCard.slotNames.header}>${data.cardTitle}</h2>
+                    ${cardSections}
+                </${ViraCollapsibleCard}>
+            `,
         ];
     } else {
         assert.tsType(data).equals<never>();
@@ -609,10 +639,6 @@ function createSourceTrigger(
 ) {
     const sources = createCleanSources(rawSources);
 
-    if (!sources) {
-        return undefined;
-    }
-
     const sourceKeyChain = [
         ...rawKeyChain,
         'source-icon',
@@ -620,27 +646,29 @@ function createSourceTrigger(
     const sourceKey = makeChainKey(sourceKeyChain);
     const isSourceExpanded = !!options.currentlyExpanded[sourceKey];
 
-    const sourceIconTemplate = html`
-        <div class="source-icon-wrapper">
-            <button class="source-icon-button">
-                <${ViraIcon.assign({
-                    icon: options.sourceIcon,
-                    fitContainer: true,
-                })}
-                    ${listen('click', (event) => {
-                        const eventTarget = extractEventTarget(event, HTMLElement);
+    const sourceIconTemplate = sources
+        ? html`
+              <div class="source-icon-wrapper">
+                  <button class="source-icon-button">
+                      <${ViraIcon.assign({
+                          icon: options.sourceIcon,
+                          fitContainer: true,
+                      })}
+                          ${listen('click', (event) => {
+                              const eventTarget = extractEventTarget(event, HTMLElement);
 
-                        eventTarget.dispatchEvent(
-                            new SourceExpansionEvent({
-                                expanded: !isSourceExpanded,
-                                key: makeChainKey(sourceKeyChain),
-                            }),
-                        );
-                    })}
-                ></${ViraIcon}>
-            </button>
-        </div>
-    `;
+                              eventTarget.dispatchEvent(
+                                  new SourceExpansionEvent({
+                                      expanded: !isSourceExpanded,
+                                      key: makeChainKey(sourceKeyChain),
+                                  }),
+                              );
+                          })}
+                      ></${ViraIcon}>
+                  </button>
+              </div>
+          `
+        : nothing;
 
     return html`
         <div class="source-content-wrapper">${content}${sourceIconTemplate}</div>
@@ -689,12 +717,6 @@ function createSourceWrapper(
     rawKeyChain: ReadonlyArray<PropertyKey>,
     rawSources: SourcesInput,
 ) {
-    const sources = createCleanSources(rawSources);
-
-    if (!sources) {
-        return content;
-    }
-
     return html`
         ${createSourceTrigger(content, options, rawKeyChain, rawSources)}
         ${createExpandingSource(options, rawKeyChain, rawSources)}

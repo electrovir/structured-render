@@ -8,7 +8,7 @@ export const blockExpansionBookPage = defineBookPage({
     title: 'Block Expansion',
     parent: cardsBookPage,
     descriptionParagraphs: [
-        'Cards rendered with blockSectionExpansion enabled, which forces all sections expanded and disables toggling.',
+        'Cards rendered with blockCardExpansion enabled, which forces all sections expanded and disables toggling.',
     ],
     defineExamples({defineExample}) {
         defineExample({
@@ -23,7 +23,7 @@ export const blockExpansionBookPage = defineBookPage({
                     <${VirStructuredRender.assign({
                         data: multiCardMock,
                         options: {
-                            blockSectionExpansion: true,
+                            blockCardExpansion: true,
                         },
                     })}></${VirStructuredRender}>
                 `;

@@ -198,24 +198,108 @@ export const multiCardMock: StructuredRenderData = [
                     {
                         content: {
                             type: StructuredRenderSectionType.text,
-                            text: 'Fix layout shifts caused by dynamically loaded images.',
+                            text: 'Fix layout shifts caused by dynamically loaded images. Fix layout shifts caused by dynamically loaded images. Fix layout shifts caused by dynamically loaded images. Fix layout shifts caused by dynamically loaded images. Fix layout shifts caused by dynamically loaded images. Fix layout shifts caused by dynamically loaded images. Fix layout shifts caused by dynamically loaded images. Fix layout shifts caused by dynamically loaded images. Fix layout shifts caused by dynamically loaded images. Fix layout shifts caused by dynamically loaded images. Fix layout shifts caused by dynamically loaded images. Fix layout shifts caused by dynamically loaded images.',
                         },
                         icon: {
                             type: StructuredRenderSectionType.icon,
                             iconKey: StatusWarning24Icon.name,
                             strokeColor: 'red',
                         },
+                        sources: [
+                            {
+                                type: 'source',
+                                fileName: 'frontend-performance-review-2026-q1.pdf',
+                                pageNumbers: [
+                                    4,
+                                ],
+                                quote: 'Layout shifts primarily caused by images without explicit dimensions.',
+                            },
+                            {
+                                type: 'source',
+                                fileName: 'web-vitals-optimization-guide.md',
+                                quote: 'Lazy loading below-the-fold content reduces initial page weight and improves LCP.',
+                            },
+                        ],
                     },
                     {
+                        icon: {
+                            type: StructuredRenderSectionType.icon,
+                            iconKey: StatusWarning24Icon.name,
+                            strokeColor: 'red',
+                        },
                         content: {
                             type: StructuredRenderSectionType.text,
                             text: 'Add explicit width and height attributes to all image elements.',
+                            sources: [
+                                {
+                                    type: 'source',
+                                    fileName: 'cls-regression-analysis.pdf',
+                                    pageNumbers: [
+                                        8,
+                                    ],
+                                    quote: 'Missing width/height attributes on images are the primary contributor to layout shift.',
+                                },
+                            ],
                         },
                     },
                     {
                         content: {
                             type: StructuredRenderSectionType.text,
                             text: 'Consider lazy loading below-the-fold content.',
+                        },
+                        sources: [
+                            {
+                                type: 'source',
+                                fileName: 'frontend-performance-review-2026-q1.pdf',
+                                pageNumbers: [
+                                    4,
+                                ],
+                                quote: 'Layout shifts primarily caused by images without explicit dimensions.',
+                            },
+                            {
+                                type: 'source',
+                                fileName: 'web-vitals-optimization-guide.md',
+                                quote: 'Lazy loading below-the-fold content reduces initial page weight and improves LCP.',
+                            },
+                        ],
+                    },
+                ],
+            },
+            {
+                type: StructuredRenderSectionType.list,
+                sectionTitle: 'Action Items',
+                items: [
+                    {
+                        content: {
+                            type: StructuredRenderSectionType.text,
+                            text: 'Audit all hero images for missing dimensions. Audit all hero images for missing dimensions. Audit all hero images for missing dimensions. Audit all hero images for missing dimensions. Audit all hero images for missing dimensions. Audit all hero images for missing dimensions. Audit all hero images for missing dimensions. Audit all hero images for missing dimensions. Audit all hero images for missing dimensions. Audit all hero images for missing dimensions. Audit all hero images for missing dimensions. Audit all hero images for missing dimensions.',
+                        },
+                        icon: {
+                            type: StructuredRenderSectionType.icon,
+                            iconKey: StatusWarning24Icon.name,
+                            strokeColor: 'orange',
+                        },
+                    },
+                    {
+                        content: {
+                            type: StructuredRenderSectionType.text,
+                            text: 'Enable native lazy loading on below-the-fold images.',
+                        },
+                        icon: {
+                            type: StructuredRenderSectionType.icon,
+                            iconKey: StatusSuccess24Icon.name,
+                            strokeColor: 'green',
+                        },
+                    },
+                    {
+                        content: {
+                            type: StructuredRenderSectionType.text,
+                            text: 'Defer non-critical third-party scripts.',
+                        },
+                        icon: {
+                            type: StructuredRenderSectionType.icon,
+                            iconKey: StatusSuccess24Icon.name,
+                            strokeColor: 'green',
                         },
                     },
                 ],
@@ -600,6 +684,131 @@ export const multiCardMock: StructuredRenderData = [
                     '    command: deploy --env production',
                     '    requires: [e2e]',
                 ].join('\n'),
+            },
+            {
+                type: StructuredRenderSectionType.collapsible,
+                sectionTitle: 'Collapsible Details',
+                header: 'Rollback Procedure',
+                content: [
+                    {
+                        type: StructuredRenderSectionType.text,
+                        text: 'If a deployment fails health checks, the pipeline automatically triggers a rollback to the previous stable version.',
+                    },
+                    {
+                        type: StructuredRenderSectionType.codeBlock,
+                        syntax: 'bash',
+                        code: [
+                            '#!/bin/bash',
+                            'deploy rollback --env production --to-version $LAST_STABLE',
+                            'notify --channel ops --message "Rollback initiated"',
+                        ].join('\n'),
+                    },
+                ],
+            },
+            {
+                type: StructuredRenderSectionType.collapsible,
+                header: 'Environment Variables',
+                content: [
+                    {
+                        type: StructuredRenderSectionType.table,
+                        direction: StructuredRenderCellDirection.Horizontal,
+                        headers: [
+                            {
+                                key: 'variable',
+                            },
+                            {
+                                key: 'staging',
+                            },
+                            {
+                                key: 'production',
+                            },
+                        ],
+                        entries: [
+                            {
+                                data: {
+                                    variable: {
+                                        type: StructuredRenderSectionType.inlineCode,
+                                        code: 'NODE_ENV',
+                                    },
+                                    staging: {
+                                        type: StructuredRenderSectionType.tag,
+                                        text: 'staging',
+                                        color: {
+                                            variant: ViraColorVariant.Warning,
+                                        },
+                                    },
+                                    production: {
+                                        type: StructuredRenderSectionType.tag,
+                                        text: 'production',
+                                        color: {
+                                            variant: ViraColorVariant.Positive,
+                                        },
+                                    },
+                                },
+                            },
+                            {
+                                data: {
+                                    variable: {
+                                        type: StructuredRenderSectionType.inlineCode,
+                                        code: 'LOG_LEVEL',
+                                    },
+                                    staging: {
+                                        type: StructuredRenderSectionType.text,
+                                        text: 'debug',
+                                    },
+                                    production: {
+                                        type: StructuredRenderSectionType.text,
+                                        text: 'warn',
+                                    },
+                                },
+                            },
+                        ],
+                    },
+                ],
+            },
+            {
+                type: StructuredRenderSectionType.collapsible,
+                header: 'Post-Deploy Checklist',
+                content: [
+                    {
+                        type: StructuredRenderSectionType.list,
+                        items: [
+                            {
+                                content: {
+                                    type: StructuredRenderSectionType.text,
+                                    text: 'Verify health check endpoints return 200.',
+                                },
+                                icon: {
+                                    type: StructuredRenderSectionType.icon,
+                                    iconKey: StatusSuccess24Icon.name,
+                                    strokeColor: 'green',
+                                },
+                            },
+                            {
+                                content: {
+                                    type: StructuredRenderSectionType.text,
+                                    text: 'Confirm error rate stays below 0.1% threshold.',
+                                },
+                                icon: {
+                                    type: StructuredRenderSectionType.icon,
+                                    iconKey: StatusWarning24Icon.name,
+                                    strokeColor: 'orange',
+                                },
+                            },
+                            {
+                                content: {
+                                    type: StructuredRenderSectionType.text,
+                                    text: 'Monitor p99 latency for 15 minutes.',
+                                },
+                                icon: {
+                                    type: StructuredRenderSectionType.icon,
+                                    iconKey: StatusSuccess24Icon.name,
+                                    strokeColor: 'green',
+                                },
+                            },
+                        ],
+                    },
+                ],
             },
         ],
     },

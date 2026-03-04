@@ -11,6 +11,7 @@ export * from './render/render-pdf.js';
 export * from './render/render-types.js';
 export * from './structured-render-data/create-section.js';
 export * from './structured-render-data/sections/code-block.section.js';
+export * from './structured-render-data/sections/collapsible.section.js';
 export * from './structured-render-data/sections/empty.section.js';
 export * from './structured-render-data/sections/icon.section.js';
 export * from './structured-render-data/sections/inline-code.section.js';

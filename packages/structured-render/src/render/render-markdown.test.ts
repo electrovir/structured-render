@@ -350,6 +350,40 @@ describe(renderStructuredMarkdown.name, () => {
                 expect: '',
             },
             {
+                it: 'handles a list section with item sources',
+                inputs: [
+                    {
+                        type: StructuredRenderSectionType.list,
+                        items: [
+                            {
+                                content: {
+                                    type: StructuredRenderSectionType.text,
+                                    text: 'First item',
+                                },
+                                sources: [
+                                    {
+                                        type: StructuredRenderSectionType.source,
+                                        fileName: 'doc.pdf',
+                                        pageNumbers: [1],
+                                    },
+                                ],
+                            },
+                            {
+                                content: {
+                                    type: StructuredRenderSectionType.text,
+                                    text: 'Second item',
+                                },
+                            },
+                        ],
+                    } satisfies StructuredRenderList,
+                ],
+                expect: `
+                    - First item
+                    <small>Source: doc.pdf, p. 1</small>
+                    - Second item
+                `,
+            },
+            {
                 it: 'handles a table section',
                 inputs: [
                     {

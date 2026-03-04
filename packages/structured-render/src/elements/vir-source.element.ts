@@ -112,6 +112,11 @@ export const VirSource = defineElement<{
             }
         }
 
+        ${ViraIcon} {
+            width: 20px;
+            height: 20px;
+        }
+
         ${hostClasses['vir-source-phone-size'].selector} {
             padding: 4px;
             ${cssVars['vir-source-phone-font-size'].value}

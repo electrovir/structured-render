@@ -130,6 +130,9 @@ const markdownRenderers: Record<
 
         return convertTemplateToString(coloredIcon.svgTemplate);
     },
+    collapsible() {
+        return '';
+    },
     codeBlock(section: Readonly<StructuredRenderCodeBlock>): string {
         return `\`\`\`${section.syntax || ''}\n${section.code}\n\`\`\``;
     },
@@ -146,7 +149,13 @@ const markdownRenderers: Record<
                 const content = renderStructuredMarkdown(item.content, options);
                 const icon = renderStructuredMarkdown(item.icon, options);
                 if (content) {
-                    return icon ? `- ${icon} ${content}` : `- ${content}`;
+                    const itemLine = icon ? `- ${icon} ${content}` : `- ${content}`;
+                    const sourcesLine = (item.sources || [])
+                        .map((source) => renderStructuredMarkdown(source, options))
+                        .filter(check.isTruthy)
+                        .join('\n');
+
+                    return sourcesLine ? `${itemLine}\n${sourcesLine}` : itemLine;
                 } else {
                     return '';
                 }
@@ -251,13 +260,15 @@ function formatSeparatorRow(widths: number[]): string {
 function structuredRenderToMarkdownArray(
     data: Readonly<RenderInput>,
     options: Readonly<RenderOptions>,
+    isFirstCardSection = false,
 ): (string | undefined)[] {
     if (!data) {
         return [];
     } else if (check.isArray(data)) {
         return data.flatMap((entry) => renderStructuredMarkdown(entry, options));
     } else if ('type' in data) {
-        const sectionTitle = 'sectionTitle' in data ? data.sectionTitle : undefined;
+        const sectionTitle =
+            'sectionTitle' in data && !isFirstCardSection ? data.sectionTitle : undefined;
         const sources = ('sources' in data && data.sources) || [];
 
         return [
@@ -268,7 +279,9 @@ function structuredRenderToMarkdownArray(
     } else if ('sections' in data) {
         return [
             data.cardTitle && `## ${data.cardTitle}`,
-            ...structuredRenderToMarkdownArray(data.sections, options),
+            ...data.sections.flatMap((section, index) =>
+                structuredRenderToMarkdownArray(section, options, index === 0),
+            ),
         ].filter(check.isTruthy);
     } else {
         assert.tsType(data).equals<never>();

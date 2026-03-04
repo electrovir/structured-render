@@ -140,17 +140,17 @@ export type RenderHtmlOptions = RenderOptions & {
     /** CSS styles for rendering internal Markdown. */
     markdownStyles: string | CSSResult;
     /**
-     * If set to `true`, all sections will start out expanded.
+     * If set to `true`, all cards will start out expanded.
      *
      * @default false
      */
-    expandAllSections: boolean;
+    expandAllCards: boolean;
     /**
-     * If set to `true`, all sections will be expanded and expansion toggling will be disabled.
+     * If set to `true`, all cards will be expanded and expansion toggling will be disabled.
      *
      * @default false
      */
-    blockSectionExpansion: boolean;
+    blockCardExpansion: boolean;
 };
 
 /**
@@ -172,6 +172,6 @@ export const defaultRenderHtmlOptions: Readonly<RenderHtmlOptions> = {
     createViewOnPageString(pageNumber) {
         return `View on page ${pageNumber}`;
     },
-    expandAllSections: false,
-    blockSectionExpansion: false,
+    expandAllCards: false,
+    blockCardExpansion: false,
 };

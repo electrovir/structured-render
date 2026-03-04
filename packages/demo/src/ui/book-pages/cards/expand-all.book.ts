@@ -8,7 +8,7 @@ export const expandAllBookPage = defineBookPage({
     title: 'Expand All',
     parent: cardsBookPage,
     descriptionParagraphs: [
-        'Cards rendered with expandAllSections enabled, which starts all sections expanded but still allows toggling.',
+        'Cards rendered with expandAllCards enabled, which starts all sections expanded but still allows toggling.',
     ],
     defineExamples({defineExample}) {
         defineExample({
@@ -23,7 +23,7 @@ export const expandAllBookPage = defineBookPage({
                     <${VirStructuredRender.assign({
                         data: multiCardMock,
                         options: {
-                            expandAllSections: true,
+                            expandAllCards: true,
                         },
                     })}></${VirStructuredRender}>
                 `;

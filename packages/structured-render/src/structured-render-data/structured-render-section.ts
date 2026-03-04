@@ -2,6 +2,7 @@ import {assert} from '@augment-vir/assert';
 import {arrayToObject, ensureArray, type AnyObject} from '@augment-vir/common';
 import {unionShape} from 'object-shape-tester';
 import {structuredRenderCodeBlockShape} from './sections/code-block.section.js';
+import {collapsibleSectionShape} from './sections/collapsible.section.js';
 import {structuredRenderEmptyShape} from './sections/empty.section.js';
 import {structuredRenderIconShape} from './sections/icon.section.js';
 import {structuredRenderInlineCodeShape} from './sections/inline-code.section.js';
@@ -30,6 +31,7 @@ export const allStructuredRenderSectionShapes = [
     structuredRenderTableShape,
     structuredRenderTextShape,
     structuredRenderIconShape,
+    collapsibleSectionShape,
 ] as const;
 
 /**
@@ -109,8 +111,11 @@ export function doesSectionHaveContent(
         return !!String(section.text) || !!section.icon;
     } else if (section.type === StructuredRenderSectionType.source) {
         return sourceHasContent(section);
+    } else if (
+        section.type === StructuredRenderSectionType.icon ||
         // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    } else if (section.type === StructuredRenderSectionType.icon) {
+        section.type === StructuredRenderSectionType.collapsible
+    ) {
         return true;
     } else {
         assert.tsType(section).equals<never>();

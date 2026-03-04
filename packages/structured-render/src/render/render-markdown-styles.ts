@@ -40,10 +40,10 @@ export const baseContentResetStyles = `
 export const defaultMarkdownStyleConfiguration = {
     accentColor: 'dodgerblue',
     bodySize: '14px',
-    h1Size: '32px',
-    h2Size: '24px',
-    h3Size: '18px',
-    h4Size: '16px',
+    h1Size: '22px',
+    h2Size: '18px',
+    h3Size: '16px',
+    h4Size: '15px',
     h5Size: '14px',
     h6Size: '14px',
     bodyGap: '24px',
@@ -170,6 +170,8 @@ export function configureDefaultMarkdownRenderStyles(
                 border-radius: 6px;
                 white-space: pre-wrap;
                 overflow-x: auto;
+                font-family: ${styles.codeFont};
+                font-size: ${styles.codeSize};
 
                 & code {
                     background-color: transparent;
