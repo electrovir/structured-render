@@ -207,9 +207,7 @@ export function configureDefaultMarkdownRenderStyles(
             & thead tr:first-child th,
             & thead tr:first-child td,
             & tbody tr:first-child th,
-            & tbody tr:first-child td,
-            & tbody tr td.source-cell,
-            & thead tr th.source-cell {
+            & tbody tr:first-child td {
                 border-top-color: transparent;
             }
 

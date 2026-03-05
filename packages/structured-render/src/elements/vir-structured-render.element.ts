@@ -16,6 +16,8 @@ import {contentDivClass, defaultMarkdownRenderStyles} from '../render/render-mar
 import {type RenderHtmlOptions, type RenderInput} from '../render/render-types.js';
 import {StructuredRenderTextStyle} from '../structured-render-data/sections/text.section.js';
 
+const iconRightMargin = css`4px`;
+
 /**
  * Used to render Structured Render data to the DOM. This is the easiest way, if you use
  * element-vir, to include Structured Render data in your web app. You can also use
@@ -162,11 +164,13 @@ export const VirStructuredRender = defineElement<{
 
                 &:has(+ .source-cell) {
                     border-right: none;
+                    padding-right: 0;
                 }
 
                 &.source-cell {
-                    border: none !important;
+                    border-left: none !important;
                     padding: 0;
+                    padding-left: 4px;
                 }
             }
 
@@ -196,6 +200,8 @@ export const VirStructuredRender = defineElement<{
             }
 
             &.vertical {
+                align-self: flex-start;
+
                 & th {
                     font-weight: bold;
                 }
@@ -286,7 +292,6 @@ export const VirStructuredRender = defineElement<{
 
         .source-icon-wrapper.source-icon-wrapper.source-icon-wrapper.source-icon-wrapper.source-icon-wrapper {
             margin-left: auto;
-            width: 32px;
             justify-content: flex-end;
             align-items: center;
             display: flex;
@@ -313,7 +318,7 @@ export const VirStructuredRender = defineElement<{
         }
 
         .source-content-wrapper {
-            > *:last-child {
+            > *:last-child:not(table) {
                 flex-grow: 1;
             }
         }
@@ -326,6 +331,7 @@ export const VirStructuredRender = defineElement<{
                 content: '•';
                 flex-shrink: 0;
                 width: 24px;
+                margin-right: ${iconRightMargin};
                 line-height: 24px;
                 display: flex;
                 justify-content: center;
@@ -347,7 +353,7 @@ export const VirStructuredRender = defineElement<{
         }
 
         .icon-section:first-child:has(+ *) {
-            margin-right: 2px;
+            margin-right: ${iconRightMargin};
         }
 
         .processing-section .source-content-wrapper {

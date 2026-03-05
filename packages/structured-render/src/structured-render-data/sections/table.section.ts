@@ -117,6 +117,7 @@ export type StructuredRenderTable = typeof structuredRenderTableShape.runtimeTyp
  * @category Util
  */
 export function createRenderDataTable<const Headers extends StructuredRenderTable['headers']>(
+    direction: StructuredRenderCellDirection,
     headers: Headers,
     entries: {
         data: Record<
@@ -126,8 +127,10 @@ export function createRenderDataTable<const Headers extends StructuredRenderTabl
         sources?: (StructuredRenderSource | undefined)[] | undefined;
     }[],
     footerRows?: StructuredRenderTable['footerRows'],
-): Omit<StructuredRenderTable, 'type' | 'direction'> {
+): StructuredRenderTable {
     return {
+        type: 'table',
+        direction,
         headers,
         entries,
         footerRows,

@@ -1,6 +1,7 @@
 import {defineBookPage} from 'element-book';
 import {css, html} from 'element-vir';
 import {
+    createRenderDataTable,
     StructuredRenderCellDirection,
     StructuredRenderSectionType,
     StructuredRenderTextStyle,
@@ -304,6 +305,281 @@ export const multiCardMock: StructuredRenderData = [
                     },
                 ],
             },
+            createRenderDataTable(
+                StructuredRenderCellDirection.Vertical,
+                [
+                    {
+                        key: 'age',
+                        text: {
+                            type: StructuredRenderSectionType.text,
+                            text: 'Age',
+                        },
+                    },
+                    {
+                        key: 'dateOfBirth',
+                        text: {
+                            type: StructuredRenderSectionType.text,
+                            text: 'DoB',
+                        },
+                    },
+                    {
+                        key: 'bloodPressure',
+                        text: {
+                            type: StructuredRenderSectionType.text,
+                            text: 'Blood Pressure',
+                        },
+                    },
+                    {
+                        key: 'bmi',
+                        text: {
+                            type: StructuredRenderSectionType.text,
+                            text: 'BMI',
+                        },
+                    },
+                    {
+                        key: 'heartRate',
+                        text: {
+                            type: StructuredRenderSectionType.text,
+                            text: 'Heart Rate',
+                        },
+                    },
+                    {
+                        key: 'oxygenSaturation',
+                        text: {
+                            type: StructuredRenderSectionType.text,
+                            text: 'Oxygen Saturation',
+                        },
+                    },
+                    {
+                        key: 'pain',
+                        text: {
+                            type: StructuredRenderSectionType.text,
+                            text: 'Pain',
+                        },
+                    },
+                    {
+                        key: 'language',
+                        text: {
+                            type: StructuredRenderSectionType.text,
+                            text: 'Language',
+                        },
+                    },
+                    {
+                        key: 'respiratory',
+                        text: {
+                            type: StructuredRenderSectionType.text,
+                            text: 'Respiratory Rate',
+                        },
+                    },
+                    {
+                        key: 'sex',
+                        text: {
+                            type: StructuredRenderSectionType.text,
+                            text: 'Sex',
+                        },
+                    },
+                    {
+                        key: 'temperature',
+                        text: {
+                            type: StructuredRenderSectionType.text,
+                            text: 'Temperature',
+                        },
+                    },
+                    {
+                        key: 'weight',
+                        text: {
+                            type: StructuredRenderSectionType.text,
+                            text: 'Weight',
+                        },
+                    },
+                    {
+                        key: 'height',
+                        text: {
+                            type: StructuredRenderSectionType.text,
+                            text: 'Height',
+                        },
+                    },
+                    {
+                        key: 'zipCode',
+                        text: {
+                            type: StructuredRenderSectionType.text,
+                            text: 'Zip Code',
+                        },
+                    },
+                ],
+                [
+                    {
+                        data: {
+                            age: {
+                                type: StructuredRenderSectionType.text,
+                                text: '72',
+                                sources: [
+                                    {
+                                        type: StructuredRenderSectionType.source,
+                                        fileName: 'intake-form.pdf',
+                                        pageNumbers: [
+                                            1,
+                                        ],
+                                        quote: 'Age: 72',
+                                    },
+                                ],
+                            },
+                            dateOfBirth: {
+                                type: StructuredRenderSectionType.text,
+                                text: '01/15/1954',
+                                sources: [
+                                    {
+                                        type: StructuredRenderSectionType.source,
+                                        fileName: 'intake-form.pdf',
+                                        pageNumbers: [
+                                            1,
+                                        ],
+                                        quote: 'DOB: 01/15/1954',
+                                    },
+                                ],
+                            },
+                            bloodPressure: {
+                                type: StructuredRenderSectionType.text,
+                                text: '130 / 85',
+                                sources: [
+                                    {
+                                        type: StructuredRenderSectionType.source,
+                                        fileName: 'vitals-chart.pdf',
+                                        pageNumbers: [
+                                            2,
+                                        ],
+                                        quote: 'BP: 130/85 mmHg',
+                                    },
+                                ],
+                            },
+                            bmi: {
+                                type: StructuredRenderSectionType.text,
+                                text: '27.3',
+                                sources: [
+                                    {
+                                        type: StructuredRenderSectionType.source,
+                                        fileName: 'vitals-chart.pdf',
+                                        pageNumbers: [
+                                            2,
+                                        ],
+                                        quote: 'BMI: 27.3',
+                                    },
+                                ],
+                            },
+                            heartRate: {
+                                type: StructuredRenderSectionType.text,
+                                text: '78 bpm',
+                                sources: [
+                                    {
+                                        type: StructuredRenderSectionType.source,
+                                        fileName: 'vitals-chart.pdf',
+                                        pageNumbers: [
+                                            2,
+                                        ],
+                                        quote: 'HR: 78 bpm',
+                                    },
+                                ],
+                            },
+                            height: {
+                                type: StructuredRenderSectionType.text,
+                                text: '170 cm',
+                            },
+                            oxygenSaturation: {
+                                type: StructuredRenderSectionType.text,
+                                text: '96%, on room air',
+                                sources: [
+                                    {
+                                        type: StructuredRenderSectionType.source,
+                                        fileName: 'vitals-chart.pdf',
+                                        pageNumbers: [
+                                            2,
+                                        ],
+                                        quote: 'SpO2: 96% on RA',
+                                    },
+                                ],
+                            },
+                            pain: {
+                                type: StructuredRenderSectionType.text,
+                                text: '4/10',
+                                sources: [
+                                    {
+                                        type: StructuredRenderSectionType.source,
+                                        fileName: 'nursing-notes.pdf',
+                                        pageNumbers: [
+                                            3,
+                                        ],
+                                        quote: 'Pain score: 4/10',
+                                    },
+                                ],
+                            },
+                            language: {
+                                type: StructuredRenderSectionType.text,
+                                text: 'English',
+                            },
+                            respiratory: {
+                                type: StructuredRenderSectionType.text,
+                                text: '18 breaths/min',
+                                sources: [
+                                    {
+                                        type: StructuredRenderSectionType.source,
+                                        fileName: 'vitals-chart.pdf',
+                                        pageNumbers: [
+                                            2,
+                                        ],
+                                        quote: 'RR: 18 breaths/min',
+                                    },
+                                ],
+                            },
+                            sex: {
+                                type: StructuredRenderSectionType.text,
+                                text: 'Male',
+                            },
+                            temperature: {
+                                type: StructuredRenderSectionType.text,
+                                text: '98.6 °F',
+                                sources: [
+                                    {
+                                        type: StructuredRenderSectionType.source,
+                                        fileName: 'vitals-chart.pdf',
+                                        pageNumbers: [
+                                            2,
+                                        ],
+                                        quote: 'Temp: 98.6°F',
+                                    },
+                                ],
+                            },
+                            weight: {
+                                type: StructuredRenderSectionType.text,
+                                text: '185 lbs',
+                                sources: [
+                                    {
+                                        type: StructuredRenderSectionType.source,
+                                        fileName: 'vitals-chart.pdf',
+                                        pageNumbers: [
+                                            2,
+                                        ],
+                                        quote: 'Weight: 185 lbs',
+                                    },
+                                ],
+                            },
+                            zipCode: {
+                                type: StructuredRenderSectionType.text,
+                                text: '90210',
+                                sources: [
+                                    {
+                                        type: StructuredRenderSectionType.source,
+                                        fileName: 'intake-form.pdf',
+                                        pageNumbers: [
+                                            1,
+                                        ],
+                                        quote: 'Zip: 90210',
+                                    },
+                                ],
+                            },
+                        },
+                    },
+                ],
+            ),
         ],
     },
     {

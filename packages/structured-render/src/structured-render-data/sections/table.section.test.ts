@@ -1,7 +1,11 @@
 import {assert} from '@augment-vir/assert';
 import {describe, it} from '@augment-vir/test';
 import {StructuredRenderSectionType} from '../structured-render-section.js';
-import {createRenderDataTable, type StructuredRenderTable} from './table.section.js';
+import {
+    createRenderDataTable,
+    StructuredRenderCellDirection,
+    type StructuredRenderTable,
+} from './table.section.js';
 
 describe(createRenderDataTable.name, () => {
     it('creates a table with headers and entries', () => {
@@ -22,7 +26,7 @@ describe(createRenderDataTable.name, () => {
             },
         ];
 
-        const result = createRenderDataTable(headers, [
+        const result = createRenderDataTable(StructuredRenderCellDirection.Horizontal, headers, [
             {
                 data: {
                     name: {
@@ -59,6 +63,7 @@ describe(createRenderDataTable.name, () => {
         ];
 
         const result = createRenderDataTable(
+            StructuredRenderCellDirection.Horizontal,
             headers,
             [
                 {
@@ -83,7 +88,7 @@ describe(createRenderDataTable.name, () => {
             },
         ];
 
-        const result = createRenderDataTable(headers, [
+        const result = createRenderDataTable(StructuredRenderCellDirection.Horizontal, headers, [
             {
                 data: {
                     col1: {
@@ -112,7 +117,7 @@ describe(createRenderDataTable.name, () => {
             },
         ];
 
-        const result = createRenderDataTable(headers, []);
+        const result = createRenderDataTable(StructuredRenderCellDirection.Horizontal, headers, []);
 
         assert.deepEquals(result.headers, headers);
         assert.strictEquals(result.entries.length, 0);

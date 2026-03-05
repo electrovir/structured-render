@@ -293,13 +293,32 @@ const htmlRenderers: Record<
                         join<HtmlInterpolation, HTMLTemplateResult>(
                             filterMap(
                                 contents,
-                                (innerContent, contentIndex) =>
-                                    renderInternalStructuredHtml(innerContent, options, [
-                                        ...keyChain,
-                                        rowIndex,
-                                        key,
-                                        contentIndex,
-                                    ]),
+                                (innerContent, contentIndex) => {
+                                    const sourcesOverride =
+                                        'sources' in innerContent
+                                            ? {
+                                                  sources:
+                                                      section.direction ===
+                                                      StructuredRenderCellDirection.Vertical
+                                                          ? undefined
+                                                          : innerContent.sources,
+                                              }
+                                            : {};
+
+                                    return renderInternalStructuredHtml(
+                                        {
+                                            ...innerContent,
+                                            ...sourcesOverride,
+                                        },
+                                        options,
+                                        [
+                                            ...keyChain,
+                                            rowIndex,
+                                            key,
+                                            contentIndex,
+                                        ],
+                                    );
+                                },
                                 check.isTruthy,
                             ),
                             html`
@@ -319,7 +338,27 @@ const htmlRenderers: Record<
             },
         );
 
-        const tableHasRowSource = rows.some((row) => !!row.data?.sources?.length);
+        const allRowSources = rows.map((row) => {
+            const lastCell = row.cells.at(-1);
+
+            const lastCellSources =
+                section.direction === StructuredRenderCellDirection.Vertical && lastCell
+                    ? ensureArray(lastCell.data?.data[lastCell.key])
+                          .filter(check.isTruthy)
+                          .flatMap((cellContent) => {
+                              return 'sources' in cellContent
+                                  ? ensureArray(cellContent.sources)
+                                  : [];
+                          })
+                    : undefined;
+
+            return createCleanSources([
+                ...ensureArray(lastCellSources),
+                ...ensureArray(row.data?.sources),
+            ]);
+        });
+
+        const tableHasRowSource = allRowSources.some((rowSources) => !!rowSources?.length);
         const columnCount = rows[0]?.cells.length || 0;
 
         return html`
@@ -363,7 +402,7 @@ const htmlRenderers: Record<
                             rowIndex,
                         ];
 
-                        const rowSources = createCleanSources(row.data?.sources);
+                        const rowSources = allRowSources[rowIndex];
 
                         const cells = row.cells.map((cell, cellIndex) => {
                             const isLastCell = cellIndex === row.cells.length - 1;
@@ -382,15 +421,7 @@ const htmlRenderers: Record<
                                 return html`
                                     ${cellTemplate}
                                     <td class="source-cell">
-                                        ${createSourceTrigger(
-                                            '',
-                                            options,
-                                            [
-                                                ...rowKeyChain,
-                                                cellIndex,
-                                            ],
-                                            rowSources,
-                                        )}
+                                        ${createSourceTrigger('', options, rowKeyChain, rowSources)}
                                     </td>
                                 `;
                             } else {
@@ -411,7 +442,7 @@ const htmlRenderers: Record<
                         return html`
                             <tr>
                                 ${cells}
-                                ${tableHasRowSource && !rowSources?.length
+                                ${tableHasRowSource
                                     ? html`
                                           <td class="source-cell"></td>
                                       `
