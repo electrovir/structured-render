@@ -308,16 +308,14 @@ function normalizeMargin(margin: Html2PdfOptions['margin']): [number, number, nu
             0,
             0,
         ];
-    }
-    if (typeof margin === 'number') {
+    } else if (typeof margin === 'number') {
         return [
             margin,
             margin,
             margin,
             margin,
         ];
-    }
-    if (margin.length === 2) {
+    } else if (margin.length === 2) {
         return [
             margin[0],
             margin[1],

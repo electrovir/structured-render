@@ -25,7 +25,7 @@ export const downloadAndPrintBookPage = defineBookPage({
                 return html`
                     <${ViraButton.assign({
                         text: 'Print',
-                        disabled: state.isLoading,
+                        isDisabled: state.isLoading,
                         icon: state.isError
                             ? StatusFailure24Icon
                             : state.isLoading
@@ -68,7 +68,7 @@ export const downloadAndPrintBookPage = defineBookPage({
                 return html`
                     <${ViraButton.assign({
                         text: 'Download',
-                        disabled: state.isLoading,
+                        isDisabled: state.isLoading,
                         icon: state.isError
                             ? StatusFailure24Icon
                             : state.isLoading
