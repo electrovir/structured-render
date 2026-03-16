@@ -636,7 +636,9 @@ function structuredRenderToHtmlArray(
                     expandOnPrint: true,
                     blockExpansion: options.blockCardExpansion,
                     hideHeader: !data.cardTitle,
-                    startExpanded: options.expandAllCards || keyChain.at(-1) === 0,
+                    startExpanded:
+                        options.expandAllCards ||
+                        (options.expandFirstCard && keyChain.at(-1) === 0),
                 })}>
                     <h2 slot=${ViraCollapsibleCard.slotNames.header}>${data.cardTitle}</h2>
                     ${cardSections}

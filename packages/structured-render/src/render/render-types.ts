@@ -151,6 +151,12 @@ export type RenderHtmlOptions = RenderOptions & {
      * @default false
      */
     blockCardExpansion: boolean;
+    /**
+     * If set to `true`, the first card will start out expanded.
+     *
+     * @default false
+     */
+    expandFirstCard: boolean;
 };
 
 /**
@@ -174,4 +180,5 @@ export const defaultRenderHtmlOptions: Readonly<RenderHtmlOptions> = {
     },
     expandAllCards: false,
     blockCardExpansion: false,
+    expandFirstCard: false,
 };
