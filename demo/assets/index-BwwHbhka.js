@@ -3571,7 +3571,23 @@ Please report this to https://github.com/markedjs/marked.`,e){let e=`<p>An error
             <span>${t.processingString}...</span>
         `},source(e,t){return V`
             <${tG.assign({options:t,sources:e})}></${tG}>
-        `},table(e,t,n){let{headerRow:r,rows:i}=CH(Gc(e.headers,(e,r)=>{if(!e.hidden)return{key:e.key,content:e.text?EG(e.text,t,[...n,`headers`,r]):e.key}},j.isTruthy),e.entries,(r,i)=>Dl(r.data,(r,a)=>{let o=Jc(a).filter(j.isTruthy);if(o.length)return Array.from(SM(Gc(o,(a,o)=>{let s=`sources`in a?{sources:e.direction===mG.Vertical?void 0:a.sources}:{};return EG({...a,...s},t,[...n,i,r,o])},j.isTruthy),V`
+        `},table(e,t,n){if(t.isPhoneSize&&e.direction===mG.Horizontal){let r=Gc(e.headers,(e,r)=>{if(!e.hidden)return{key:e.key,headerIndex:r,renderedContent:e.text?EG(e.text,t,[...n,`headers`,r]):e.key}},j.isTruthy);return V`
+                <div class="phone-table-cards">${e.entries.map((e,i)=>{let a=[...n,i],o=Gc(r,n=>{let r=e.data[n.key],i=Jc(r).filter(j.isTruthy);if(!i.length)return;let o=Array.from(SM(Gc(i,(e,r)=>EG(e,t,[...a,n.key,r]),j.isTruthy),V`
+                                    <br />
+                                `));return V`
+                            <tr>
+                                <th>${n.renderedContent}</th>
+                                <td>${o}</td>
+                            </tr>
+                        `},j.isTruthy),s=$W(e.sources);return V`
+                    <${NL} class="phone-table-card">
+                        <table class="vertical phone-card-table" cellspacing="0" cellpadding="0">
+                            <tbody>${o}</tbody>
+                        </table>
+                        ${s?.length?NG(V``,t,a,s):M}
+                    </${NL}>
+                `})}</div>
+            `}let{headerRow:r,rows:i}=CH(Gc(e.headers,(e,r)=>{if(!e.hidden)return{key:e.key,content:e.text?EG(e.text,t,[...n,`headers`,r]):e.key}},j.isTruthy),e.entries,(r,i)=>Dl(r.data,(r,a)=>{let o=Jc(a).filter(j.isTruthy);if(o.length)return Array.from(SM(Gc(o,(a,o)=>{let s=`sources`in a?{sources:e.direction===mG.Vertical?void 0:a.sources}:{};return EG({...a,...s},t,[...n,i,r,o])},j.isTruthy),V`
                                 <br />
                             `))}),{orientation:e.direction===mG.Horizontal?SH.Vertical:SH.Horizontal}),a=i.map(t=>{let n=t.cells.at(-1);return $W([...Jc(e.direction===mG.Vertical&&n?Jc(n.data?.data[n.key]).filter(j.isTruthy).flatMap(e=>`sources`in e?Jc(e.sources):[]):void 0),...Jc(t.data?.sources)])}),o=a.some(e=>!!e?.length),s=i[0]?.cells.length||0;return V`
             <table
@@ -3995,6 +4011,21 @@ Please report this to https://github.com/markedjs/marked.`,e){let e=`<p>An error
             & li::marker {
                 font-size: 0.7em;
             }
+
+            & .phone-table-cards {
+                display: flex;
+                flex-direction: column;
+                gap: 12px;
+
+                & .phone-table-card {
+                    padding: 8px 16px;
+
+                    & th,
+                    & td {
+                        border: none;
+                    }
+                }
+            }
         }
 
         ${t[`vir-structured-render-tablet-size`].selector} {
@@ -4116,6 +4147,14 @@ This is **bold** and _italic_ text.
                     <${$.assign({data:{type:Q.table,sectionTitle:`Horizontal Table`,direction:mG.Horizontal,headers:[{key:`name`},{key:`value`}],entries:[{data:{name:{type:Q.text,text:`Alpha`},value:{type:Q.text,text:`100`}}},{data:{name:{type:Q.text,text:`Beta`},value:{type:Q.text,text:`200`}}}]}})}></${$}>
                 `}}),e({title:`vertical`,render(){return V`
                     <${$.assign({data:{type:Q.table,sectionTitle:`Vertical Table`,direction:mG.Vertical,headers:[{key:`feature`},{key:`status`}],entries:[{data:{feature:{type:Q.text,text:`Image Export`},status:{type:Q.tag,text:`Supported`}}},{data:{feature:{type:Q.text,text:`PDF Export`},status:{type:Q.tag,text:`Beta`}}}]}})}></${$}>
+                `}}),e({title:`horizontal table with phone size`,render(){return V`
+                    <div
+                        style=${B`
+                            width: 400px;
+                        `}
+                    >
+                        <${$.assign({data:{type:Q.table,sectionTitle:`Horizontal Table (Phone)`,direction:mG.Horizontal,headers:[{key:`name`},{key:`value`},{key:`status`}],entries:[{data:{name:{type:Q.text,text:`Alpha`},value:{type:Q.text,text:`100`},status:{type:Q.tag,text:`Active`,color:{variant:q.Positive}}}},{data:{name:{type:Q.text,text:`Beta`},value:{type:Q.text,text:`200`},status:{type:Q.tag,text:`Inactive`,color:{variant:q.Warning}}}}]},options:{isPhoneSize:!0}})}></${$}>
+                    </div>
                 `}}),e({title:`with mixed cell types`,render(){return V`
                     <${$.assign({data:{type:Q.table,sectionTitle:`Mixed Cell Types`,direction:mG.Horizontal,headers:[{key:`label`},{key:`detail`}],entries:[{data:{label:{type:Q.text,text:`Status`},detail:{type:Q.tag,text:`Active`,color:{variant:q.Positive}}}},{data:{label:{type:Q.text,text:`Version`},detail:{type:Q.inlineCode,code:`v1.0.0`}}}]}})}></${$}>
                 `}})}}),fu({title:`Tag`,parent:pK,defineExamples({defineExample:e}){e({title:`basic`,render(){return V`
