@@ -3670,7 +3670,7 @@ Please report this to https://github.com/markedjs/marked.`,e){let e=`<p>An error
                 >
                     <h2
                         slot=${IL.slotNames.header}
-                        class=${bM({"card-title-with-icon":!!e.cardTitleIcon})}
+                        class="card-title ${bM({"card-title-with-icon":!!e.cardTitleIcon})}"
                     >
                         ${i}${e.cardTitle}
                     </h2>
@@ -3933,8 +3933,9 @@ Please report this to https://github.com/markedjs/marked.`,e){let e=`<p>An error
             gap: 8px;
         }
 
-        .raw-collapsible-card {
+        .raw-collapsible-card.raw-collapsible-card.raw-collapsible-card.raw-collapsible-card {
             display: flex;
+            padding: 0 16px;
             border-top: 1px solid
                 ${G.colors[`vira-grey-foreground-decoration`].foreground.value};
 
@@ -3949,10 +3950,6 @@ Please report this to https://github.com/markedjs/marked.`,e){let e=`<p>An error
 
             &:first-child {
                 border-top: none;
-            }
-
-            & .top-section-wrapper {
-                padding: 4px 16px;
             }
 
             ${IL.cssVars[`vira-collapsible-card-content-gap`].name}: 8px;
