@@ -3238,7 +3238,7 @@ Please report this to https://github.com/markedjs/marked.`,e){let e=`<p>An error
 .${WW} > *:last-child {
     margin-bottom: 0;
 }
-`,KW={accentColor:`dodgerblue`,bodySize:`14px`,h1Size:`22px`,h2Size:`18px`,h3Size:`16px`,h4Size:`15px`,h5Size:`14px`,h6Size:`14px`,bodyGap:`24px`,smallTextSize:`10px`,liSpacing:`4px`,bodyFont:`sans-serif`,codeFont:`monospace`,codeSize:`1em`,codeBackgroundColor:G.colors[`vira-grey-behind-fg-small-body`].background.value,contentSelector:`.${WW}`,tableBorderColor:G.colors[`vira-grey-foreground-decoration`].foreground.value,tableBorderWidth:`1px`};function qW(e){return Dl(ul(KW,e),(e,t)=>j.isString(t)?Su(t):t instanceof xu?t:t.value)}var JW=YW();function YW(e){let t=qW(e);return B`
+`,KW={accentColor:`dodgerblue`,bodySize:`14px`,h1Size:`22px`,h2Size:`18px`,h3Size:`16px`,h4Size:`15px`,h5Size:`14px`,h6Size:`14px`,bodyGap:`24px`,smallTextSize:`10px`,liSpacing:`4px`,bodyFont:`sans-serif`,codeFont:`monospace`,codeSize:`1em`,codeBackgroundColor:G.colors[`vira-grey-behind-fg-small-body`].background.value,contentSelector:`.${WW}`,tableBorderColor:G.colors[`vira-grey-foreground-decoration`].foreground.value,tableBorderWidth:`1px`,tableHeaderBackgroundColor:G.colors[`vira-grey-behind-bg-invisible`].background.value};function qW(e){return Dl(ul(KW,e),(e,t)=>j.isString(t)?Su(t):t instanceof xu?t:t.value)}var JW=YW();function YW(e){let t=qW(e);return B`
         ${Su(e?.contentSelector||KW.contentSelector)} {
             display: flex;
             flex-direction: column;
@@ -3361,6 +3361,7 @@ Please report this to https://github.com/markedjs/marked.`,e){let e=`<p>An error
 
                 & th {
                     font-weight: bold;
+                    background-color: ${t.tableHeaderBackgroundColor};
                 }
             }
 
@@ -3422,7 +3423,7 @@ Please report this to https://github.com/markedjs/marked.`,e){let e=`<p>An error
                     <${LL}>
                         ${je(`Failed to parse markdown content.`,e)}
                     </${LL}>
-                `)}}),ZW=_j({x1:-1,y1:-1,x2:-1,y2:-1}),QW=_j({type:wj(`source`),pageNumbers:Aj([Aj(-1)]),fileName:Aj(``),fileBoundingBoxes:Aj([Aj(ZW)]),quote:Aj(``)});function $W(e){return Pc.isLengthAtLeast(Jc(e).filter(eG),1)}function eG(e){return!!(e&&(e.quote?.trim()||e.fileName||e.pageNumbers?.filter(j.isDefined).length))}var tG=nN()({tagName:`vir-source`,hostClasses:{"vir-source-phone-size":({inputs:e})=>e.options.isPhoneSize},events:{viewOnPageClick:GM()},cssVars:{"vir-source-background-color":G.colors[nF].background.value,"vir-source-borer-radius":K[`vira-form-radius`].value,"vir-source-header-color":G.colors[`vira-grey-foreground-header`].foreground.value,"vir-source-view-on-page-icon-color":K[`vira-form-accent-primary-color`].value,"vir-source-view-on-page-hover-background-color":G.colors[`vira-grey-behind-fg-small-body`].background.value,"vir-source-view-on-page-active-background-color":G.colors[`vira-grey-behind-fg-body`].background.value,"vir-source-font-size":`16px`,"vir-source-phone-font-size":`14px`},styles:({hostClasses:e,cssVars:t})=>B`
+                `)}}),ZW={icons:OL,sourceString:`Source`,pluralSourcesString:`Sources`},QW={...ZW,styles:JW},$W={...ZW,processingString:`Processing`,currentlyExpanded:{},sourceIcon:KI,viewOnPageIcon:ZI,processingIcon:nL,expandSourcesOnPrint:!1,hideViewOnPageButtons:!1,isPhoneSize:!1,markdownStyles:JW,createViewOnPageString(e){return`View on page ${e}`},expandAllCards:!1,blockCardExpansion:!1,expandFirstCard:!1,useCardStyles:!1},eG=_j({x1:-1,y1:-1,x2:-1,y2:-1}),tG=_j({type:wj(`source`),pageNumbers:Aj([Aj(-1)]),fileName:Aj(``),fileBoundingBoxes:Aj([Aj(eG)]),quote:Aj(``)});function nG(e){return Pc.isLengthAtLeast(Jc(e).filter(rG),1)}function rG(e){return!!(e&&(e.quote?.trim()||e.fileName||e.pageNumbers?.filter(j.isDefined).length))}var iG=nN()({tagName:`vir-source`,hostClasses:{"vir-source-phone-size":({inputs:e})=>!!e.options?.isPhoneSize},events:{viewOnPageClick:GM()},cssVars:{"vir-source-background-color":G.colors[nF].background.value,"vir-source-borer-radius":K[`vira-form-radius`].value,"vir-source-header-color":G.colors[`vira-grey-foreground-header`].foreground.value,"vir-source-view-on-page-icon-color":K[`vira-form-accent-primary-color`].value,"vir-source-view-on-page-hover-background-color":G.colors[`vira-grey-behind-fg-small-body`].background.value,"vir-source-view-on-page-active-background-color":G.colors[`vira-grey-behind-fg-body`].background.value,"vir-source-font-size":`16px`,"vir-source-phone-font-size":`14px`},styles:({hostClasses:e,cssVars:t})=>B`
         ${NL} {
             background: ${t[`vir-source-background-color`].value};
             border-radius: ${t[`vir-source-borer-radius`].value};
@@ -3502,47 +3503,47 @@ Please report this to https://github.com/markedjs/marked.`,e){let e=`<p>An error
                 height: 18px;
             }
         }
-    `,render({inputs:e,dispatch:t,events:n}){let r=$W(e.sources);return r?V`
+    `,render({inputs:e,dispatch:t,events:n}){let r=nG(e.sources);if(!r)return M;let i=ul($W,e.options);return V`
             <${NL}>
                 <p class="header">
-                    <${J.assign({icon:e.options.sourceIcon,fitContainer:!0})}></${J}>
-                    <span>${e.options.pluralSourcesString}</span>
+                    <${J.assign({icon:i.sourceIcon,fitContainer:!0})}></${J}>
+                    <span>${i.pluralSourcesString}</span>
                 </p>
                 <div class="entries">
-                    ${r.map(r=>{let i=!e.options.hideViewOnPageButtons&&r.fileName&&r.pageNumbers?.length?V`
+                    ${r.map(e=>{let r=!i.hideViewOnPageButtons&&e.fileName&&e.pageNumbers?.length?V`
                                       <button
                                           class="view-on-page-button"
-                                          title=${r.fileName}
-                                          ${mN(`click`,()=>{t(new n.viewOnPageClick(r))})}
+                                          title=${e.fileName}
+                                          ${mN(`click`,()=>{t(new n.viewOnPageClick(e))})}
                                       >
-                                          <${J.assign({icon:e.options.viewOnPageIcon,fitContainer:!0})}></${J}>
-                                          ${e.options.createViewOnPageString(r.pageNumbers[0]??1)}
+                                          <${J.assign({icon:i.viewOnPageIcon,fitContainer:!0})}></${J}>
+                                          ${i.createViewOnPageString(e.pageNumbers[0]??1)}
                                       </button>
-                                  `:void 0,a=r.quote?.trim()||``,o=a?V`
+                                  `:void 0,a=e.quote?.trim()||``,o=a?V`
                                   <p class="source-text">"${a}"</p>
-                              `:void 0;return o||i?V`
-                                <div class="entry">${o} ${i}</div>
+                              `:void 0;return o||r?V`
+                                <div class="entry">${o} ${r}</div>
                             `:M})}
                 </div>
             </${NL}>
-        `:M}}),nG=_j({type:wj(`icon`),iconKey:``,strokeColor:Aj(``),fillColor:Aj(``),strokeWidth:Aj(kj(``,-1))});function rG(e,{icons:t}){let n=t[e.iconKey];if(n)return DL(n,{"vira-icon-fill-color":e.fillColor||void 0,"vira-icon-stroke-color":e.strokeColor||void 0,"vira-icon-stroke-width":j.isString(e.strokeWidth)?e.strokeWidth:j.isNumber(e.strokeWidth)?pl({value:e.strokeWidth,suffix:`px`}):void 0})}function iG(e,t){return _j({type:wj(e),sectionTitle:Aj(``),sources:Aj([Aj(QW)]),...t})}var aG=_j({type:wj(`empty`)}),oG=iG(`inlineCode`,{code:``}),sG=iG(`tag`,{text:Mj(``),useBigTag:Aj(!1),color:Aj(kj({custom:jj({backgroundColor:Aj(``),foregroundColor:Aj(``)})},{variant:Cj(q)}))}),cG=function(e){return e.Faint=`faint`,e.Small=`small`,e.Bold=`bold`,e}({}),lG=iG(`text`,{text:Aj(Mj()),style:Aj(Cj(cG)),icon:Aj(nG)}),uG=iG(`list`,{items:[_j({content:Aj(kj(lG,sG,aG)),icon:Aj(nG),sources:Aj([Aj(QW)])})]}),dG=iG(`markdown`,{markdown:``}),fG=_j({type:wj(`processing`)}),pG=function(e){return e.Left=`left`,e.Right=`right`,e}({}),mG=function(e){return e.Horizontal=`horizontal`,e.Vertical=`vertical`,e}({}),hG=kj(lG,oG,dG,sG,uG,aG,fG),gG=iG(`table`,{direction:Cj(mG),headers:[{key:``,text:Aj(lG),hidden:Aj(!1)}],entries:[{data:Hj({keys:``,values:kj(Aj(hG),[Aj(hG)])}),sources:Aj([Aj(QW)])}],footerRows:Aj([{alignment:Aj(Cj(pG)),cells:kj(Aj(hG),[Aj(hG)])}])});function _G(e,t,n,r){return{type:`table`,direction:e,headers:t,entries:n,footerRows:r}}var vG=iG(`codeBlock`,{syntax:Aj(``),code:``}),yG=[vG,oG,aG,uG,dG,sG,fG,QW,gG,lG,nG,iG(`collapsible`,{header:Mj(),content:[kj(vG,aG,nG,oG,uG,dG,fG,sG,gG,lG)]})];kj(...yG);var Q=Kc(yG,e=>({key:e.default.type,value:e.default.type}),{useRequired:!0}),bG={icons:OL,sourceString:`Source`,pluralSourcesString:`Sources`},xG={...bG,styles:JW},SG={...bG,processingString:`Processing`,currentlyExpanded:{},sourceIcon:KI,viewOnPageIcon:ZI,processingIcon:nL,expandSourcesOnPrint:!1,hideViewOnPageButtons:!1,isPhoneSize:!1,markdownStyles:JW,createViewOnPageString(e){return`View on page ${e}`},expandAllCards:!1,blockCardExpansion:!1,expandFirstCard:!1};function CG(e,t){return EG(e,ul(SG,t),[])}function wG(e){if(e==null)return;if(!j.isString(e))return String(e);let t=e.trim();if(!t)return;let n=t.split(`
+        `}}),aG=_j({type:wj(`icon`),iconKey:``,strokeColor:Aj(``),fillColor:Aj(``),strokeWidth:Aj(kj(``,-1))});function oG(e,{icons:t}){let n=t[e.iconKey];if(n)return DL(n,{"vira-icon-fill-color":e.fillColor||void 0,"vira-icon-stroke-color":e.strokeColor||void 0,"vira-icon-stroke-width":j.isString(e.strokeWidth)?e.strokeWidth:j.isNumber(e.strokeWidth)?pl({value:e.strokeWidth,suffix:`px`}):void 0})}function sG(e,t){return _j({type:wj(e),sectionTitle:Aj(``),sources:Aj([Aj(tG)]),...t})}var cG=_j({type:wj(`empty`)}),lG=sG(`inlineCode`,{code:``}),uG=sG(`tag`,{text:Mj(``),useBigTag:Aj(!1),color:Aj(kj({custom:jj({backgroundColor:Aj(``),foregroundColor:Aj(``)})},{variant:Cj(q)}))}),dG=function(e){return e.Faint=`faint`,e.Small=`small`,e.Bold=`bold`,e}({}),fG=sG(`text`,{text:Aj(Mj()),style:Aj(Cj(dG)),icon:Aj(aG)}),pG=sG(`list`,{items:[_j({content:Aj(kj(fG,uG,cG)),icon:Aj(aG),sources:Aj([Aj(tG)])})]}),mG=sG(`markdown`,{markdown:``}),hG=_j({type:wj(`processing`)}),gG=function(e){return e.Left=`left`,e.Right=`right`,e}({}),_G=function(e){return e.Horizontal=`horizontal`,e.Vertical=`vertical`,e}({}),vG=kj(fG,lG,mG,uG,pG,cG,hG),yG=sG(`table`,{direction:Cj(_G),headers:[{key:``,text:Aj(fG),hidden:Aj(!1)}],entries:[{data:Hj({keys:``,values:kj(Aj(vG),[Aj(vG)])}),sources:Aj([Aj(tG)])}],footerRows:Aj([{alignment:Aj(Cj(gG)),cells:kj(Aj(vG),[Aj(vG)])}])});function bG(e,t,n,r){return{type:`table`,direction:e,headers:t,entries:n,footerRows:r}}var xG=sG(`codeBlock`,{syntax:Aj(``),code:``}),SG=[xG,lG,cG,pG,mG,uG,hG,tG,yG,fG,aG,sG(`collapsible`,{header:Mj(),content:[kj(xG,cG,aG,lG,pG,mG,hG,uG,yG,fG)]})];kj(...SG);var Q=Kc(SG,e=>({key:e.default.type,value:e.default.type}),{useRequired:!0}),CG=WM()(`source-expansion`);function wG(e,t){return DG(e,ul($W,t),[])}function TG(e){if(e==null)return;if(!j.isString(e))return String(e);let t=e.trim();if(!t)return;let n=t.split(`
 `);return n.flatMap((e,t)=>V`
             ${e}${t<n.length-1?V`
                       <br />
                   `:``}
-        `)}var TG={icon(e,t){let n=rG(e,t);return n?V`
+        `)}var EG={icon(e,t){let n=oG(e,t);return n?V`
             <${J.assign({icon:n})}></${J}>
         `:M},codeBlock(e){return V`
             <pre>${e.code}</pre>
         `},collapsible(e,t,n){return V`
             <${IL.assign({rawCollapsible:!0})}>
                 <span slot=${IL.slotNames.header}>${String(e.header)}</span>
-                ${EG(e.content,t,[...n,`collapsible`])}
+                ${DG(e.content,t,[...n,`collapsible`])}
             </${IL}>
         `},empty(){},inlineCode(e){return V`
             <code>${e.code}</code>
-        `},list(e,t,n){let r=Gc(e.items,(e,r)=>{if(!e.icon&&!e.content)return;let i=[...n,r],a=e.content?EG(e.content,t,[...i,`content`]):void 0,o=V`
-                    ${e.icon?EG(e.icon,t,[...i,`icon`]):M}${a}
+        `},list(e,t,n){let r=Gc(e.items,(e,r)=>{if(!e.icon&&!e.content)return;let i=[...n,r],a=e.content?DG(e.content,t,[...i,`content`]):void 0,o=V`
+                    ${e.icon?DG(e.icon,t,[...i,`icon`]):M}${a}
                 `;return V`
                     <li
                         class=${bM({"list-item-with-icon":!!e.icon})}
@@ -3570,16 +3571,16 @@ Please report this to https://github.com/markedjs/marked.`,e){let e=`<p>An error
             <${J.assign({icon:t.processingIcon})}></${J}>
             <span>${t.processingString}...</span>
         `},source(e,t){return V`
-            <${tG.assign({options:t,sources:e})}></${tG}>
-        `},table(e,t,n){if(t.isPhoneSize&&e.direction===mG.Horizontal){let r=Gc(e.headers,(e,r)=>{if(!e.hidden)return{key:e.key,headerIndex:r,renderedContent:e.text?EG(e.text,t,[...n,`headers`,r]):e.key}},j.isTruthy);return V`
-                <div class="phone-table-cards">${e.entries.map((e,i)=>{let a=[...n,i],o=Gc(r,n=>{let r=e.data[n.key],i=Jc(r).filter(j.isTruthy);if(!i.length)return;let o=Array.from(SM(Gc(i,(e,r)=>EG(e,t,[...a,n.key,r]),j.isTruthy),V`
+            <${iG.assign({options:t,sources:e})}></${iG}>
+        `},table(e,t,n){if(t.isPhoneSize&&e.direction===_G.Horizontal){let r=Gc(e.headers,(e,r)=>{if(!e.hidden)return{key:e.key,headerIndex:r,renderedContent:e.text?DG(e.text,t,[...n,`headers`,r]):e.key}},j.isTruthy);return V`
+                <div class="phone-table-cards">${e.entries.map((e,i)=>{let a=[...n,i],o=Gc(r,n=>{let r=e.data[n.key],i=Jc(r).filter(j.isTruthy);if(!i.length)return;let o=Array.from(SM(Gc(i,(e,r)=>DG(e,t,[...a,n.key,r]),j.isTruthy),V`
                                     <br />
                                 `));return V`
                             <tr>
                                 <th>${n.renderedContent}</th>
                                 <td>${o}</td>
                             </tr>
-                        `},j.isTruthy),s=$W(e.sources);return V`
+                        `},j.isTruthy),s=nG(e.sources);return V`
                     <${NL} class="phone-table-card">
                         <table class="vertical phone-card-table" cellspacing="0" cellpadding="0">
                             <tbody>${o}</tbody>
@@ -3587,13 +3588,13 @@ Please report this to https://github.com/markedjs/marked.`,e){let e=`<p>An error
                         ${s?.length?NG(V``,t,a,s):M}
                     </${NL}>
                 `})}</div>
-            `}let{headerRow:r,rows:i}=CH(Gc(e.headers,(e,r)=>{if(!e.hidden)return{key:e.key,content:e.text?EG(e.text,t,[...n,`headers`,r]):e.key}},j.isTruthy),e.entries,(r,i)=>Dl(r.data,(r,a)=>{let o=Jc(a).filter(j.isTruthy);if(o.length)return Array.from(SM(Gc(o,(a,o)=>{let s=`sources`in a?{sources:e.direction===mG.Vertical?void 0:a.sources}:{};return EG({...a,...s},t,[...n,i,r,o])},j.isTruthy),V`
+            `}let{headerRow:r,rows:i}=CH(Gc(e.headers,(e,r)=>{if(!e.hidden)return{key:e.key,content:e.text?DG(e.text,t,[...n,`headers`,r]):e.key}},j.isTruthy),e.entries,(r,i)=>Dl(r.data,(r,a)=>{let o=Jc(a).filter(j.isTruthy);if(o.length)return Array.from(SM(Gc(o,(a,o)=>{let s=`sources`in a?{sources:e.direction===_G.Vertical?void 0:a.sources}:{};return DG({...a,...s},t,[...n,i,r,o])},j.isTruthy),V`
                                 <br />
-                            `))}),{orientation:e.direction===mG.Horizontal?SH.Vertical:SH.Horizontal}),a=i.map(t=>{let n=t.cells.at(-1);return $W([...Jc(e.direction===mG.Vertical&&n?Jc(n.data?.data[n.key]).filter(j.isTruthy).flatMap(e=>`sources`in e?Jc(e.sources):[]):void 0),...Jc(t.data?.sources)])}),o=a.some(e=>!!e?.length),s=i[0]?.cells.length||0;return V`
+                            `))}),{orientation:e.direction===_G.Horizontal?SH.Vertical:SH.Horizontal}),a=i.map(t=>{let n=t.cells.at(-1);return nG([...Jc(e.direction===_G.Vertical&&n?Jc(n.data?.data[n.key]).filter(j.isTruthy).flatMap(e=>`sources`in e?Jc(e.sources):[]):void 0),...Jc(t.data?.sources)])}),o=a.some(e=>!!e?.length),s=i[0]?.cells.length||0;return V`
             <table
                 cellspacing="0"
                 cellpadding="0"
-                class=${bM({vertical:e.direction===mG.Vertical,horizontal:e.direction===mG.Horizontal,"wide-table":e.direction===mG.Horizontal&&r?r.length>5:e.direction===mG.Vertical&&i[0]?i[0].cells.length>5:!1})}
+                class=${bM({vertical:e.direction===_G.Vertical,horizontal:e.direction===_G.Horizontal,"wide-table":e.direction===_G.Horizontal&&r?r.length>5:e.direction===_G.Vertical&&i[0]?i[0].cells.length>5:!1})}
             >
                 ${r?V`
                           <thead>
@@ -3608,7 +3609,7 @@ Please report this to https://github.com/markedjs/marked.`,e){let e=`<p>An error
                           </thead>
                       `:M}
                 <tbody>
-                    ${i.map((r,i)=>{let s=[...n,i],c=a[i],l=r.cells.map((n,i)=>{let a=i===r.cells.length-1,o=e.direction===mG.Vertical&&i===0?`th`:`td`,l=V`
+                    ${i.map((r,i)=>{let s=[...n,i],c=a[i],l=r.cells.map((n,i)=>{let a=i===r.cells.length-1,o=e.direction===_G.Vertical&&i===0?`th`:`td`,l=V`
                                 <${o}>${n.content}</${o}>
                             `;return c?.length&&a?V`
                                     ${l}
@@ -3633,8 +3634,8 @@ Please report this to https://github.com/markedjs/marked.`,e){let e=`<p>An error
                 </tbody>
                 ${e.footerRows?.length?V`
                           <tfoot>
-                              ${e.footerRows.map((e,r)=>{let i=Jc(e.cells);if(!i.length)return M;let a=e.alignment===pG.Right?s-i.length+1:0;return V`
-                                      <tr>${i.map((e,i)=>{let o=i?0:a,s=o<1?void 0:o,c=e?EG(e,t,[...n,`footers`,r,i]):M;return V`
+                              ${e.footerRows.map((e,r)=>{let i=Jc(e.cells);if(!i.length)return M;let a=e.alignment===gG.Right?s-i.length+1:0;return V`
+                                      <tr>${i.map((e,i)=>{let o=i?0:a,s=o<1?void 0:o,c=e?DG(e,t,[...n,`footers`,r,i]):M;return V`
                                           <td
                                               colspan=${xM(s)}
                                               class=${bM({"right-aligned-footer-cell":!!s})}
@@ -3646,49 +3647,138 @@ Please report this to https://github.com/markedjs/marked.`,e){let e=`<p>An error
                           </tfoot>
                       `:M}
             </table>
-        `},text(e,t,n){let r=wG(e.text),i=e.style?`text-style-${e.style}`:void 0;if(r)return V`
-            ${EG(e.icon,t,[...n,`icon`])}
+        `},text(e,t,n){let r=TG(e.text),i=e.style?`text-style-${e.style}`:void 0;if(r)return V`
+            ${DG(e.icon,t,[...n,`icon`])}
             <span
                 class=${[i,`text-section-text-content`].join(` `)}
             >
                 ${r}
             </span>
-        `}};function EG(e,t,n){return kG(e,t,n,!1).filter(j.isTruthy)}var DG=ll(Q,e=>[e,`section`].join(`-`)),OG=`structured-render-section`;function kG(e,t,n,r){if(!e)return[];if(j.isArray(e))return e.flatMap((e,i)=>kG(e,t,[...n,i],r));if(`type`in e){let i=`sectionTitle`in e&&n.length>0&&!(r&&n.at(-1)===0)&&e.sectionTitle||void 0,a=TG[e.type](e,t,n),o=`sources`in e&&e.sources||void 0,s=V`
+        `}};function DG(e,t,n){return AG(e,t,n,!1).filter(j.isTruthy)}var OG=ll(Q,e=>[e,`section`].join(`-`)),kG=`structured-render-section`;function AG(e,t,n,r){if(!e)return[];if(j.isArray(e))return e.flatMap((e,i)=>AG(e,t,[...n,i],r));if(`type`in e){let i=`sectionTitle`in e&&n.length>0&&!(r&&n.at(-1)===0)&&e.sectionTitle||void 0,a=EG[e.type](e,t,n),o=`sources`in e&&e.sources||void 0,s=V`
             <div
-                class=${bM({"section-wrapper":!0,"top-section-wrapper":r,[DG[e.type]]:!0})}
-                ${kN(OG)}
-                ${kN(DG[e.type])}
+                class=${bM({"section-wrapper":!0,"top-section-wrapper":r,[OG[e.type]]:!0})}
+                ${kN(kG)}
+                ${kN(OG[e.type])}
             >
                 ${NG(a,t,n,o)}
             </div>
         `;return[i?V`
                       <h3>${i}</h3>
-                  `:void 0,s]}else if(`sections`in e){let r=kG(e.sections,t,[...n,`sections`],!0);return[V`
-                <${IL.assign({expandOnPrint:!0,blockExpansion:t.blockCardExpansion,hideHeader:!e.cardTitle,startExpanded:t.expandAllCards||t.expandFirstCard&&n.at(-1)===0})}>
-                    <h2 slot=${IL.slotNames.header}>${e.cardTitle}</h2>
+                  `:void 0,s]}else if(`sections`in e){let r=AG(e.sections,t,[...n,`sections`],!0),i=e.cardTitleIcon?DG(e.cardTitleIcon,t,[...n,`cardTitleIcon`]):M;return[V`
+                <${IL.assign({expandOnPrint:!0,rawCollapsible:!t.useCardStyles,blockExpansion:t.blockCardExpansion,hideHeader:!e.cardTitle,startExpanded:t.expandAllCards||t.expandFirstCard&&n.at(-1)===0})}
+                    class=${bM({"raw-collapsible-card":!t.useCardStyles})}
+                >
+                    <h2
+                        slot=${IL.slotNames.header}
+                        class=${bM({"card-title-with-icon":!!e.cardTitleIcon})}
+                    >
+                        ${i}${e.cardTitle}
+                    </h2>
                     ${r}
                 </${IL}>
-            `]}else throw Mc.tsType(e).equals(),Error(`Unexpected structured render type: ${v(e)}`)}var AG=WM()(`source-expansion`);function jG(e,t,n,r){let i=$W(r),a=[...n,`source-icon`],o=PG(a),s=!!t.currentlyExpanded[o];return V`
+            `]}else throw Mc.tsType(e).equals(),Error(`Unexpected structured render type: ${v(e)}`)}function jG(e,t,n,r){let i=nG(r),a=[...n,`source-icon`],o=PG(a),s=!!t.currentlyExpanded[o];return V`
         <div class="source-content-wrapper">${e}${i?V`
               <div class="source-icon-wrapper">
                   <button class="source-icon-button">
                       <${J.assign({icon:t.sourceIcon,fitContainer:!0})}
-                          ${mN(`click`,e=>{aP(e,HTMLElement).dispatchEvent(new AG({expanded:!s,key:PG(a)}))})}
+                          ${mN(`click`,e=>{aP(e,HTMLElement).dispatchEvent(new CG({expanded:!s,key:PG(a)}))})}
                       ></${J}>
                   </button>
               </div>
           `:M}</div>
-    `}function MG(e,t,n){let r=$W(n);if(!r)return;let i=PG([...t,`source-icon`]),a=!!e.currentlyExpanded[i];return V`
+    `}function MG(e,t,n){let r=nG(n);if(!r)return;let i=PG([...t,`source-icon`]),a=!!e.currentlyExpanded[i];return V`
         <${FL.assign({expanded:a,expandOnPrint:e.expandSourcesOnPrint})}
             class="collapsible-source-wrapper ${bM({"expanded-source":a})}"
         >
             <span slot=${FL.slotNames.header}></span>
-            <${tG.assign({options:e,sources:r})}></${tG}>
+            <${iG.assign({options:e,sources:r})}></${iG}>
         </${FL}>
     `}function NG(e,t,n,r){return V`
         ${jG(e,t,n,r)}
         ${MG(t,n,r)}
-    `}function PG(e){return[`key`,...e].join(`;`).replaceAll(` `,`_`).replaceAll(/[^\w;]/g,``)}var FG=B`4px`,$=nN()({tagName:`vir-structured-render`,state(){return{currentlyExpanded:{},lastStyleString:``}},cssVars:{"vir-structured-render-h1-font-size":`24px`,"vir-structured-render-h2-font-size":`18px`,"vir-structured-render-h3-font-size":`16px`,"vir-structured-render-small-font-size":`12px`},hostClasses:{"vir-structured-render-phone-size":({inputs:e})=>!!e.options?.isPhoneSize,"vir-structured-render-tablet-size":({inputs:e})=>!!e.options?.isTabletSize},styles:({cssVars:e,hostClasses:t})=>B`
+    `}function PG(e){return[`key`,...e].join(`;`).replaceAll(` `,`_`).replaceAll(/[^\w;]/g,``)}var FG=B`
+    .source-content-wrapper {
+        display: flex;
+
+        & > *:last-child:not(table) {
+            flex-grow: 1;
+        }
+    }
+
+    .collapsible-source-wrapper {
+        border: none;
+    }
+
+    .expanded-source {
+        margin: 8px 0 !important;
+    }
+
+    .source-icon-button {
+        ${OF};
+        cursor: pointer;
+        color: ${G.colors[`vira-grey-foreground-header`].foreground.value};
+        padding: 2px;
+        border-radius: 4px;
+
+        & ${J} {
+            display: flex;
+        }
+
+        &:hover {
+            background-color: ${G.colors[`vira-grey-behind-fg-small-body`].background.value};
+            color: ${K[`vira-form-accent-primary-color`].value};
+        }
+
+        &:active {
+            background-color: ${G.colors[`vira-grey-behind-fg-body`].background.value};
+            color: ${K[`vira-form-accent-primary-color`].value};
+        }
+    }
+
+    .source-icon-wrapper.source-icon-wrapper.source-icon-wrapper.source-icon-wrapper.source-icon-wrapper {
+        margin-left: auto;
+        justify-content: flex-end;
+        align-items: center;
+        display: flex;
+        flex-shrink: 0;
+        align-self: top;
+
+        & ${J} {
+            width: 20px;
+            height: 20px;
+        }
+    }
+
+    @media print {
+        .source-icon-wrapper {
+            display: none !important;
+        }
+    }
+`,IG=nN()({tagName:`vir-expandable-source`,state(){return{currentlyExpanded:{}}},styles:B`
+        :host {
+            display: flex;
+            flex-direction: column;
+        }
+
+        ${J} {
+            flex-shrink: 0;
+        }
+
+        *::first-line {
+            /* this height must match the icon size */
+            line-height: 24px;
+        }
+
+        ${FG}
+    `,render({inputs:e,state:t,updateState:n}){let r=ul($W,{...e.options,currentlyExpanded:{...e.options?.currentlyExpanded,...t.currentlyExpanded}});return V`
+            <div
+                ${mN(CG,e=>{n({currentlyExpanded:{...t.currentlyExpanded,[e.detail.key]:e.detail.expanded}})})}
+            >
+                ${NG(V`
+                        <slot></slot>
+                    `,r,[`expandable-source`],e.sources)}
+            </div>
+        `}}),LG=B`4px`,$=nN()({tagName:`vir-structured-render`,state(){return{currentlyExpanded:{},lastStyleString:``}},cssVars:{"vir-structured-render-h1-font-size":`24px`,"vir-structured-render-h2-font-size":`18px`,"vir-structured-render-h3-font-size":`16px`,"vir-structured-render-small-font-size":`12px`},hostClasses:{"vir-structured-render-phone-size":({inputs:e})=>!!e.options?.isPhoneSize,"vir-structured-render-tablet-size":({inputs:e})=>!!e.options?.isTabletSize},styles:({cssVars:e,hostClasses:t})=>B`
         :host {
             ${yH(G.colors[nF])}
         }
@@ -3750,13 +3840,13 @@ Please report this to https://github.com/markedjs/marked.`,e){let e=`<p>An error
             }
         }
 
-        .text-style-${Su(cG.Faint)}.text-style-${Su(cG.Faint)}.text-style-${Su(cG.Faint)}.text-style-${Su(cG.Faint)} {
+        .text-style-${Su(dG.Faint)}.text-style-${Su(dG.Faint)}.text-style-${Su(dG.Faint)}.text-style-${Su(dG.Faint)} {
             color: ${G.colors[`vira-grey-foreground-non-body`].foreground.value};
         }
-        .text-style-${Su(cG.Bold)}.text-style-${Su(cG.Bold)}.text-style-${Su(cG.Bold)}.text-style-${Su(cG.Bold)} {
+        .text-style-${Su(dG.Bold)}.text-style-${Su(dG.Bold)}.text-style-${Su(dG.Bold)}.text-style-${Su(dG.Bold)} {
             font-weight: bold;
         }
-        .text-style-${Su(cG.Small)}.text-style-${Su(cG.Small)}.text-style-${Su(cG.Small)}.text-style-${Su(cG.Small)} {
+        .text-style-${Su(dG.Small)}.text-style-${Su(dG.Small)}.text-style-${Su(dG.Small)}.text-style-${Su(dG.Small)} {
             font-size: ${e[`vir-structured-render-small-font-size`].value};
         }
 
@@ -3768,10 +3858,6 @@ Please report this to https://github.com/markedjs/marked.`,e){let e=`<p>An error
             & td {
                 padding: 16px;
                 padding-left: 24px;
-
-                &:first-child {
-                    padding-left: 0;
-                }
 
                 &:has(+ .source-cell) {
                     border-right: none;
@@ -3794,6 +3880,7 @@ Please report this to https://github.com/markedjs/marked.`,e){let e=`<p>An error
                 font-weight: normal;
                 white-space: nowrap;
                 vertical-align: top;
+                background-color: #f8f9fa;
             }
 
             &.wide-table {
@@ -3803,10 +3890,6 @@ Please report this to https://github.com/markedjs/marked.`,e){let e=`<p>An error
                 & td {
                     padding: 4px;
                     padding-left: 8px;
-
-                    &:first-child {
-                        padding-left: 0;
-                    }
                 }
             }
 
@@ -3844,8 +3927,35 @@ Please report this to https://github.com/markedjs/marked.`,e){let e=`<p>An error
             }
         }
 
-        .expanded-source {
-            margin: 8px 0 !important;
+        .card-title-with-icon {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .raw-collapsible-card {
+            display: flex;
+            border-top: 1px solid
+                ${G.colors[`vira-grey-foreground-decoration`].foreground.value};
+
+            & h2 {
+                font-weight: normal;
+                padding: 8px 0;
+            }
+
+            &:not(:first-child) {
+                margin-top: -24px;
+            }
+
+            &:first-child {
+                border-top: none;
+            }
+
+            & .top-section-wrapper {
+                padding: 4px 16px;
+            }
+
+            ${IL.cssVars[`vira-collapsible-card-content-gap`].name}: 8px;
         }
 
         *::first-line {
@@ -3863,55 +3973,13 @@ Please report this to https://github.com/markedjs/marked.`,e){let e=`<p>An error
             display: flex;
             flex-direction: column;
 
-            & .source-content-wrapper {
-                display: flex;
-            }
-
-            & .collapsible-source-wrapper {
-                border: none;
-            }
-
             & .text-section-text-content {
                 flex-grow: 1;
                 vertical-align: middle;
             }
-
-            & .source-icon-button {
-                ${OF};
-                cursor: pointer;
-                color: ${G.colors[`vira-grey-foreground-header`].foreground.value};
-                padding: 2px;
-                border-radius: 4px;
-
-                & ${J} {
-                    display: flex;
-                }
-
-                &:hover {
-                    background-color: ${G.colors[`vira-grey-behind-fg-small-body`].background.value};
-                    color: ${K[`vira-form-accent-primary-color`].value};
-                }
-
-                &:active {
-                    background-color: ${G.colors[`vira-grey-behind-fg-body`].background.value};
-                    color: ${K[`vira-form-accent-primary-color`].value};
-                }
-            }
         }
 
-        .source-icon-wrapper.source-icon-wrapper.source-icon-wrapper.source-icon-wrapper.source-icon-wrapper {
-            margin-left: auto;
-            justify-content: flex-end;
-            align-items: center;
-            display: flex;
-            flex-shrink: 0;
-            align-self: top;
-
-            & ${J} {
-                width: 20px;
-                height: 20px;
-            }
-        }
+        ${FG}
 
         .${Su(WW)}.${Su(WW)}.${Su(WW)}.${Su(WW)} {
             ul {
@@ -3924,12 +3992,6 @@ Please report this to https://github.com/markedjs/marked.`,e){let e=`<p>An error
             }
         }
 
-        .source-content-wrapper {
-            > *:last-child:not(table) {
-                flex-grow: 1;
-            }
-        }
-
         li {
             display: flex;
             flex-direction: column;
@@ -3938,7 +4000,7 @@ Please report this to https://github.com/markedjs/marked.`,e){let e=`<p>An error
                 content: '•';
                 flex-shrink: 0;
                 width: 24px;
-                margin-right: ${FG};
+                margin-right: ${LG};
                 line-height: 24px;
                 display: flex;
                 justify-content: center;
@@ -3960,7 +4022,7 @@ Please report this to https://github.com/markedjs/marked.`,e){let e=`<p>An error
         }
 
         .icon-section:first-child:has(+ *) {
-            margin-right: ${FG};
+            margin-right: ${LG};
         }
 
         .processing-section .source-content-wrapper {
@@ -4023,6 +4085,7 @@ Please report this to https://github.com/markedjs/marked.`,e){let e=`<p>An error
                     & th,
                     & td {
                         border: none;
+                        background-color: transparent;
                     }
                 }
             }
@@ -4033,100 +4096,124 @@ Please report this to https://github.com/markedjs/marked.`,e){let e=`<p>An error
                 flex-wrap: wrap;
             }
         }
-
-        @media print {
-            .source-icon-wrapper {
-                display: none !important;
-            }
-        }
-    `,render({inputs:e,state:t,updateState:n,host:r}){let i=String(e.options?.markdownStyles||JW);uU({maintainFirstStylesheet:!0,newStyles:i,oldStyles:t.lastStyleString,shadowRoot:r.shadowRoot})&&n({lastStyleString:i});let a=CG(e.data,{...e.options,currentlyExpanded:{...e.options?.currentlyExpanded,...t.currentlyExpanded}});return V`
+    `,render({inputs:e,state:t,updateState:n,host:r}){let i=String(e.options?.markdownStyles||JW);uU({maintainFirstStylesheet:!0,newStyles:i,oldStyles:t.lastStyleString,shadowRoot:r.shadowRoot})&&n({lastStyleString:i});let a=wG(e.data,{...e.options,currentlyExpanded:{...e.options?.currentlyExpanded,...t.currentlyExpanded}});return V`
             <div
-                ${mN(AG,e=>{n({currentlyExpanded:{...t.currentlyExpanded,[e.detail.key]:e.detail.expanded}})})}
+                ${mN(CG,e=>{n({currentlyExpanded:{...t.currentlyExpanded,[e.detail.key]:e.detail.expanded}})})}
                 class=${WW}
             >
                 ${a}
             </div>
-        `}});async function IG(){let e=await r(()=>import(`./src-tolp6nSh.js`),__vite__mapDeps([0,1,2,3,4,5]));return e.default||e}function LG(e,t){return KG(e,ul(xG,t)).filter(j.isTruthy).join(`
+        `}});async function RG(){let e=await r(()=>import(`./src-tolp6nSh.js`),__vite__mapDeps([0,1,2,3,4,5]));return e.default||e}function zG(e,t){return JG(e,ul(QW,t)).filter(j.isTruthy).join(`
 
-`)}var RG={[cG.Bold]:`**`};function zG(e,t,n){let r=e.entries.length+1,i=t.map(t=>[t.text?LG(t.text,n):t.key,...e.entries.map(e=>LG(e.data[t.key],n))]);return[qc(r,()=>``),...i]}function BG(e,t,n){return[t.map(e=>e.text?LG(e.text,n):e.key),...e.entries.map(e=>t.map(t=>LG(e.data[t.key],n)))]}var VG={[mG.Vertical]:zG,[mG.Horizontal]:BG},HG={icon(e,t){let n=rG(e,t);return n?VN(n.svgTemplate):``},collapsible(){return``},codeBlock(e){return`\`\`\`${e.syntax||``}\n${e.code}\n\`\`\``},inlineCode(e){return`\`${e.code}\``},empty(){return``},list(e,t){return Gc(e.items,e=>{let n=LG(e.content,t),r=LG(e.icon,t);if(n){let i=r?`- ${r} ${n}`:`- ${n}`,a=(e.sources||[]).map(e=>LG(e,t)).filter(j.isTruthy).join(`
+`)}var BG={[dG.Bold]:`**`};function VG(e,t,n){let r=e.entries.length+1,i=t.map(t=>[t.text?zG(t.text,n):t.key,...e.entries.map(e=>zG(e.data[t.key],n))]);return[qc(r,()=>``),...i]}function HG(e,t,n){return[t.map(e=>e.text?zG(e.text,n):e.key),...e.entries.map(e=>t.map(t=>zG(e.data[t.key],n)))]}var UG={[_G.Vertical]:VG,[_G.Horizontal]:HG},WG={icon(e,t){let n=oG(e,t);return n?VN(n.svgTemplate):``},collapsible(){return``},codeBlock(e){return`\`\`\`${e.syntax||``}\n${e.code}\n\`\`\``},inlineCode(e){return`\`${e.code}\``},empty(){return``},list(e,t){return Gc(e.items,e=>{let n=zG(e.content,t),r=zG(e.icon,t);if(n){let i=r?`- ${r} ${n}`:`- ${n}`,a=(e.sources||[]).map(e=>zG(e,t)).filter(j.isTruthy).join(`
 `);return a?`${i}\n${a}`:i}else return``},j.isTruthy).join(`
-`)},markdown(e){return e.markdown},tag(e){return e.text==null?``:String(e.text)},processing(){return``},source(e,t){let n=e.pageNumbers?.filter(j.isDefined),r=n?.length?`p. ${n.join(`, `)}`:``,i=[e.fileName,r].filter(j.isTruthy).join(`, `);return i?`<small>${t.sourceString}: ${i}</small>`:``},table(e,t){let n=e.headers.filter(e=>!e.hidden),r=VG[e.direction](e,n,t),i=UG(r,r[0].length||0),[a,...o]=r;return[WG(a,i),GG(i),...o.map(e=>WG(e,i))].join(`
-`)},text(e,t){if(e.text==null)return``;let n=e.style&&RG[e.style]||``,r=LG(e.icon,t),i=Ll({value:String(e.text),wrapper:n});return r?`${r} ${i}`:i}};function UG(e,t){return qc(t,t=>e.reduce((e,n,r)=>Math.max(e,Dc.isDefined(n[t],`No cell at row index ${r}, column index ${t}`).length),3))}function WG(e,t){return`| ${e.map((e,n)=>e.padEnd(t[n]??3)).join(` | `)} |`}function GG(e){return`| ${e.map(e=>`-`.repeat(e)).join(` | `)} |`}function KG(e,t,n=!1){if(!e)return[];if(j.isArray(e))return e.flatMap(e=>LG(e,t));if(`type`in e){let r=`sectionTitle`in e&&!n?e.sectionTitle:void 0,i=`sources`in e&&e.sources||[];return[r?`### ${r}`:void 0,HG[e.type](e,t),...i.map(e=>LG(e,t))]}else if(`sections`in e)return[e.cardTitle&&`## ${e.cardTitle}`,...e.sections.flatMap((e,n)=>KG(e,t,n===0))].filter(j.isTruthy);else throw Mc.tsType(e).equals(),Error(`Unexpected structured render type: ${v(e)}`)}var qG=function(e){return e.ArrayBuffer=`arraybuffer`,e.Blob=`blob`,e.BlobUri=`bloburi`,e.BlobUrl=`bloburl`,e.DataUriString=`datauristring`,e.DataUrlString=`dataurlstring`,e.DataUri=`datauri`,e.DataUrl=`dataurl`,e.DataUrlNewWindow=`dataurlnewwindow`,e.PdfObjectNewWindow=`pdfobjectnewwindow`,e.PdfJsNewWindow=`pdfjsnewwindow`,e.Download=`download`,e}({}),JG=function(e){return e.Img=`img`,e.DataUriString=`datauristring`,e.DataUrlString=`dataurlstring`,e.DataUri=`datauri`,e.DataUrl=`dataurl`,e.Download=`download`,e}({});function YG(e){return{margin:[25,15],filename:e,image:{type:`jpeg`,quality:.98},html2canvas:{scale:2,logging:!1,scrollX:0,scrollY:0,useCORS:!0},jsPDF:{unit:`mm`,format:`a4`,orientation:`portrait`},pagebreak:{mode:[`css`,`legacy`]}}}async function XG(e,{fileName:t,outputType:n,options:r}){if(!b(_e.Web))throw Error(`${nK.name} cannot run outside of a browser.`);let a=ul(xG,r),[o]=await Promise.all([IG(),eK()]),s=await UW.parse(LG(e,a)),c=VN(V`
+`)},markdown(e){return e.markdown},tag(e){return e.text==null?``:String(e.text)},processing(){return``},source(e,t){let n=e.pageNumbers?.filter(j.isDefined),r=n?.length?`p. ${n.join(`, `)}`:``,i=[e.fileName,r].filter(j.isTruthy).join(`, `);return i?`<small>${t.sourceString}: ${i}</small>`:``},table(e,t){let n=e.headers.filter(e=>!e.hidden),r=UG[e.direction](e,n,t),i=GG(r,r[0].length||0),[a,...o]=r;return[KG(a,i),qG(i),...o.map(e=>KG(e,i))].join(`
+`)},text(e,t){if(e.text==null)return``;let n=e.style&&BG[e.style]||``,r=zG(e.icon,t),i=Ll({value:String(e.text),wrapper:n});return r?`${r} ${i}`:i}};function GG(e,t){return qc(t,t=>e.reduce((e,n,r)=>Math.max(e,Dc.isDefined(n[t],`No cell at row index ${r}, column index ${t}`).length),3))}function KG(e,t){return`| ${e.map((e,n)=>e.padEnd(t[n]??3)).join(` | `)} |`}function qG(e){return`| ${e.map(e=>`-`.repeat(e)).join(` | `)} |`}function JG(e,t,n=!1){if(!e)return[];if(j.isArray(e))return e.flatMap(e=>zG(e,t));if(`type`in e){let r=`sectionTitle`in e&&!n?e.sectionTitle:void 0,i=`sources`in e&&e.sources||[];return[r?`### ${r}`:void 0,WG[e.type](e,t),...i.map(e=>zG(e,t))]}else if(`sections`in e)return[e.cardTitle&&`## ${e.cardTitle}`,...e.sections.flatMap((e,n)=>JG(e,t,n===0))].filter(j.isTruthy);else throw Mc.tsType(e).equals(),Error(`Unexpected structured render type: ${v(e)}`)}var YG=function(e){return e.ArrayBuffer=`arraybuffer`,e.Blob=`blob`,e.BlobUri=`bloburi`,e.BlobUrl=`bloburl`,e.DataUriString=`datauristring`,e.DataUrlString=`dataurlstring`,e.DataUri=`datauri`,e.DataUrl=`dataurl`,e.DataUrlNewWindow=`dataurlnewwindow`,e.PdfObjectNewWindow=`pdfobjectnewwindow`,e.PdfJsNewWindow=`pdfjsnewwindow`,e.Download=`download`,e}({}),XG=function(e){return e.Img=`img`,e.DataUriString=`datauristring`,e.DataUrlString=`dataurlstring`,e.DataUri=`datauri`,e.DataUrl=`dataurl`,e.Download=`download`,e}({});function ZG(e){return{margin:[25,15],filename:e,image:{type:`jpeg`,quality:.98},html2canvas:{scale:2,logging:!1,scrollX:0,scrollY:0,useCORS:!0},jsPDF:{unit:`mm`,format:`a4`,orientation:`portrait`},pagebreak:{mode:[`css`,`legacy`]}}}async function QG(e,{fileName:t,outputType:n,options:r}){if(!b(_e.Web))throw Error(`${iK.name} cannot run outside of a browser.`);let a=ul(QW,r),[o]=await Promise.all([RG(),nK()]),s=await UW.parse(zG(e,a)),c=VN(V`
         <div class=${WW}>${i.sanitize(s)}</div>
-    `),l=YG(t),u=await ZG(c,String(a.styles),l),d=o().set(l).from(u);if(n.pdf)if(n.pdf===qG.Download){let e=await d.outputPdf(qG.Blob),n=URL.createObjectURL(e),r=globalThis.document.createElement(`a`);r.href=n,r.download=t.endsWith(`.pdf`)?t:`${t}.pdf`,r.style.display=`none`,globalThis.document.body.append(r),r.click(),r.remove(),URL.revokeObjectURL(n);return}else return await d.outputPdf(n.pdf,{filename:t});else if(n.image)return n.image===JG.Download?await d.toImg().save(t):await d.outputImg(n.image);else throw Mc.tsType(n).equals(),Error(`Invalid output type: ${v(n)}`)}async function ZG(e,t,n){let r=tK(n.margin),i=210-r[1]-r[3],a=globalThis.document.createElement(`iframe`);a.style.position=`fixed`,a.style.left=`-10000px`,a.style.top=`0`,a.style.width=`${i}mm`,a.style.height=`0`,a.style.border=`none`,a.setAttribute(`aria-hidden`,`true`),a.srcdoc=[`<!DOCTYPE html><html><head><style>`,GW,t,`</style></head><body style="margin:0;padding:0;">`,e,`</body></html>`].join(``),globalThis.document.body.append(a);try{await new Promise(e=>{a.addEventListener(`load`,()=>{e()},{once:!0})});let e=Dc.isDefined(a.contentDocument);await e.fonts.ready;let t=Dc.isDefined(e.body.firstElementChild);return a.style.height=`${e.body.scrollHeight}px`,await QN(3),await $G()(t,{...n.html2canvas})}finally{a.remove()}}var QG;function $G(){if(!QG)throw Error(`html2canvas has not been loaded yet. Call preloadHtml2Canvas() first.`);return QG}async function eK(){QG||=(await r(async()=>{let{default:e}=await import(`./html2canvas-DcbCcm1Y.js`).then(e=>t(e.default,1));return{default:e}},__vite__mapDeps([6,5,1]))).default}function tK(e){return e==null?[0,0,0,0]:typeof e==`number`?[e,e,e,e]:e.length===2?[e[0],e[1],e[0],e[1]]:[e[0],e[1],e[2],e[3]]}async function nK(e,{saveLocationPath:n,outputType:a,options:o}){if(b(_e.Web))throw Error(`${nK.name} cannot run inside of a browser.`);let s=ul(xG,o),{chromium:c}=await r(async()=>{let{chromium:e}=await import(`playwright`);return{chromium:e}},[]),{readFile:l,writeFile:u,mkdir:d}=await r(async()=>{let{readFile:e,writeFile:t,mkdir:n}=await import(`node:fs/promises`);return{readFile:e,writeFile:t,mkdir:n}},[]),{createRequire:f}=await r(async()=>{let{createRequire:e}=await import(`./__vite-browser-external-C2HJ6kSE.js`).then(e=>t(e.default,1));return{createRequire:e}},__vite__mapDeps([7,1])),{basename:p,dirname:m}=await r(async()=>{let{basename:e,dirname:t}=await import(`node:path`);return{basename:e,dirname:t}},[]),h=f(import.meta.url),[g,_]=await Promise.all([l(h.resolve(`html2pdf.js/dist/html2pdf.bundle.min.js`),`utf-8`),l(h.resolve(`dompurify/dist/purify.min.js`),`utf-8`)]),ee=await UW.parse(LG(e,s)),te=VN(V`
+    `),l=ZG(t),u=await $G(c,String(a.styles),l),d=o().set(l).from(u);if(n.pdf)if(n.pdf===YG.Download){let e=await d.outputPdf(YG.Blob),n=URL.createObjectURL(e),r=globalThis.document.createElement(`a`);r.href=n,r.download=t.endsWith(`.pdf`)?t:`${t}.pdf`,r.style.display=`none`,globalThis.document.body.append(r),r.click(),r.remove(),URL.revokeObjectURL(n);return}else return await d.outputPdf(n.pdf,{filename:t});else if(n.image)return n.image===XG.Download?await d.toImg().save(t):await d.outputImg(n.image);else throw Mc.tsType(n).equals(),Error(`Invalid output type: ${v(n)}`)}async function $G(e,t,n){let r=rK(n.margin),i=210-r[1]-r[3],a=globalThis.document.createElement(`iframe`);a.style.position=`fixed`,a.style.left=`-10000px`,a.style.top=`0`,a.style.width=`${i}mm`,a.style.height=`0`,a.style.border=`none`,a.setAttribute(`aria-hidden`,`true`),a.srcdoc=[`<!DOCTYPE html><html><head><style>`,GW,t,`</style></head><body style="margin:0;padding:0;">`,e,`</body></html>`].join(``),globalThis.document.body.append(a);try{await new Promise(e=>{a.addEventListener(`load`,()=>{e()},{once:!0})});let e=Dc.isDefined(a.contentDocument);await e.fonts.ready;let t=Dc.isDefined(e.body.firstElementChild);return a.style.height=`${e.body.scrollHeight}px`,await QN(3),await tK()(t,{...n.html2canvas})}finally{a.remove()}}var eK;function tK(){if(!eK)throw Error(`html2canvas has not been loaded yet. Call preloadHtml2Canvas() first.`);return eK}async function nK(){eK||=(await r(async()=>{let{default:e}=await import(`./html2canvas-DcbCcm1Y.js`).then(e=>t(e.default,1));return{default:e}},__vite__mapDeps([6,5,1]))).default}function rK(e){return e==null?[0,0,0,0]:typeof e==`number`?[e,e,e,e]:e.length===2?[e[0],e[1],e[0],e[1]]:[e[0],e[1],e[2],e[3]]}async function iK(e,{saveLocationPath:n,outputType:a,options:o}){if(b(_e.Web))throw Error(`${iK.name} cannot run inside of a browser.`);let s=ul(QW,o),{chromium:c}=await r(async()=>{let{chromium:e}=await import(`playwright`);return{chromium:e}},[]),{readFile:l,writeFile:u,mkdir:d}=await r(async()=>{let{readFile:e,writeFile:t,mkdir:n}=await import(`node:fs/promises`);return{readFile:e,writeFile:t,mkdir:n}},[]),{createRequire:f}=await r(async()=>{let{createRequire:e}=await import(`./__vite-browser-external-C2HJ6kSE.js`).then(e=>t(e.default,1));return{createRequire:e}},__vite__mapDeps([7,1])),{basename:p,dirname:m}=await r(async()=>{let{basename:e,dirname:t}=await import(`node:path`);return{basename:e,dirname:t}},[]),h=f(import.meta.url),[g,_]=await Promise.all([l(h.resolve(`html2pdf.js/dist/html2pdf.bundle.min.js`),`utf-8`),l(h.resolve(`dompurify/dist/purify.min.js`),`utf-8`)]),ee=await UW.parse(zG(e,s)),te=VN(V`
         <style id="styles">
             ${s.styles}
         </style>
-    `),ne=await c.launch();try{let e=await ne.newPage();await e.setContent(te,{waitUntil:`networkidle`}),await e.addScriptTag({content:g}),await e.addScriptTag({content:_});let t=YG(p(n));a.image&&(t.image={type:`png`});let r=(await e.evaluate(async({html2pdfOptions:e,outputType:t,dirtyMarkdown:n,wrapperClass:r,outputImageType:a,outputPdfType:o})=>{let s=i.sanitize(n),c=html2pdf().set(e).from(`<div class="${r}">${s}</div>`);if(t.image)return await c.outputImg(a,{filename:e.filename});if(t.pdf)return await c.outputPdf(o,{filename:e.filename});throw Error(`Invalid output type selected.`)},{html2pdfOptions:t,outputType:a,dirtyMarkdown:ee,wrapperClass:WW,outputImageType:JG.DataUriString,outputPdfType:qG.DataUriString})).split(`,`)[1];await d(m(n),{recursive:!0}),await u(n,Buffer.from(r,`base64`))}finally{await ne.close()}return n}async function rK(e,{pdfOutputType:t,...n}){if(!b(_e.Web))throw Error(`${rK.name} cannot run outside of a browser.`);return XG(e,{outputType:{pdf:t||qG.Download},...n})}async function iK(e,t){if(!b(_e.Web))throw Error(`${iK.name} cannot run outside of a browser.`);let n=await XG(e,{outputType:{pdf:qG.Blob},...t}),r=URL.createObjectURL(n),i=navigator.userAgent.toLowerCase(),a=i.includes(`firefox`),o=/iphone|ipad|ipod/.test(i)||i.includes(`macintosh`)&&navigator.maxTouchPoints>1;if(a||o){if(!globalThis.window.open(r))throw URL.revokeObjectURL(r),Error(`Failed to open print window. Check your popup blocker settings.`);return}let s=globalThis.document.createElement(`iframe`);s.style.position=`fixed`,s.style.left=`-10000px`,s.style.top=`0`,s.style.width=`1px`,s.style.height=`1px`,s.style.border=`none`,s.style.opacity=`0`,s.src=r,globalThis.document.body.append(s),await new Promise(e=>{s.addEventListener(`load`,()=>{e()},{once:!0})});let c=s.contentWindow;if(!c){URL.revokeObjectURL(r),s.remove();return}return await QN(3),await po({milliseconds:250}),await QN(3),new Promise(e=>{function t(){URL.revokeObjectURL(r),s.remove(),e()}let n=!1;function i(){n||(n=!0,globalThis.window.removeEventListener(`focus`,a),t())}function a(){i()}c.addEventListener(`afterprint`,()=>{i()},{once:!0}),globalThis.window.addEventListener(`focus`,a,{once:!0}),c.print()})}var aK=[{cardTitle:`Frontend Performance`,sections:[{type:Q.text,sectionTitle:`Overview`,text:`Frontend performance metrics collected from the last 30 days of production monitoring.`,sources:[{type:`source`,fileName:`performance-report-2026-02.pdf`,pageNumbers:[1,2],quote:`Metrics aggregated from real user monitoring (RUM) data across all production traffic.`}]},{type:Q.table,sectionTitle:`Core Web Vitals`,direction:mG.Horizontal,sources:[{type:`source`,fileName:`lighthouse-audit.json`,pageNumbers:[3],quote:`Core Web Vitals thresholds based on Chrome UX Report field data.`},{type:`source`,fileName:`web-vitals-spec.md`,quote:`Targets align with Google recommended thresholds for good user experience.`}],headers:[{key:`metric`},{key:`p50`},{key:`p95`},{key:`target`},{key:`status`}],entries:[{data:{metric:{type:Q.text,text:`Largest Contentful Paint`,style:cG.Bold},p50:{type:Q.inlineCode,code:`1.2s`},p95:{type:Q.inlineCode,code:`2.8s`},target:{type:Q.text,text:`< 2.5s`},status:{type:Q.tag,text:`Pass`,color:{variant:q.Positive}}}},{data:{metric:{type:Q.text,text:`First Input Delay`,style:cG.Bold},p50:{type:Q.inlineCode,code:`12ms`},p95:{type:Q.inlineCode,code:`85ms`},target:{type:Q.text,text:`< 100ms`},status:{type:Q.tag,text:`Pass`,color:{variant:q.Positive}}}},{data:{metric:{type:Q.text,text:`Cumulative Layout Shift`,style:cG.Bold},p50:{type:Q.inlineCode,code:`0.18`},p95:{type:Q.inlineCode,code:`0.32`},target:{type:Q.text,text:`< 0.1`},status:{type:Q.tag,text:`Fail`,color:{variant:q.Danger}}},sources:[{type:`source`,fileName:`cls-regression-analysis.pdf`,pageNumbers:[7],quote:`CLS spike correlated with hero image carousel added in v3.12.0.`}]},{data:{metric:{type:Q.text,text:`Time to First Byte`,style:cG.Bold},p50:{type:Q.inlineCode,code:`210ms`},p95:{type:Q.inlineCode,code:`480ms`},target:{type:Q.text,text:`< 600ms`},status:{type:Q.tag,text:`Pass`,color:{variant:q.Positive}}}}]},{type:Q.list,sectionTitle:`Recommendations`,items:[{content:{type:Q.text,text:`Fix layout shifts caused by dynamically loaded images. Fix layout shifts caused by dynamically loaded images. Fix layout shifts caused by dynamically loaded images. Fix layout shifts caused by dynamically loaded images. Fix layout shifts caused by dynamically loaded images. Fix layout shifts caused by dynamically loaded images. Fix layout shifts caused by dynamically loaded images. Fix layout shifts caused by dynamically loaded images. Fix layout shifts caused by dynamically loaded images. Fix layout shifts caused by dynamically loaded images. Fix layout shifts caused by dynamically loaded images. Fix layout shifts caused by dynamically loaded images.`},icon:{type:Q.icon,iconKey:CL.name,strokeColor:`red`},sources:[{type:`source`,fileName:`frontend-performance-review-2026-q1.pdf`,pageNumbers:[4],quote:`Layout shifts primarily caused by images without explicit dimensions.`},{type:`source`,fileName:`web-vitals-optimization-guide.md`,quote:`Lazy loading below-the-fold content reduces initial page weight and improves LCP.`}]},{icon:{type:Q.icon,iconKey:CL.name,strokeColor:`red`},content:{type:Q.text,text:`Add explicit width and height attributes to all image elements.`,sources:[{type:`source`,fileName:`cls-regression-analysis.pdf`,pageNumbers:[8],quote:`Missing width/height attributes on images are the primary contributor to layout shift.`}]}},{content:{type:Q.text,text:`Consider lazy loading below-the-fold content.`},sources:[{type:`source`,fileName:`frontend-performance-review-2026-q1.pdf`,pageNumbers:[4],quote:`Layout shifts primarily caused by images without explicit dimensions.`},{type:`source`,fileName:`web-vitals-optimization-guide.md`,quote:`Lazy loading below-the-fold content reduces initial page weight and improves LCP.`}]}]},{type:Q.list,sectionTitle:`Action Items`,items:[{content:{type:Q.text,text:`Audit all hero images for missing dimensions. Audit all hero images for missing dimensions. Audit all hero images for missing dimensions. Audit all hero images for missing dimensions. Audit all hero images for missing dimensions. Audit all hero images for missing dimensions. Audit all hero images for missing dimensions. Audit all hero images for missing dimensions. Audit all hero images for missing dimensions. Audit all hero images for missing dimensions. Audit all hero images for missing dimensions. Audit all hero images for missing dimensions.`},icon:{type:Q.icon,iconKey:CL.name,strokeColor:`orange`}},{content:{type:Q.text,text:`Enable native lazy loading on below-the-fold images.`},icon:{type:Q.icon,iconKey:xL.name,strokeColor:`green`}},{content:{type:Q.text,text:`Defer non-critical third-party scripts.`},icon:{type:Q.icon,iconKey:xL.name,strokeColor:`green`}}]},_G(mG.Vertical,[{key:`age`,text:{type:Q.text,text:`Age`}},{key:`dateOfBirth`,text:{type:Q.text,text:`DoB`}},{key:`bloodPressure`,text:{type:Q.text,text:`Blood Pressure`}},{key:`bmi`,text:{type:Q.text,text:`BMI`}},{key:`heartRate`,text:{type:Q.text,text:`Heart Rate`}},{key:`oxygenSaturation`,text:{type:Q.text,text:`Oxygen Saturation`}},{key:`pain`,text:{type:Q.text,text:`Pain`}},{key:`language`,text:{type:Q.text,text:`Language`}},{key:`respiratory`,text:{type:Q.text,text:`Respiratory Rate`}},{key:`sex`,text:{type:Q.text,text:`Sex`}},{key:`temperature`,text:{type:Q.text,text:`Temperature`}},{key:`weight`,text:{type:Q.text,text:`Weight`}},{key:`height`,text:{type:Q.text,text:`Height`}},{key:`zipCode`,text:{type:Q.text,text:`Zip Code`}}],[{data:{age:{type:Q.text,text:`72`,sources:[{type:Q.source,fileName:`intake-form.pdf`,pageNumbers:[1],quote:`Age: 72`}]},dateOfBirth:{type:Q.text,text:`01/15/1954`,sources:[{type:Q.source,fileName:`intake-form.pdf`,pageNumbers:[1],quote:`DOB: 01/15/1954`}]},bloodPressure:{type:Q.text,text:`130 / 85`,sources:[{type:Q.source,fileName:`vitals-chart.pdf`,pageNumbers:[2],quote:`BP: 130/85 mmHg`}]},bmi:{type:Q.text,text:`27.3`,sources:[{type:Q.source,fileName:`vitals-chart.pdf`,pageNumbers:[2],quote:`BMI: 27.3`}]},heartRate:{type:Q.text,text:`78 bpm`,sources:[{type:Q.source,fileName:`vitals-chart.pdf`,pageNumbers:[2],quote:`HR: 78 bpm`}]},height:{type:Q.text,text:`170 cm`},oxygenSaturation:{type:Q.text,text:`96%, on room air`,sources:[{type:Q.source,fileName:`vitals-chart.pdf`,pageNumbers:[2],quote:`SpO2: 96% on RA`}]},pain:{type:Q.text,text:`4/10`,sources:[{type:Q.source,fileName:`nursing-notes.pdf`,pageNumbers:[3],quote:`Pain score: 4/10`}]},language:{type:Q.text,text:`English`},respiratory:{type:Q.text,text:`18 breaths/min`,sources:[{type:Q.source,fileName:`vitals-chart.pdf`,pageNumbers:[2],quote:`RR: 18 breaths/min`}]},sex:{type:Q.text,text:`Male`},temperature:{type:Q.text,text:`98.6 °F`,sources:[{type:Q.source,fileName:`vitals-chart.pdf`,pageNumbers:[2],quote:`Temp: 98.6°F`}]},weight:{type:Q.text,text:`185 lbs`,sources:[{type:Q.source,fileName:`vitals-chart.pdf`,pageNumbers:[2],quote:`Weight: 185 lbs`}]},zipCode:{type:Q.text,text:`90210`,sources:[{type:Q.source,fileName:`intake-form.pdf`,pageNumbers:[1],quote:`Zip: 90210`}]}}}])]},{cardTitle:`Backend API Health`,sections:[{type:Q.markdown,sectionTitle:`Status Summary`,sources:[{type:`source`,fileName:`uptime-monitor-export.csv`,quote:`Uptime percentages calculated from 5-minute health check intervals.`}],markdown:[`All **12 services** are operational. Average uptime over the past 30 days: **99.97%**.`,``,`| Service | Uptime |`,`|---------|--------|`,`| Auth | 99.99% |`,`| Users | 99.98% |`,`| Notifications | 99.91% |`,`| Billing | 100% |`].join(`
-`)},{type:Q.table,sectionTitle:`Endpoint Latency (ms)`,direction:mG.Vertical,headers:[{key:`endpoint`},{key:`getUsers`},{key:`createUser`},{key:`getReport`},{key:`sendNotification`}],entries:[{data:{endpoint:{type:Q.text,text:`p50`},getUsers:{type:Q.inlineCode,code:`45`},createUser:{type:Q.inlineCode,code:`120`},getReport:{type:Q.inlineCode,code:`890`},sendNotification:{type:Q.inlineCode,code:`65`}}},{data:{endpoint:{type:Q.text,text:`p99`},getUsers:{type:Q.inlineCode,code:`180`},createUser:{type:Q.inlineCode,code:`450`},getReport:{type:Q.inlineCode,code:`3200`},sendNotification:{type:Q.inlineCode,code:`210`}}}]},{type:Q.codeBlock,sectionTitle:`Slow Query Sample`,syntax:`sql`,code:[`SELECT r.id, r.title, r.created_at,`,`       u.name AS author_name,`,`       COUNT(c.id) AS comment_count`,`FROM reports r`,`JOIN users u ON u.id = r.author_id`,`LEFT JOIN comments c ON c.report_id = r.id`,`WHERE r.created_at > NOW() - INTERVAL '30 days'`,`GROUP BY r.id, r.title, r.created_at, u.name`,`ORDER BY r.created_at DESC`,`LIMIT 100;`].join(`
-`)}]},{cardTitle:`Deployment Pipeline`,sections:[{type:Q.text,sectionTitle:`Current State`,text:`The CI/CD pipeline is fully automated with staging and production environments.`,icon:{type:Q.icon,iconKey:xL.name,strokeColor:`green`}},{type:Q.table,sectionTitle:`Recent Deployments`,direction:mG.Horizontal,sources:[{type:`source`,fileName:`ci-pipeline-logs.txt`,pageNumbers:[12,15,18,22],quote:`Deployment records extracted from CI/CD pipeline execution logs.`}],headers:[{key:`version`},{key:`environment`},{key:`date`},{key:`duration`},{key:`status`}],entries:[{data:{version:{type:Q.inlineCode,code:`v3.14.2`},environment:{type:Q.tag,text:`Production`,color:{variant:q.Positive}},date:{type:Q.text,text:`2026-02-28`},duration:{type:Q.text,text:`4m 22s`},status:{type:Q.tag,text:`Success`,color:{variant:q.Positive}}}},{data:{version:{type:Q.inlineCode,code:`v3.14.1`},environment:{type:Q.tag,text:`Production`,color:{variant:q.Positive}},date:{type:Q.text,text:`2026-02-25`},duration:{type:Q.text,text:`3m 58s`},status:{type:Q.tag,text:`Success`,color:{variant:q.Positive}}}},{data:{version:{type:Q.inlineCode,code:`v3.14.0`},environment:{type:Q.tag,text:`Staging`,color:{variant:q.Warning}},date:{type:Q.text,text:`2026-02-24`},duration:{type:Q.text,text:`5m 01s`},status:{type:Q.tag,text:`Rolled Back`,color:{variant:q.Danger}}}},{data:{version:{type:Q.inlineCode,code:`v3.13.9`},environment:{type:Q.tag,text:`Production`,color:{variant:q.Positive}},date:{type:Q.text,text:`2026-02-20`},duration:{type:Q.text,text:`4m 10s`},status:{type:Q.tag,text:`Success`,color:{variant:q.Positive}}}}]},{type:Q.list,sectionTitle:`Pipeline Steps`,items:[{content:{type:Q.text,text:`Lint and type check.`},icon:{type:Q.icon,iconKey:xL.name,strokeColor:`green`}},{content:{type:Q.text,text:`Unit and integration tests.`},icon:{type:Q.icon,iconKey:xL.name,strokeColor:`green`}},{content:{type:Q.text,text:`Build production bundle.`},icon:{type:Q.icon,iconKey:xL.name,strokeColor:`green`}},{content:{type:Q.text,text:`Deploy to staging.`},icon:{type:Q.icon,iconKey:xL.name,strokeColor:`green`}},{content:{type:Q.text,text:`E2E smoke tests.`},icon:{type:Q.icon,iconKey:xL.name,strokeColor:`green`}},{content:{type:Q.text,text:`Promote to production.`},icon:{type:Q.icon,iconKey:xL.name,strokeColor:`green`}}]},{type:Q.codeBlock,sectionTitle:`Pipeline Config Snippet`,syntax:`yaml`,code:[`stages:`,`  - name: lint`,`    command: npm run lint`,`  - name: test`,`    command: npm test`,`    parallel: true`,`  - name: build`,`    command: npm run build`,`  - name: deploy-staging`,`    command: deploy --env staging`,`  - name: e2e`,`    command: npm run test:e2e`,`  - name: deploy-production`,`    command: deploy --env production`,`    requires: [e2e]`].join(`
+    `),ne=await c.launch();try{let e=await ne.newPage();await e.setContent(te,{waitUntil:`networkidle`}),await e.addScriptTag({content:g}),await e.addScriptTag({content:_});let t=ZG(p(n));a.image&&(t.image={type:`png`});let r=(await e.evaluate(async({html2pdfOptions:e,outputType:t,dirtyMarkdown:n,wrapperClass:r,outputImageType:a,outputPdfType:o})=>{let s=i.sanitize(n),c=html2pdf().set(e).from(`<div class="${r}">${s}</div>`);if(t.image)return await c.outputImg(a,{filename:e.filename});if(t.pdf)return await c.outputPdf(o,{filename:e.filename});throw Error(`Invalid output type selected.`)},{html2pdfOptions:t,outputType:a,dirtyMarkdown:ee,wrapperClass:WW,outputImageType:XG.DataUriString,outputPdfType:YG.DataUriString})).split(`,`)[1];await d(m(n),{recursive:!0}),await u(n,Buffer.from(r,`base64`))}finally{await ne.close()}return n}async function aK(e,{pdfOutputType:t,...n}){if(!b(_e.Web))throw Error(`${aK.name} cannot run outside of a browser.`);return QG(e,{outputType:{pdf:t||YG.Download},...n})}async function oK(e,t){if(!b(_e.Web))throw Error(`${oK.name} cannot run outside of a browser.`);let n=await QG(e,{outputType:{pdf:YG.Blob},...t}),r=URL.createObjectURL(n),i=navigator.userAgent.toLowerCase(),a=i.includes(`firefox`),o=/iphone|ipad|ipod/.test(i)||i.includes(`macintosh`)&&navigator.maxTouchPoints>1;if(a||o){if(!globalThis.window.open(r))throw URL.revokeObjectURL(r),Error(`Failed to open print window. Check your popup blocker settings.`);return}let s=globalThis.document.createElement(`iframe`);s.style.position=`fixed`,s.style.left=`-10000px`,s.style.top=`0`,s.style.width=`1px`,s.style.height=`1px`,s.style.border=`none`,s.style.opacity=`0`,s.src=r,globalThis.document.body.append(s),await new Promise(e=>{s.addEventListener(`load`,()=>{e()},{once:!0})});let c=s.contentWindow;if(!c){URL.revokeObjectURL(r),s.remove();return}return await QN(3),await po({milliseconds:250}),await QN(3),new Promise(e=>{function t(){URL.revokeObjectURL(r),s.remove(),e()}let n=!1;function i(){n||(n=!0,globalThis.window.removeEventListener(`focus`,a),t())}function a(){i()}c.addEventListener(`afterprint`,()=>{i()},{once:!0}),globalThis.window.addEventListener(`focus`,a,{once:!0}),c.print()})}var sK=[{cardTitle:`Frontend Performance`,cardTitleIcon:{type:Q.icon,iconKey:xL.name,strokeColor:`green`},sections:[{type:Q.text,sectionTitle:`Overview`,text:`Frontend performance metrics collected from the last 30 days of production monitoring.`,sources:[{type:`source`,fileName:`performance-report-2026-02.pdf`,pageNumbers:[1,2],quote:`Metrics aggregated from real user monitoring (RUM) data across all production traffic.`}]},{type:Q.table,sectionTitle:`Core Web Vitals`,direction:_G.Horizontal,sources:[{type:`source`,fileName:`lighthouse-audit.json`,pageNumbers:[3],quote:`Core Web Vitals thresholds based on Chrome UX Report field data.`},{type:`source`,fileName:`web-vitals-spec.md`,quote:`Targets align with Google recommended thresholds for good user experience.`}],headers:[{key:`metric`},{key:`p50`},{key:`p95`},{key:`target`},{key:`status`}],entries:[{data:{metric:{type:Q.text,text:`Largest Contentful Paint`,style:dG.Bold},p50:{type:Q.inlineCode,code:`1.2s`},p95:{type:Q.inlineCode,code:`2.8s`},target:{type:Q.text,text:`< 2.5s`},status:{type:Q.tag,text:`Pass`,color:{variant:q.Positive}}}},{data:{metric:{type:Q.text,text:`First Input Delay`,style:dG.Bold},p50:{type:Q.inlineCode,code:`12ms`},p95:{type:Q.inlineCode,code:`85ms`},target:{type:Q.text,text:`< 100ms`},status:{type:Q.tag,text:`Pass`,color:{variant:q.Positive}}}},{data:{metric:{type:Q.text,text:`Cumulative Layout Shift`,style:dG.Bold},p50:{type:Q.inlineCode,code:`0.18`},p95:{type:Q.inlineCode,code:`0.32`},target:{type:Q.text,text:`< 0.1`},status:{type:Q.tag,text:`Fail`,color:{variant:q.Danger}}},sources:[{type:`source`,fileName:`cls-regression-analysis.pdf`,pageNumbers:[7],quote:`CLS spike correlated with hero image carousel added in v3.12.0.`}]},{data:{metric:{type:Q.text,text:`Time to First Byte`,style:dG.Bold},p50:{type:Q.inlineCode,code:`210ms`},p95:{type:Q.inlineCode,code:`480ms`},target:{type:Q.text,text:`< 600ms`},status:{type:Q.tag,text:`Pass`,color:{variant:q.Positive}}}}]},{type:Q.list,sectionTitle:`Recommendations`,items:[{content:{type:Q.text,text:`Fix layout shifts caused by dynamically loaded images. Fix layout shifts caused by dynamically loaded images. Fix layout shifts caused by dynamically loaded images. Fix layout shifts caused by dynamically loaded images. Fix layout shifts caused by dynamically loaded images. Fix layout shifts caused by dynamically loaded images. Fix layout shifts caused by dynamically loaded images. Fix layout shifts caused by dynamically loaded images. Fix layout shifts caused by dynamically loaded images. Fix layout shifts caused by dynamically loaded images. Fix layout shifts caused by dynamically loaded images. Fix layout shifts caused by dynamically loaded images.`},icon:{type:Q.icon,iconKey:CL.name,strokeColor:`red`},sources:[{type:`source`,fileName:`frontend-performance-review-2026-q1.pdf`,pageNumbers:[4],quote:`Layout shifts primarily caused by images without explicit dimensions.`},{type:`source`,fileName:`web-vitals-optimization-guide.md`,quote:`Lazy loading below-the-fold content reduces initial page weight and improves LCP.`}]},{icon:{type:Q.icon,iconKey:CL.name,strokeColor:`red`},content:{type:Q.text,text:`Add explicit width and height attributes to all image elements.`,sources:[{type:`source`,fileName:`cls-regression-analysis.pdf`,pageNumbers:[8],quote:`Missing width/height attributes on images are the primary contributor to layout shift.`}]}},{content:{type:Q.text,text:`Consider lazy loading below-the-fold content.`},sources:[{type:`source`,fileName:`frontend-performance-review-2026-q1.pdf`,pageNumbers:[4],quote:`Layout shifts primarily caused by images without explicit dimensions.`},{type:`source`,fileName:`web-vitals-optimization-guide.md`,quote:`Lazy loading below-the-fold content reduces initial page weight and improves LCP.`}]}]},{type:Q.list,sectionTitle:`Action Items`,items:[{content:{type:Q.text,text:`Audit all hero images for missing dimensions. Audit all hero images for missing dimensions. Audit all hero images for missing dimensions. Audit all hero images for missing dimensions. Audit all hero images for missing dimensions. Audit all hero images for missing dimensions. Audit all hero images for missing dimensions. Audit all hero images for missing dimensions. Audit all hero images for missing dimensions. Audit all hero images for missing dimensions. Audit all hero images for missing dimensions. Audit all hero images for missing dimensions.`},icon:{type:Q.icon,iconKey:CL.name,strokeColor:`orange`}},{content:{type:Q.text,text:`Enable native lazy loading on below-the-fold images.`},icon:{type:Q.icon,iconKey:xL.name,strokeColor:`green`}},{content:{type:Q.text,text:`Defer non-critical third-party scripts.`},icon:{type:Q.icon,iconKey:xL.name,strokeColor:`green`}}]},bG(_G.Vertical,[{key:`age`,text:{type:Q.text,text:`Age`}},{key:`dateOfBirth`,text:{type:Q.text,text:`DoB`}},{key:`bloodPressure`,text:{type:Q.text,text:`Blood Pressure`}},{key:`bmi`,text:{type:Q.text,text:`BMI`}},{key:`heartRate`,text:{type:Q.text,text:`Heart Rate`}},{key:`oxygenSaturation`,text:{type:Q.text,text:`Oxygen Saturation`}},{key:`pain`,text:{type:Q.text,text:`Pain`}},{key:`language`,text:{type:Q.text,text:`Language`}},{key:`respiratory`,text:{type:Q.text,text:`Respiratory Rate`}},{key:`sex`,text:{type:Q.text,text:`Sex`}},{key:`temperature`,text:{type:Q.text,text:`Temperature`}},{key:`weight`,text:{type:Q.text,text:`Weight`}},{key:`height`,text:{type:Q.text,text:`Height`}},{key:`zipCode`,text:{type:Q.text,text:`Zip Code`}}],[{data:{age:{type:Q.text,text:`72`,sources:[{type:Q.source,fileName:`intake-form.pdf`,pageNumbers:[1],quote:`Age: 72`}]},dateOfBirth:{type:Q.text,text:`01/15/1954`,sources:[{type:Q.source,fileName:`intake-form.pdf`,pageNumbers:[1],quote:`DOB: 01/15/1954`}]},bloodPressure:{type:Q.text,text:`130 / 85`,sources:[{type:Q.source,fileName:`vitals-chart.pdf`,pageNumbers:[2],quote:`BP: 130/85 mmHg`}]},bmi:{type:Q.text,text:`27.3`,sources:[{type:Q.source,fileName:`vitals-chart.pdf`,pageNumbers:[2],quote:`BMI: 27.3`}]},heartRate:{type:Q.text,text:`78 bpm`,sources:[{type:Q.source,fileName:`vitals-chart.pdf`,pageNumbers:[2],quote:`HR: 78 bpm`}]},height:{type:Q.text,text:`170 cm`},oxygenSaturation:{type:Q.text,text:`96%, on room air`,sources:[{type:Q.source,fileName:`vitals-chart.pdf`,pageNumbers:[2],quote:`SpO2: 96% on RA`}]},pain:{type:Q.text,text:`4/10`,sources:[{type:Q.source,fileName:`nursing-notes.pdf`,pageNumbers:[3],quote:`Pain score: 4/10`}]},language:{type:Q.text,text:`English`},respiratory:{type:Q.text,text:`18 breaths/min`,sources:[{type:Q.source,fileName:`vitals-chart.pdf`,pageNumbers:[2],quote:`RR: 18 breaths/min`}]},sex:{type:Q.text,text:`Male`},temperature:{type:Q.text,text:`98.6 °F`,sources:[{type:Q.source,fileName:`vitals-chart.pdf`,pageNumbers:[2],quote:`Temp: 98.6°F`}]},weight:{type:Q.text,text:`185 lbs`,sources:[{type:Q.source,fileName:`vitals-chart.pdf`,pageNumbers:[2],quote:`Weight: 185 lbs`}]},zipCode:{type:Q.text,text:`90210`,sources:[{type:Q.source,fileName:`intake-form.pdf`,pageNumbers:[1],quote:`Zip: 90210`}]}}}])]},{cardTitle:`Backend API Health`,sections:[{type:Q.markdown,sectionTitle:`Status Summary`,sources:[{type:`source`,fileName:`uptime-monitor-export.csv`,quote:`Uptime percentages calculated from 5-minute health check intervals.`}],markdown:[`All **12 services** are operational. Average uptime over the past 30 days: **99.97%**.`,``,`| Service | Uptime |`,`|---------|--------|`,`| Auth | 99.99% |`,`| Users | 99.98% |`,`| Notifications | 99.91% |`,`| Billing | 100% |`].join(`
+`)},{type:Q.table,sectionTitle:`Endpoint Latency (ms)`,direction:_G.Vertical,headers:[{key:`endpoint`},{key:`getUsers`},{key:`createUser`},{key:`getReport`},{key:`sendNotification`}],entries:[{data:{endpoint:{type:Q.text,text:`p50`},getUsers:{type:Q.inlineCode,code:`45`},createUser:{type:Q.inlineCode,code:`120`},getReport:{type:Q.inlineCode,code:`890`},sendNotification:{type:Q.inlineCode,code:`65`}}},{data:{endpoint:{type:Q.text,text:`p99`},getUsers:{type:Q.inlineCode,code:`180`},createUser:{type:Q.inlineCode,code:`450`},getReport:{type:Q.inlineCode,code:`3200`},sendNotification:{type:Q.inlineCode,code:`210`}}}]},{type:Q.codeBlock,sectionTitle:`Slow Query Sample`,syntax:`sql`,code:[`SELECT r.id, r.title, r.created_at,`,`       u.name AS author_name,`,`       COUNT(c.id) AS comment_count`,`FROM reports r`,`JOIN users u ON u.id = r.author_id`,`LEFT JOIN comments c ON c.report_id = r.id`,`WHERE r.created_at > NOW() - INTERVAL '30 days'`,`GROUP BY r.id, r.title, r.created_at, u.name`,`ORDER BY r.created_at DESC`,`LIMIT 100;`].join(`
+`)}]},{cardTitle:`Deployment Pipeline`,sections:[{type:Q.text,sectionTitle:`Current State`,text:`The CI/CD pipeline is fully automated with staging and production environments.`,icon:{type:Q.icon,iconKey:xL.name,strokeColor:`green`}},{type:Q.table,sectionTitle:`Recent Deployments`,direction:_G.Horizontal,sources:[{type:`source`,fileName:`ci-pipeline-logs.txt`,pageNumbers:[12,15,18,22],quote:`Deployment records extracted from CI/CD pipeline execution logs.`}],headers:[{key:`version`},{key:`environment`},{key:`date`},{key:`duration`},{key:`status`}],entries:[{data:{version:{type:Q.inlineCode,code:`v3.14.2`},environment:{type:Q.tag,text:`Production`,color:{variant:q.Positive}},date:{type:Q.text,text:`2026-02-28`},duration:{type:Q.text,text:`4m 22s`},status:{type:Q.tag,text:`Success`,color:{variant:q.Positive}}}},{data:{version:{type:Q.inlineCode,code:`v3.14.1`},environment:{type:Q.tag,text:`Production`,color:{variant:q.Positive}},date:{type:Q.text,text:`2026-02-25`},duration:{type:Q.text,text:`3m 58s`},status:{type:Q.tag,text:`Success`,color:{variant:q.Positive}}}},{data:{version:{type:Q.inlineCode,code:`v3.14.0`},environment:{type:Q.tag,text:`Staging`,color:{variant:q.Warning}},date:{type:Q.text,text:`2026-02-24`},duration:{type:Q.text,text:`5m 01s`},status:{type:Q.tag,text:`Rolled Back`,color:{variant:q.Danger}}}},{data:{version:{type:Q.inlineCode,code:`v3.13.9`},environment:{type:Q.tag,text:`Production`,color:{variant:q.Positive}},date:{type:Q.text,text:`2026-02-20`},duration:{type:Q.text,text:`4m 10s`},status:{type:Q.tag,text:`Success`,color:{variant:q.Positive}}}}]},{type:Q.list,sectionTitle:`Pipeline Steps`,items:[{content:{type:Q.text,text:`Lint and type check.`},icon:{type:Q.icon,iconKey:xL.name,strokeColor:`green`}},{content:{type:Q.text,text:`Unit and integration tests.`},icon:{type:Q.icon,iconKey:xL.name,strokeColor:`green`}},{content:{type:Q.text,text:`Build production bundle.`},icon:{type:Q.icon,iconKey:xL.name,strokeColor:`green`}},{content:{type:Q.text,text:`Deploy to staging.`},icon:{type:Q.icon,iconKey:xL.name,strokeColor:`green`}},{content:{type:Q.text,text:`E2E smoke tests.`},icon:{type:Q.icon,iconKey:xL.name,strokeColor:`green`}},{content:{type:Q.text,text:`Promote to production.`},icon:{type:Q.icon,iconKey:xL.name,strokeColor:`green`}}]},{type:Q.codeBlock,sectionTitle:`Pipeline Config Snippet`,syntax:`yaml`,code:[`stages:`,`  - name: lint`,`    command: npm run lint`,`  - name: test`,`    command: npm test`,`    parallel: true`,`  - name: build`,`    command: npm run build`,`  - name: deploy-staging`,`    command: deploy --env staging`,`  - name: e2e`,`    command: npm run test:e2e`,`  - name: deploy-production`,`    command: deploy --env production`,`    requires: [e2e]`].join(`
 `)},{type:Q.collapsible,sectionTitle:`Collapsible Details`,header:`Rollback Procedure`,content:[{type:Q.text,text:`If a deployment fails health checks, the pipeline automatically triggers a rollback to the previous stable version.`},{type:Q.codeBlock,syntax:`bash`,code:[`#!/bin/bash`,`deploy rollback --env production --to-version $LAST_STABLE`,`notify --channel ops --message "Rollback initiated"`].join(`
-`)}]},{type:Q.collapsible,header:`Environment Variables`,content:[{type:Q.table,direction:mG.Horizontal,headers:[{key:`variable`},{key:`staging`},{key:`production`}],entries:[{data:{variable:{type:Q.inlineCode,code:`NODE_ENV`},staging:{type:Q.tag,text:`staging`,color:{variant:q.Warning}},production:{type:Q.tag,text:`production`,color:{variant:q.Positive}}}},{data:{variable:{type:Q.inlineCode,code:`LOG_LEVEL`},staging:{type:Q.text,text:`debug`},production:{type:Q.text,text:`warn`}}}]}]},{type:Q.collapsible,header:`Post-Deploy Checklist`,content:[{type:Q.list,items:[{content:{type:Q.text,text:`Verify health check endpoints return 200.`},icon:{type:Q.icon,iconKey:xL.name,strokeColor:`green`}},{content:{type:Q.text,text:`Confirm error rate stays below 0.1% threshold.`},icon:{type:Q.icon,iconKey:CL.name,strokeColor:`orange`}},{content:{type:Q.text,text:`Monitor p99 latency for 15 minutes.`},icon:{type:Q.icon,iconKey:xL.name,strokeColor:`green`}}]}]}]}],oK=fu({title:`Multi Card`,parent:lU,descriptionParagraphs:[`Multiple cards rendered together to demonstrate complex multi-card layouts.`],defineExamples({defineExample:e}){e({title:`three cards`,styles:B`
+`)}]},{type:Q.collapsible,header:`Environment Variables`,content:[{type:Q.table,direction:_G.Horizontal,headers:[{key:`variable`},{key:`staging`},{key:`production`}],entries:[{data:{variable:{type:Q.inlineCode,code:`NODE_ENV`},staging:{type:Q.tag,text:`staging`,color:{variant:q.Warning}},production:{type:Q.tag,text:`production`,color:{variant:q.Positive}}}},{data:{variable:{type:Q.inlineCode,code:`LOG_LEVEL`},staging:{type:Q.text,text:`debug`},production:{type:Q.text,text:`warn`}}}]}]},{type:Q.collapsible,header:`Post-Deploy Checklist`,content:[{type:Q.list,items:[{content:{type:Q.text,text:`Verify health check endpoints return 200.`},icon:{type:Q.icon,iconKey:xL.name,strokeColor:`green`}},{content:{type:Q.text,text:`Confirm error rate stays below 0.1% threshold.`},icon:{type:Q.icon,iconKey:CL.name,strokeColor:`orange`}},{content:{type:Q.text,text:`Monitor p99 latency for 15 minutes.`},icon:{type:Q.icon,iconKey:xL.name,strokeColor:`green`}}]}]}]}],cK=fu({title:`Multi Card`,parent:lU,descriptionParagraphs:[`Multiple cards rendered together to demonstrate complex multi-card layouts.`],defineExamples({defineExample:e}){e({title:`three cards`,styles:B`
                 :host {
                     max-width: 900px;
                 }
             `,render(){return V`
-                    <${$.assign({data:aK})}></${$}>
-                `}})}}),sK=fu({title:`Block Expansion`,parent:lU,descriptionParagraphs:[`Cards rendered with blockCardExpansion enabled, which forces all sections expanded and disables toggling.`],defineExamples({defineExample:e}){e({title:`all sections locked open`,styles:B`
+                    <${$.assign({data:sK,options:{useCardStyles:!0}})}></${$}>
+                `}})}}),lK=fu({title:`Block Expansion`,parent:lU,descriptionParagraphs:[`Cards rendered with blockCardExpansion enabled, which forces all sections expanded and disables toggling.`],defineExamples({defineExample:e}){e({title:`all sections locked open`,styles:B`
                 :host {
                     max-width: 900px;
                 }
             `,render(){return V`
-                    <${$.assign({data:aK,options:{blockCardExpansion:!0}})}></${$}>
-                `}})}}),cK=fu({title:`Dense Data`,parent:lU,descriptionParagraphs:[`A single card packed with many sections, large tables, lists, code blocks, and markdown to stress-test rendering.`],defineExamples({defineExample:e}){e({title:`comprehensive product analysis`,styles:B`
+                    <${$.assign({data:sK,options:{useCardStyles:!0,blockCardExpansion:!0}})}></${$}>
+                `}})}}),uK=fu({title:`Dense Data`,parent:lU,descriptionParagraphs:[`A single card packed with many sections, large tables, lists, code blocks, and markdown to stress-test rendering.`],defineExamples({defineExample:e}){e({title:`comprehensive product analysis`,styles:B`
                 :host {
                     max-width: 900px;
                 }
             `,render(){return V`
-                    <${$.assign({data:[{cardTitle:`Comprehensive Product Analysis`,sections:[{type:Q.text,sectionTitle:`Executive Summary`,text:`This analysis covers product adoption, feature usage, customer feedback, technical debt, and roadmap progress across all three product lines.`,style:cG.Bold},{type:Q.markdown,sectionTitle:`Adoption Trends`,markdown:[`### Monthly Active Users`,``,`Growth has been **steady** across all tiers:`,``,`- **Free tier**: 14,200 MAU (+8% MoM)`,`- **Pro tier**: 3,800 MAU (+12% MoM)`,`- **Enterprise tier**: 420 MAU (+3% MoM)`,``,`### Retention`,``,`Day-7 retention: **68%** | Day-30 retention: **41%** | Day-90 retention: **28%**`,``,`> The largest drop-off occurs between day 7 and day 14, suggesting onboarding improvements could have significant impact.`].join(`
-`)},{type:Q.table,sectionTitle:`Feature Usage Matrix`,direction:mG.Horizontal,headers:[{key:`feature`},{key:`freeTier`},{key:`proTier`},{key:`enterpriseTier`},{key:`satisfaction`},{key:`trend`}],entries:[{data:{feature:{type:Q.text,text:`Dashboard`,style:cG.Bold},freeTier:{type:Q.text,text:`92%`},proTier:{type:Q.text,text:`97%`},enterpriseTier:{type:Q.text,text:`99%`},satisfaction:{type:Q.tag,text:`4.5 / 5`,color:{variant:q.Positive}},trend:{type:Q.tag,text:`Stable`,color:{variant:q.Positive}}}},{data:{feature:{type:Q.text,text:`Export (PDF/Image)`,style:cG.Bold},freeTier:{type:Q.text,text:`34%`},proTier:{type:Q.text,text:`78%`},enterpriseTier:{type:Q.text,text:`91%`},satisfaction:{type:Q.tag,text:`3.8 / 5`,color:{variant:q.Warning}},trend:{type:Q.tag,text:`Growing`,color:{variant:q.Positive}}}},{data:{feature:{type:Q.text,text:`API Access`,style:cG.Bold},freeTier:{type:Q.text,text:`5%`},proTier:{type:Q.text,text:`42%`},enterpriseTier:{type:Q.text,text:`88%`},satisfaction:{type:Q.tag,text:`4.1 / 5`,color:{variant:q.Positive}},trend:{type:Q.tag,text:`Growing`,color:{variant:q.Positive}}}},{data:{feature:{type:Q.text,text:`Collaboration`,style:cG.Bold},freeTier:{type:Q.text,text:`18%`},proTier:{type:Q.text,text:`61%`},enterpriseTier:{type:Q.text,text:`95%`},satisfaction:{type:Q.tag,text:`4.3 / 5`,color:{variant:q.Positive}},trend:{type:Q.tag,text:`Stable`,color:{variant:q.Positive}}}},{data:{feature:{type:Q.text,text:`Custom Themes`,style:cG.Bold},freeTier:{type:Q.text,text:`0%`},proTier:{type:Q.text,text:`29%`},enterpriseTier:{type:Q.text,text:`67%`},satisfaction:{type:Q.tag,text:`3.2 / 5`,color:{variant:q.Warning}},trend:{type:Q.tag,text:`Declining`,color:{variant:q.Danger}}}},{data:{feature:{type:Q.text,text:`Webhooks`,style:cG.Bold},freeTier:{type:Q.text,text:`0%`},proTier:{type:Q.text,text:`15%`},enterpriseTier:{type:Q.text,text:`72%`},satisfaction:{type:Q.tag,text:`4.0 / 5`,color:{variant:q.Positive}},trend:{type:Q.tag,text:`Growing`,color:{variant:q.Positive}}}}]},{type:Q.list,sectionTitle:`Customer Feedback Themes`,items:[{content:{type:Q.text,text:`Export quality needs improvement (mentioned 47 times).`},icon:{type:Q.icon,iconKey:CL.name,strokeColor:`orange`}},{content:{type:Q.text,text:`Dashboard customization is highly valued (mentioned 82 times).`},icon:{type:Q.icon,iconKey:vL.name,strokeColor:`gold`}},{content:{type:Q.text,text:`API documentation could be more complete (mentioned 31 times).`},icon:{type:Q.icon,iconKey:CL.name,strokeColor:`orange`}},{content:{type:Q.text,text:`Real-time collaboration is a top-requested feature (mentioned 64 times).`},icon:{type:Q.icon,iconKey:vL.name,strokeColor:`gold`}},{content:{type:Q.text,text:`Mobile experience needs significant work (mentioned 28 times).`},icon:{type:Q.icon,iconKey:CL.name,strokeColor:`red`}}]},{type:Q.codeBlock,sectionTitle:`Top API Usage Pattern`,syntax:`typescript`,code:[`import {createClient} from '@product/sdk';`,``,`const client = createClient({`,`    apiKey: process.env.PRODUCT_API_KEY,`,`    baseUrl: 'https://api.product.com/v2',`,`});`,``,`const report = await client.reports.create({`,`    title: 'Weekly Summary',`,`    sections: [`,`        {type: 'chart', dataSource: 'revenue'},`,`        {type: 'table', dataSource: 'transactions'},`,`        {type: 'text', content: 'Generated automatically.'},`,`    ],`,`    format: 'pdf',`,`});`,``,`await client.reports.export(report.id, {`,`    destination: 's3://reports-bucket/weekly/',`,`});`].join(`
-`)},{type:Q.table,sectionTitle:`Technical Debt Inventory`,direction:mG.Horizontal,headers:[{key:`item`},{key:`severity`},{key:`age`},{key:`effort`},{key:`impact`}],entries:[{data:{item:{type:Q.text,text:`Legacy auth middleware.`},severity:{type:Q.tag,text:`High`,color:{variant:q.Danger}},age:{type:Q.text,text:`18 months`},effort:{type:Q.text,text:`3 sprints`},impact:{type:Q.text,text:`Blocks SSO integration.`}}},{data:{item:{type:Q.text,text:`Untyped API responses.`},severity:{type:Q.tag,text:`Medium`,color:{variant:q.Warning}},age:{type:Q.text,text:`12 months`},effort:{type:Q.text,text:`2 sprints`},impact:{type:Q.text,text:`Frequent runtime errors.`}}},{data:{item:{type:Q.text,text:`Duplicated validation logic.`},severity:{type:Q.tag,text:`Medium`,color:{variant:q.Warning}},age:{type:Q.text,text:`9 months`},effort:{type:Q.text,text:`1 sprint`},impact:{type:Q.text,text:`Inconsistent error messages.`}}},{data:{item:{type:Q.text,text:`Missing database indexes.`},severity:{type:Q.tag,text:`High`,color:{variant:q.Danger}},age:{type:Q.text,text:`6 months`},effort:{type:Q.text,text:`0.5 sprint`},impact:{type:Q.text,text:`Slow report generation.`}}},{data:{item:{type:Q.text,text:`Outdated test fixtures.`},severity:{type:Q.tag,text:`Low`,color:{custom:{backgroundColor:`#e0e0e0`,foregroundColor:`#333`}}},age:{type:Q.text,text:`4 months`},effort:{type:Q.text,text:`1 sprint`},impact:{type:Q.text,text:`Reduced test reliability.`}}}]},{type:Q.markdown,sectionTitle:`Roadmap Progress`,markdown:[`### Q1 2026 Goals`,``,`| Goal | Status | Completion |`,`|------|--------|------------|`,`| SSO Integration | In Progress | 60% |`,`| Mobile App v1 | In Progress | 35% |`,`| API v3 | Planning | 10% |`,`| Export Overhaul | Complete | 100% |`,`| Webhook Reliability | Complete | 100% |`,``,`### Q2 2026 Planned`,``,`- Real-time collaboration MVP.`,`- Custom theme builder.`,`- Advanced analytics dashboard.`,`- Internationalization (i18n) support.`].join(`
-`)},{type:Q.list,sectionTitle:`Key Risks`,items:[{content:{type:Q.text,text:`SSO integration depends on legacy auth refactor completing first.`,style:cG.Bold},icon:{type:Q.icon,iconKey:CL.name,strokeColor:`red`}},{content:{type:Q.text,text:`Mobile app timeline may slip due to design resource constraints.`},icon:{type:Q.icon,iconKey:CL.name,strokeColor:`orange`}},{content:{type:Q.text,text:`API v3 design needs broader stakeholder input before implementation.`}},{content:{type:Q.text,text:`Real-time collaboration requires WebSocket infrastructure not yet provisioned.`},icon:{type:Q.icon,iconKey:CL.name,strokeColor:`orange`}}]},{type:Q.text,sectionTitle:`Prepared By`,text:`Product & Engineering Team, March 2026.`,style:cG.Faint}]}]})}></${$}>
-                `}})}}),lK=fu({title:`Expand All`,parent:lU,descriptionParagraphs:[`Cards rendered with expandAllCards enabled, which starts all sections expanded but still allows toggling.`],defineExamples({defineExample:e}){e({title:`all sections start expanded`,styles:B`
+                    <${$.assign({options:{useCardStyles:!0},data:[{cardTitle:`Comprehensive Product Analysis`,sections:[{type:Q.text,sectionTitle:`Executive Summary`,text:`This analysis covers product adoption, feature usage, customer feedback, technical debt, and roadmap progress across all three product lines.`,style:dG.Bold},{type:Q.markdown,sectionTitle:`Adoption Trends`,markdown:[`### Monthly Active Users`,``,`Growth has been **steady** across all tiers:`,``,`- **Free tier**: 14,200 MAU (+8% MoM)`,`- **Pro tier**: 3,800 MAU (+12% MoM)`,`- **Enterprise tier**: 420 MAU (+3% MoM)`,``,`### Retention`,``,`Day-7 retention: **68%** | Day-30 retention: **41%** | Day-90 retention: **28%**`,``,`> The largest drop-off occurs between day 7 and day 14, suggesting onboarding improvements could have significant impact.`].join(`
+`)},{type:Q.table,sectionTitle:`Feature Usage Matrix`,direction:_G.Horizontal,headers:[{key:`feature`},{key:`freeTier`},{key:`proTier`},{key:`enterpriseTier`},{key:`satisfaction`},{key:`trend`}],entries:[{data:{feature:{type:Q.text,text:`Dashboard`,style:dG.Bold},freeTier:{type:Q.text,text:`92%`},proTier:{type:Q.text,text:`97%`},enterpriseTier:{type:Q.text,text:`99%`},satisfaction:{type:Q.tag,text:`4.5 / 5`,color:{variant:q.Positive}},trend:{type:Q.tag,text:`Stable`,color:{variant:q.Positive}}}},{data:{feature:{type:Q.text,text:`Export (PDF/Image)`,style:dG.Bold},freeTier:{type:Q.text,text:`34%`},proTier:{type:Q.text,text:`78%`},enterpriseTier:{type:Q.text,text:`91%`},satisfaction:{type:Q.tag,text:`3.8 / 5`,color:{variant:q.Warning}},trend:{type:Q.tag,text:`Growing`,color:{variant:q.Positive}}}},{data:{feature:{type:Q.text,text:`API Access`,style:dG.Bold},freeTier:{type:Q.text,text:`5%`},proTier:{type:Q.text,text:`42%`},enterpriseTier:{type:Q.text,text:`88%`},satisfaction:{type:Q.tag,text:`4.1 / 5`,color:{variant:q.Positive}},trend:{type:Q.tag,text:`Growing`,color:{variant:q.Positive}}}},{data:{feature:{type:Q.text,text:`Collaboration`,style:dG.Bold},freeTier:{type:Q.text,text:`18%`},proTier:{type:Q.text,text:`61%`},enterpriseTier:{type:Q.text,text:`95%`},satisfaction:{type:Q.tag,text:`4.3 / 5`,color:{variant:q.Positive}},trend:{type:Q.tag,text:`Stable`,color:{variant:q.Positive}}}},{data:{feature:{type:Q.text,text:`Custom Themes`,style:dG.Bold},freeTier:{type:Q.text,text:`0%`},proTier:{type:Q.text,text:`29%`},enterpriseTier:{type:Q.text,text:`67%`},satisfaction:{type:Q.tag,text:`3.2 / 5`,color:{variant:q.Warning}},trend:{type:Q.tag,text:`Declining`,color:{variant:q.Danger}}}},{data:{feature:{type:Q.text,text:`Webhooks`,style:dG.Bold},freeTier:{type:Q.text,text:`0%`},proTier:{type:Q.text,text:`15%`},enterpriseTier:{type:Q.text,text:`72%`},satisfaction:{type:Q.tag,text:`4.0 / 5`,color:{variant:q.Positive}},trend:{type:Q.tag,text:`Growing`,color:{variant:q.Positive}}}}]},{type:Q.list,sectionTitle:`Customer Feedback Themes`,items:[{content:{type:Q.text,text:`Export quality needs improvement (mentioned 47 times).`},icon:{type:Q.icon,iconKey:CL.name,strokeColor:`orange`}},{content:{type:Q.text,text:`Dashboard customization is highly valued (mentioned 82 times).`},icon:{type:Q.icon,iconKey:vL.name,strokeColor:`gold`}},{content:{type:Q.text,text:`API documentation could be more complete (mentioned 31 times).`},icon:{type:Q.icon,iconKey:CL.name,strokeColor:`orange`}},{content:{type:Q.text,text:`Real-time collaboration is a top-requested feature (mentioned 64 times).`},icon:{type:Q.icon,iconKey:vL.name,strokeColor:`gold`}},{content:{type:Q.text,text:`Mobile experience needs significant work (mentioned 28 times).`},icon:{type:Q.icon,iconKey:CL.name,strokeColor:`red`}}]},{type:Q.codeBlock,sectionTitle:`Top API Usage Pattern`,syntax:`typescript`,code:[`import {createClient} from '@product/sdk';`,``,`const client = createClient({`,`    apiKey: process.env.PRODUCT_API_KEY,`,`    baseUrl: 'https://api.product.com/v2',`,`});`,``,`const report = await client.reports.create({`,`    title: 'Weekly Summary',`,`    sections: [`,`        {type: 'chart', dataSource: 'revenue'},`,`        {type: 'table', dataSource: 'transactions'},`,`        {type: 'text', content: 'Generated automatically.'},`,`    ],`,`    format: 'pdf',`,`});`,``,`await client.reports.export(report.id, {`,`    destination: 's3://reports-bucket/weekly/',`,`});`].join(`
+`)},{type:Q.table,sectionTitle:`Technical Debt Inventory`,direction:_G.Horizontal,headers:[{key:`item`},{key:`severity`},{key:`age`},{key:`effort`},{key:`impact`}],entries:[{data:{item:{type:Q.text,text:`Legacy auth middleware.`},severity:{type:Q.tag,text:`High`,color:{variant:q.Danger}},age:{type:Q.text,text:`18 months`},effort:{type:Q.text,text:`3 sprints`},impact:{type:Q.text,text:`Blocks SSO integration.`}}},{data:{item:{type:Q.text,text:`Untyped API responses.`},severity:{type:Q.tag,text:`Medium`,color:{variant:q.Warning}},age:{type:Q.text,text:`12 months`},effort:{type:Q.text,text:`2 sprints`},impact:{type:Q.text,text:`Frequent runtime errors.`}}},{data:{item:{type:Q.text,text:`Duplicated validation logic.`},severity:{type:Q.tag,text:`Medium`,color:{variant:q.Warning}},age:{type:Q.text,text:`9 months`},effort:{type:Q.text,text:`1 sprint`},impact:{type:Q.text,text:`Inconsistent error messages.`}}},{data:{item:{type:Q.text,text:`Missing database indexes.`},severity:{type:Q.tag,text:`High`,color:{variant:q.Danger}},age:{type:Q.text,text:`6 months`},effort:{type:Q.text,text:`0.5 sprint`},impact:{type:Q.text,text:`Slow report generation.`}}},{data:{item:{type:Q.text,text:`Outdated test fixtures.`},severity:{type:Q.tag,text:`Low`,color:{custom:{backgroundColor:`#e0e0e0`,foregroundColor:`#333`}}},age:{type:Q.text,text:`4 months`},effort:{type:Q.text,text:`1 sprint`},impact:{type:Q.text,text:`Reduced test reliability.`}}}]},{type:Q.markdown,sectionTitle:`Roadmap Progress`,markdown:[`### Q1 2026 Goals`,``,`| Goal | Status | Completion |`,`|------|--------|------------|`,`| SSO Integration | In Progress | 60% |`,`| Mobile App v1 | In Progress | 35% |`,`| API v3 | Planning | 10% |`,`| Export Overhaul | Complete | 100% |`,`| Webhook Reliability | Complete | 100% |`,``,`### Q2 2026 Planned`,``,`- Real-time collaboration MVP.`,`- Custom theme builder.`,`- Advanced analytics dashboard.`,`- Internationalization (i18n) support.`].join(`
+`)},{type:Q.list,sectionTitle:`Key Risks`,items:[{content:{type:Q.text,text:`SSO integration depends on legacy auth refactor completing first.`,style:dG.Bold},icon:{type:Q.icon,iconKey:CL.name,strokeColor:`red`}},{content:{type:Q.text,text:`Mobile app timeline may slip due to design resource constraints.`},icon:{type:Q.icon,iconKey:CL.name,strokeColor:`orange`}},{content:{type:Q.text,text:`API v3 design needs broader stakeholder input before implementation.`}},{content:{type:Q.text,text:`Real-time collaboration requires WebSocket infrastructure not yet provisioned.`},icon:{type:Q.icon,iconKey:CL.name,strokeColor:`orange`}}]},{type:Q.text,sectionTitle:`Prepared By`,text:`Product & Engineering Team, March 2026.`,style:dG.Faint}]}]})}></${$}>
+                `}})}}),dK=fu({title:`Expand All`,parent:lU,descriptionParagraphs:[`Cards rendered with expandAllCards enabled, which starts all sections expanded but still allows toggling.`],defineExamples({defineExample:e}){e({title:`all sections start expanded`,styles:B`
                 :host {
                     max-width: 900px;
                 }
             `,render(){return V`
-                    <${$.assign({data:aK,options:{expandAllCards:!0}})}></${$}>
-                `}})}}),uK=fu({title:`Full Card`,parent:lU,descriptionParagraphs:[`Demos of VirStructuredRender with full StructuredRenderData (card arrays).`],defineExamples({defineExample:e}){e({title:`single card with many sections`,styles:B`
+                    <${$.assign({data:sK,options:{useCardStyles:!0,expandAllCards:!0}})}></${$}>
+                `}})}}),fK=fu({title:`Full Card`,parent:lU,descriptionParagraphs:[`Demos of VirStructuredRender with full StructuredRenderData (card arrays).`],defineExamples({defineExample:e}){e({title:`single card with many sections`,styles:B`
                 :host {
                     max-width: 900px;
                 }
             `,render(){return V`
-                    <${$.assign({data:[{cardTitle:`Project Health Report`,sections:[{type:Q.text,sectionTitle:`Summary`,text:`Overall project health is good. Most metrics are within acceptable ranges, though a few areas require attention.`},{type:Q.markdown,sectionTitle:`Key Findings`,markdown:[`### Strengths`,``,`- **Code coverage** has improved from 72% to 89% over the past quarter.`,`- Build times remain under 3 minutes for the full suite.`,`- Zero critical vulnerabilities in the latest dependency audit.`,``,`### Areas for Improvement`,``,`1. Documentation coverage for public APIs is at 64%.`,`2. Integration test flakiness has risen to 4.2%.`,`3. Bundle size has grown 18% since the last review.`].join(`
-`)},{type:Q.table,sectionTitle:`Module Metrics`,direction:mG.Horizontal,headers:[{key:`module`},{key:`coverage`},{key:`buildTime`},{key:`status`}],entries:[{data:{module:{type:Q.text,text:`Core`},coverage:{type:Q.inlineCode,code:`94%`},buildTime:{type:Q.text,text:`42s`},status:{type:Q.tag,text:`Healthy`,color:{variant:q.Positive}}}},{data:{module:{type:Q.text,text:`Rendering`},coverage:{type:Q.inlineCode,code:`88%`},buildTime:{type:Q.text,text:`28s`},status:{type:Q.tag,text:`Healthy`,color:{variant:q.Positive}}}},{data:{module:{type:Q.text,text:`Data Layer`},coverage:{type:Q.inlineCode,code:`71%`},buildTime:{type:Q.text,text:`1m 14s`},status:{type:Q.tag,text:`Needs Attention`,color:{variant:q.Warning}}}},{data:{module:{type:Q.text,text:`CLI Tools`},coverage:{type:Q.inlineCode,code:`82%`},buildTime:{type:Q.text,text:`19s`},status:{type:Q.tag,text:`Healthy`,color:{variant:q.Positive}}}}]},{type:Q.codeBlock,sectionTitle:`Sample Config`,syntax:`json`,code:JSON.stringify({project:`structured-render`,coverageThreshold:80,maxBuildTimeSeconds:180,modules:[`core`,`rendering`,`data-layer`,`cli-tools`]},null,4)},{type:Q.list,sectionTitle:`Action Items`,items:[{content:{type:Q.text,text:`Increase data layer test coverage to 80%.`},icon:{type:Q.icon,iconKey:CL.name,strokeColor:`orange`}},{content:{type:Q.text,text:`Investigate and fix flaky integration tests.`},icon:{type:Q.icon,iconKey:CL.name,strokeColor:`orange`}},{content:{type:Q.text,text:`Audit bundle size and remove unused dependencies.`}},{content:{type:Q.text,text:`Add missing JSDoc to public API functions.`}},{content:{type:Q.text,text:`Schedule quarterly security review.`},icon:{type:Q.icon,iconKey:xL.name,strokeColor:`green`}}]},{type:Q.text,sectionTitle:`Next Review`,text:`Scheduled for Q3 2026.`,style:cG.Faint}]}]})}></${$}>
-                `}})}}),dK=fu({title:`Examples`,parent:void 0,descriptionParagraphs:[`Examples of specific functionality.`]}),fK=fu({title:`Download and Print`,parent:dK,descriptionParagraphs:[`Demonstrates downloading and printing structured render data as a PDF.`],defineExamples({defineExample:e}){e({title:`print`,state(){return{isLoading:!1,isError:!1}},render({state:e,updateState:t}){return V`
+                    <${$.assign({options:{useCardStyles:!0},data:[{cardTitle:`Project Health Report`,sections:[{type:Q.text,sectionTitle:`Summary`,text:`Overall project health is good. Most metrics are within acceptable ranges, though a few areas require attention.`},{type:Q.markdown,sectionTitle:`Key Findings`,markdown:[`### Strengths`,``,`- **Code coverage** has improved from 72% to 89% over the past quarter.`,`- Build times remain under 3 minutes for the full suite.`,`- Zero critical vulnerabilities in the latest dependency audit.`,``,`### Areas for Improvement`,``,`1. Documentation coverage for public APIs is at 64%.`,`2. Integration test flakiness has risen to 4.2%.`,`3. Bundle size has grown 18% since the last review.`].join(`
+`)},{type:Q.table,sectionTitle:`Module Metrics`,direction:_G.Horizontal,headers:[{key:`module`},{key:`coverage`},{key:`buildTime`},{key:`status`}],entries:[{data:{module:{type:Q.text,text:`Core`},coverage:{type:Q.inlineCode,code:`94%`},buildTime:{type:Q.text,text:`42s`},status:{type:Q.tag,text:`Healthy`,color:{variant:q.Positive}}}},{data:{module:{type:Q.text,text:`Rendering`},coverage:{type:Q.inlineCode,code:`88%`},buildTime:{type:Q.text,text:`28s`},status:{type:Q.tag,text:`Healthy`,color:{variant:q.Positive}}}},{data:{module:{type:Q.text,text:`Data Layer`},coverage:{type:Q.inlineCode,code:`71%`},buildTime:{type:Q.text,text:`1m 14s`},status:{type:Q.tag,text:`Needs Attention`,color:{variant:q.Warning}}}},{data:{module:{type:Q.text,text:`CLI Tools`},coverage:{type:Q.inlineCode,code:`82%`},buildTime:{type:Q.text,text:`19s`},status:{type:Q.tag,text:`Healthy`,color:{variant:q.Positive}}}}]},{type:Q.codeBlock,sectionTitle:`Sample Config`,syntax:`json`,code:JSON.stringify({project:`structured-render`,coverageThreshold:80,maxBuildTimeSeconds:180,modules:[`core`,`rendering`,`data-layer`,`cli-tools`]},null,4)},{type:Q.list,sectionTitle:`Action Items`,items:[{content:{type:Q.text,text:`Increase data layer test coverage to 80%.`},icon:{type:Q.icon,iconKey:CL.name,strokeColor:`orange`}},{content:{type:Q.text,text:`Investigate and fix flaky integration tests.`},icon:{type:Q.icon,iconKey:CL.name,strokeColor:`orange`}},{content:{type:Q.text,text:`Audit bundle size and remove unused dependencies.`}},{content:{type:Q.text,text:`Add missing JSDoc to public API functions.`}},{content:{type:Q.text,text:`Schedule quarterly security review.`},icon:{type:Q.icon,iconKey:xL.name,strokeColor:`green`}}]},{type:Q.text,sectionTitle:`Next Review`,text:`Scheduled for Q3 2026.`,style:dG.Faint}]}]})}></${$}>
+                `}})}}),pK=fu({title:`No Card Styles`,parent:lU,descriptionParagraphs:[`Cards rendered without card wrapper styles. Cards stack flush with thin borders between them.`],defineExamples({defineExample:e}){e({title:`flat card list`,styles:B`
+                :host {
+                    max-width: 900px;
+                }
+            `,render(){return V`
+                    <${$.assign({data:sK})}></${$}>
+                `}})}}),mK=fu({title:`Examples`,parent:void 0,descriptionParagraphs:[`Examples of specific functionality.`]}),hK=fu({title:`Download and Print`,parent:mK,descriptionParagraphs:[`Demonstrates downloading and printing structured render data as a PDF.`],defineExamples({defineExample:e}){e({title:`print`,state(){return{isLoading:!1,isError:!1}},render({state:e,updateState:t}){return V`
                     <${jL.assign({text:`Print`,isDisabled:e.isLoading,icon:e.isError?yL:e.isLoading?nL:void 0})}
-                        ${mN(`click`,async()=>{t({isLoading:!0});try{await iK(aK,{fileName:`structured-render-print`})}catch(e){bl.error(`Failed to print PDF`,e),t({isError:!0})}finally{t({isLoading:!1})}})}
+                        ${mN(`click`,async()=>{t({isLoading:!0});try{await oK(sK,{fileName:`structured-render-print`})}catch(e){bl.error(`Failed to print PDF`,e),t({isError:!0})}finally{t({isLoading:!1})}})}
                     ></${jL}>
                 `}}),e({title:`download`,state(){return{isLoading:!1,isError:!1}},render({state:e,updateState:t}){return V`
                     <${jL.assign({text:`Download`,isDisabled:e.isLoading,icon:e.isError?yL:e.isLoading?nL:void 0})}
-                        ${mN(`click`,async()=>{t({isLoading:!0});try{await rK(aK,{fileName:`structured-render-download`,pdfOutputType:qG.Download})}catch(e){bl.error(`Failed to download PDF`,e),t({isError:!0})}finally{t({isLoading:!1})}})}
+                        ${mN(`click`,async()=>{t({isLoading:!0});try{await aK(sK,{fileName:`structured-render-download`,pdfOutputType:YG.Download})}catch(e){bl.error(`Failed to download PDF`,e),t({isError:!0})}finally{t({isLoading:!1})}})}
                     ></${jL}>
-                `}})}}),pK=fu({title:`Sections`,parent:void 0,descriptionParagraphs:[`All structured render section types.`]}),mK=[fu({title:`Code Block`,parent:pK,defineExamples({defineExample:e}){e({title:`basic`,render(){return V`
-                    <${$.assign({data:{type:Q.codeBlock,sectionTitle:`Code Block Example`,code:`const hello = "world";
+                `}})}}),gK=fu({title:`Expandable Source`,parent:mK,descriptionParagraphs:[`Demonstrates VirExpandableSource, a self-contained element that renders a source icon button which expands to reveal source details.`],defineExamples({defineExample:e}){e({title:`single source`,styles:B`
+                :host {
+                    max-width: 400px;
+                }
+            `,render(){return V`
+                    <${IG.assign({sources:{type:Q.source,fileName:`example.pdf`,pageNumbers:[3],fileBoundingBoxes:null,quote:`This is a quoted passage from the source document.`}})}>
+                        <span>Some content with a source</span>
+                    </${IG}>
+                `}}),e({title:`multiple sources`,styles:B`
+                :host {
+                    max-width: 400px;
+                }
+            `,render(){return V`
+                    <${IG.assign({sources:[{type:Q.source,fileName:`report.pdf`,pageNumbers:[1,2],fileBoundingBoxes:null,quote:`First source quote.`},{type:Q.source,fileName:`notes.pdf`,pageNumbers:[5],fileBoundingBoxes:null,quote:`Second source quote.`}]})}>
+                        <span>Content with multiple sources</span>
+                    </${IG}>
+                `}}),e({title:`without quote`,styles:B`
+                :host {
+                    max-width: 400px;
+                }
+            `,render(){return V`
+                    <${IG.assign({sources:{type:Q.source,fileName:`data.csv`,pageNumbers:null,fileBoundingBoxes:null,quote:null}})}>
+                        <span>Content with a file-only source</span>
+                    </${IG}>
+                `}})}}),_K=fu({title:`Sections`,parent:void 0,descriptionParagraphs:[`All structured render section types.`]}),vK=[fu({title:`Code Block`,parent:_K,defineExamples({defineExample:e}){e({title:`basic`,render(){return V`
+                    <${$.assign({options:{useCardStyles:!0},data:{type:Q.codeBlock,sectionTitle:`Code Block Example`,code:`const hello = "world";
 console.log(hello);`,syntax:`typescript`}})}></${$}>
                 `}}),e({title:`no syntax`,render(){return V`
-                    <${$.assign({data:{type:Q.codeBlock,code:`plain text code block
+                    <${$.assign({options:{useCardStyles:!0},data:{type:Q.codeBlock,code:`plain text code block
 with multiple lines`,syntax:null}})}></${$}>
-                `}})}}),fu({title:`Empty`,parent:pK,defineExamples({defineExample:e}){e({title:`empty`,render(){return V`
-                    <${$.assign({data:{type:Q.empty}})}></${$}>
-                `}})}}),fu({title:`Icon`,parent:pK,defineExamples({defineExample:e}){e({title:`basic`,render(){return V`
-                    <${$.assign({data:{type:Q.icon,iconKey:vL.name}})}></${$}>
+                `}})}}),fu({title:`Empty`,parent:_K,defineExamples({defineExample:e}){e({title:`empty`,render(){return V`
+                    <${$.assign({options:{useCardStyles:!0},data:{type:Q.empty}})}></${$}>
+                `}})}}),fu({title:`Icon`,parent:_K,defineExamples({defineExample:e}){e({title:`basic`,render(){return V`
+                    <${$.assign({options:{useCardStyles:!0},data:{type:Q.icon,iconKey:vL.name}})}></${$}>
                 `}}),e({title:`colored stroke`,render(){return V`
-                    <${$.assign({data:{type:Q.icon,iconKey:vL.name,strokeColor:`gold`}})}></${$}>
+                    <${$.assign({options:{useCardStyles:!0},data:{type:Q.icon,iconKey:vL.name,strokeColor:`gold`}})}></${$}>
                 `}}),e({title:`colored fill`,render(){return V`
-                    <${$.assign({data:{type:Q.icon,iconKey:xL.name,fillColor:`lime`}})}></${$}>
-                `}})}}),fu({title:`Inline Code`,parent:pK,defineExamples({defineExample:e}){e({title:`basic`,render(){return V`
-                    <${$.assign({data:{type:Q.inlineCode,sectionTitle:`Inline Code Example`,code:`const x = 42;`}})}></${$}>
-                `}})}}),fu({title:`List`,parent:pK,defineExamples({defineExample:e}){e({title:`basic`,render(){return V`
-                    <${$.assign({data:{type:Q.list,sectionTitle:`List Example`,items:[{content:{type:Q.text,text:`First item`}},{content:{type:Q.text,text:`Second item`}},{content:{type:Q.text,text:`Third item`}}]}})}></${$}>
+                    <${$.assign({options:{useCardStyles:!0},data:{type:Q.icon,iconKey:xL.name,fillColor:`lime`}})}></${$}>
+                `}})}}),fu({title:`Inline Code`,parent:_K,defineExamples({defineExample:e}){e({title:`basic`,render(){return V`
+                    <${$.assign({options:{useCardStyles:!0},data:{type:Q.inlineCode,sectionTitle:`Inline Code Example`,code:`const x = 42;`}})}></${$}>
+                `}})}}),fu({title:`List`,parent:_K,defineExamples({defineExample:e}){e({title:`basic`,render(){return V`
+                    <${$.assign({options:{useCardStyles:!0},data:{type:Q.list,sectionTitle:`List Example`,items:[{content:{type:Q.text,text:`First item`}},{content:{type:Q.text,text:`Second item`}},{content:{type:Q.text,text:`Third item`}}]}})}></${$}>
                 `}}),e({title:`with icons`,render(){return V`
-                    <${$.assign({data:{type:Q.list,sectionTitle:`List with Icons`,items:[{content:{type:Q.text,text:`Completed task`},icon:{type:Q.icon,iconKey:xL.name,strokeColor:`green`}},{content:{type:Q.text,text:`Another completed task`},icon:{type:Q.icon,iconKey:xL.name,strokeColor:`green`}}]}})}></${$}>
+                    <${$.assign({options:{useCardStyles:!0},data:{type:Q.list,sectionTitle:`List with Icons`,items:[{content:{type:Q.text,text:`Completed task`},icon:{type:Q.icon,iconKey:xL.name,strokeColor:`green`}},{content:{type:Q.text,text:`Another completed task`},icon:{type:Q.icon,iconKey:xL.name,strokeColor:`green`}}]}})}></${$}>
                 `}}),e({title:`with tags`,render(){return V`
-                    <${$.assign({data:{type:Q.list,sectionTitle:`List with Tags`,items:[{content:{type:Q.tag,text:`Important`,color:{variant:q.Warning}}},{content:{type:Q.tag,text:`Info`}}]}})}></${$}>
-                `}})}}),fu({title:`Markdown`,parent:pK,defineExamples({defineExample:e}){e({title:`basic`,render(){return V`
-                    <${$.assign({data:{type:Q.markdown,sectionTitle:`Markdown Example`,markdown:`## Hello World
+                    <${$.assign({options:{useCardStyles:!0},data:{type:Q.list,sectionTitle:`List with Tags`,items:[{content:{type:Q.tag,text:`Important`,color:{variant:q.Warning}}},{content:{type:Q.tag,text:`Info`}}]}})}></${$}>
+                `}})}}),fu({title:`Markdown`,parent:_K,defineExamples({defineExample:e}){e({title:`basic`,render(){return V`
+                    <${$.assign({options:{useCardStyles:!0},data:{type:Q.markdown,sectionTitle:`Markdown Example`,markdown:`## Hello World
 
 This is **bold** and _italic_ text.
 
@@ -4134,46 +4221,46 @@ This is **bold** and _italic_ text.
 - Item 2
 - Item 3`}})}></${$}>
                 `}}),e({title:`with code`,render(){return V`
-                    <${$.assign({data:{type:Q.markdown,sectionTitle:`Markdown with Code`,markdown:"### Code Example\n\nHere is some `inline code` and a code block:\n\n```typescript\nconst x = 42;\n```"}})}></${$}>
-                `}})}}),fu({title:`Processing`,parent:pK,defineExamples({defineExample:e}){e({title:`basic`,render(){return V`
-                    <${$.assign({data:{type:Q.processing}})}></${$}>
-                `}})}}),fu({title:`Source`,parent:pK,defineExamples({defineExample:e}){e({title:`with file name`,render(){return V`
-                    <${$.assign({data:{type:Q.source,fileName:`example.ts`,pageNumbers:null,fileBoundingBoxes:null,quote:null}})}></${$}>
+                    <${$.assign({options:{useCardStyles:!0},data:{type:Q.markdown,sectionTitle:`Markdown with Code`,markdown:"### Code Example\n\nHere is some `inline code` and a code block:\n\n```typescript\nconst x = 42;\n```"}})}></${$}>
+                `}})}}),fu({title:`Processing`,parent:_K,defineExamples({defineExample:e}){e({title:`basic`,render(){return V`
+                    <${$.assign({options:{useCardStyles:!0},data:{type:Q.processing}})}></${$}>
+                `}})}}),fu({title:`Source`,parent:_K,defineExamples({defineExample:e}){e({title:`with file name`,render(){return V`
+                    <${$.assign({options:{useCardStyles:!0},data:{type:Q.source,fileName:`example.ts`,pageNumbers:null,fileBoundingBoxes:null,quote:null}})}></${$}>
                 `}}),e({title:`with quote`,render(){return V`
-                    <${$.assign({data:{type:Q.source,fileName:`document.pdf`,pageNumbers:[1,2],fileBoundingBoxes:null,quote:`This is the relevant quote from the source document.`}})}></${$}>
+                    <${$.assign({options:{useCardStyles:!0},data:{type:Q.source,fileName:`document.pdf`,pageNumbers:[1,2],fileBoundingBoxes:null,quote:`This is the relevant quote from the source document.`}})}></${$}>
                 `}}),e({title:`with page numbers`,render(){return V`
-                    <${$.assign({data:{type:Q.source,fileName:`report.pdf`,pageNumbers:[5,10,15],fileBoundingBoxes:null,quote:null}})}></${$}>
-                `}})}}),fu({title:`Table`,parent:pK,defineExamples({defineExample:e}){e({title:`horizontal`,render(){return V`
-                    <${$.assign({data:{type:Q.table,sectionTitle:`Horizontal Table`,direction:mG.Horizontal,headers:[{key:`name`},{key:`value`}],entries:[{data:{name:{type:Q.text,text:`Alpha`},value:{type:Q.text,text:`100`}}},{data:{name:{type:Q.text,text:`Beta`},value:{type:Q.text,text:`200`}}}]}})}></${$}>
+                    <${$.assign({options:{useCardStyles:!0},data:{type:Q.source,fileName:`report.pdf`,pageNumbers:[5,10,15],fileBoundingBoxes:null,quote:null}})}></${$}>
+                `}})}}),fu({title:`Table`,parent:_K,defineExamples({defineExample:e}){e({title:`horizontal`,render(){return V`
+                    <${$.assign({options:{useCardStyles:!0},data:{type:Q.table,sectionTitle:`Horizontal Table`,direction:_G.Horizontal,headers:[{key:`name`},{key:`value`}],entries:[{data:{name:{type:Q.text,text:`Alpha`},value:{type:Q.text,text:`100`}}},{data:{name:{type:Q.text,text:`Beta`},value:{type:Q.text,text:`200`}}}]}})}></${$}>
                 `}}),e({title:`vertical`,render(){return V`
-                    <${$.assign({data:{type:Q.table,sectionTitle:`Vertical Table`,direction:mG.Vertical,headers:[{key:`feature`},{key:`status`}],entries:[{data:{feature:{type:Q.text,text:`Image Export`},status:{type:Q.tag,text:`Supported`}}},{data:{feature:{type:Q.text,text:`PDF Export`},status:{type:Q.tag,text:`Beta`}}}]}})}></${$}>
+                    <${$.assign({options:{useCardStyles:!0},data:{type:Q.table,sectionTitle:`Vertical Table`,direction:_G.Vertical,headers:[{key:`feature`},{key:`status`}],entries:[{data:{feature:{type:Q.text,text:`Image Export`},status:{type:Q.tag,text:`Supported`}}},{data:{feature:{type:Q.text,text:`PDF Export`},status:{type:Q.tag,text:`Beta`}}}]}})}></${$}>
                 `}}),e({title:`horizontal table with phone size`,render(){return V`
                     <div
                         style=${B`
                             width: 400px;
                         `}
                     >
-                        <${$.assign({data:{type:Q.table,sectionTitle:`Horizontal Table (Phone)`,direction:mG.Horizontal,headers:[{key:`name`},{key:`value`},{key:`status`}],entries:[{data:{name:{type:Q.text,text:`Alpha`},value:{type:Q.text,text:`100`},status:{type:Q.tag,text:`Active`,color:{variant:q.Positive}}}},{data:{name:{type:Q.text,text:`Beta`},value:{type:Q.text,text:`200`},status:{type:Q.tag,text:`Inactive`,color:{variant:q.Warning}}}}]},options:{isPhoneSize:!0}})}></${$}>
+                        <${$.assign({data:{type:Q.table,sectionTitle:`Horizontal Table (Phone)`,direction:_G.Horizontal,headers:[{key:`name`},{key:`value`},{key:`status`}],entries:[{data:{name:{type:Q.text,text:`Alpha`},value:{type:Q.text,text:`100`},status:{type:Q.tag,text:`Active`,color:{variant:q.Positive}}}},{data:{name:{type:Q.text,text:`Beta`},value:{type:Q.text,text:`200`},status:{type:Q.tag,text:`Inactive`,color:{variant:q.Warning}}}}]},options:{useCardStyles:!0,isPhoneSize:!0}})}></${$}>
                     </div>
                 `}}),e({title:`with mixed cell types`,render(){return V`
-                    <${$.assign({data:{type:Q.table,sectionTitle:`Mixed Cell Types`,direction:mG.Horizontal,headers:[{key:`label`},{key:`detail`}],entries:[{data:{label:{type:Q.text,text:`Status`},detail:{type:Q.tag,text:`Active`,color:{variant:q.Positive}}}},{data:{label:{type:Q.text,text:`Version`},detail:{type:Q.inlineCode,code:`v1.0.0`}}}]}})}></${$}>
-                `}})}}),fu({title:`Tag`,parent:pK,defineExamples({defineExample:e}){e({title:`basic`,render(){return V`
-                    <${$.assign({data:{type:Q.tag,sectionTitle:`Tag Example`,text:`Default Tag`}})}></${$}>
+                    <${$.assign({options:{useCardStyles:!0},data:{type:Q.table,sectionTitle:`Mixed Cell Types`,direction:_G.Horizontal,headers:[{key:`label`},{key:`detail`}],entries:[{data:{label:{type:Q.text,text:`Status`},detail:{type:Q.tag,text:`Active`,color:{variant:q.Positive}}}},{data:{label:{type:Q.text,text:`Version`},detail:{type:Q.inlineCode,code:`v1.0.0`}}}]}})}></${$}>
+                `}})}}),fu({title:`Tag`,parent:_K,defineExamples({defineExample:e}){e({title:`basic`,render(){return V`
+                    <${$.assign({options:{useCardStyles:!0},data:{type:Q.tag,sectionTitle:`Tag Example`,text:`Default Tag`}})}></${$}>
                 `}}),e({title:`custom colors`,render(){return V`
-                    <${$.assign({data:{type:Q.tag,text:`Custom Colors`,color:{custom:{backgroundColor:`#e74c3c`,foregroundColor:`#ffffff`}}}})}></${$}>
+                    <${$.assign({options:{useCardStyles:!0},data:{type:Q.tag,text:`Custom Colors`,color:{custom:{backgroundColor:`#e74c3c`,foregroundColor:`#ffffff`}}}})}></${$}>
                 `}}),e({title:`big tag`,render(){return V`
-                    <${$.assign({data:{type:Q.tag,text:`Big Tag`,useBigTag:!0}})}></${$}>
-                `}})}}),fu({title:`Text`,parent:pK,defineExamples({defineExample:e}){e({title:`basic`,render(){return V`
-                    <${$.assign({data:{type:Q.text,sectionTitle:`Text Example`,text:`This is a simple text section.`}})}></${$}>
+                    <${$.assign({options:{useCardStyles:!0},data:{type:Q.tag,text:`Big Tag`,useBigTag:!0}})}></${$}>
+                `}})}}),fu({title:`Text`,parent:_K,defineExamples({defineExample:e}){e({title:`basic`,render(){return V`
+                    <${$.assign({options:{useCardStyles:!0},data:{type:Q.text,sectionTitle:`Text Example`,text:`This is a simple text section.`}})}></${$}>
                 `}}),e({title:`bold`,render(){return V`
-                    <${$.assign({data:{type:Q.text,text:`Bold text section.`,style:cG.Bold}})}></${$}>
+                    <${$.assign({options:{useCardStyles:!0},data:{type:Q.text,text:`Bold text section.`,style:dG.Bold}})}></${$}>
                 `}}),e({title:`small`,render(){return V`
-                    <${$.assign({data:{type:Q.text,text:`Small text section.`,style:cG.Small}})}></${$}>
+                    <${$.assign({options:{useCardStyles:!0},data:{type:Q.text,text:`Small text section.`,style:dG.Small}})}></${$}>
                 `}}),e({title:`faint`,render(){return V`
-                    <${$.assign({data:{type:Q.text,text:`Faint text section.`,style:cG.Faint}})}></${$}>
+                    <${$.assign({options:{useCardStyles:!0},data:{type:Q.text,text:`Faint text section.`,style:dG.Faint}})}></${$}>
                 `}}),e({title:`with icon`,render(){return V`
-                    <${$.assign({data:{type:Q.text,text:`Text with icon.`,icon:{type:Q.icon,iconKey:vL.name,strokeColor:`gold`}}})}></${$}>
-                `}})}}),uK,oK,cK,sK,lK,fK,lU,dK,pK];nN()({tagName:`vir-app`,styles:B`
+                    <${$.assign({options:{useCardStyles:!0},data:{type:Q.text,text:`Text with icon.`,icon:{type:Q.icon,iconKey:vL.name,strokeColor:`gold`}}})}></${$}>
+                `}})}}),fK,cK,uK,lK,dK,pK,hK,gK,lU,mK,_K];nN()({tagName:`vir-app`,styles:B`
         :host {
             display: flex;
             flex-grow: 1;
@@ -4192,7 +4279,7 @@ This is **bold** and _italic_ text.
             padding-bottom: 8px;
         }
     `,render(){return V`
-            <${cU.assign({pages:mK,internalRouterConfig:{useInternalRouter:!0,basePath:`structured-render/demo`}})}>
+            <${cU.assign({pages:vK,internalRouterConfig:{useInternalRouter:!0,basePath:`structured-render/demo`}})}>
                 <p slot=${cU.slotNames.navHeader}>Structured<br>Render</p>
             </${cU}>
         `}});
