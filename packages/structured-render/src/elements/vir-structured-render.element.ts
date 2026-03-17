@@ -233,6 +233,12 @@ export const VirStructuredRender = defineElement<{
             }
         }
 
+        .card-title-with-icon {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
         .expanded-source {
             margin: 8px 0 !important;
         }

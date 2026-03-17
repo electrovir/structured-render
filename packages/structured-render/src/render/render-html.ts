@@ -718,6 +718,13 @@ function structuredRenderToHtmlArray(
             true,
         );
 
+        const cardTitleIconTemplate = data.cardTitleIcon
+            ? renderInternalStructuredHtml(data.cardTitleIcon, options, [
+                  ...keyChain,
+                  'cardTitleIcon',
+              ])
+            : nothing;
+
         return [
             html`
                 <${ViraCollapsibleCard.assign({
@@ -728,7 +735,14 @@ function structuredRenderToHtmlArray(
                         options.expandAllCards ||
                         (options.expandFirstCard && keyChain.at(-1) === 0),
                 })}>
-                    <h2 slot=${ViraCollapsibleCard.slotNames.header}>${data.cardTitle}</h2>
+                    <h2
+                        slot=${ViraCollapsibleCard.slotNames.header}
+                        class=${classMap({
+                            'card-title-with-icon': !!data.cardTitleIcon,
+                        })}
+                    >
+                        ${cardTitleIconTemplate}${data.cardTitle}
+                    </h2>
                     ${cardSections}
                 </${ViraCollapsibleCard}>
             `,

@@ -1,4 +1,5 @@
 import {defineShape, nullableShape} from 'object-shape-tester';
+import {structuredRenderIconShape} from './sections/icon.section.js';
 import {structuredRenderSectionShape} from './structured-render-section.js';
 
 /**
@@ -8,6 +9,7 @@ import {structuredRenderSectionShape} from './structured-render-section.js';
  */
 export const structuredRenderCardShape = defineShape({
     cardTitle: nullableShape(''),
+    cardTitleIcon: nullableShape(structuredRenderIconShape),
     sections: [nullableShape(structuredRenderSectionShape)],
 });
 /**
