@@ -1,5 +1,5 @@
 import {defineBookPage} from 'element-book';
-import {html} from 'element-vir';
+import {css, html} from 'element-vir';
 import {
     StructuredRenderCellDirection,
     StructuredRenderSectionType,
@@ -106,6 +106,81 @@ export const tableSectionBookPage = defineBookPage({
                             ],
                         },
                     })}></${VirStructuredRender}>
+                `;
+            },
+        });
+
+        defineExample({
+            title: 'horizontal table with phone size',
+            render() {
+                return html`
+                    <div
+                        style=${css`
+                            width: 400px;
+                        `}
+                    >
+                        <${VirStructuredRender.assign({
+                            data: {
+                                type: StructuredRenderSectionType.table,
+                                sectionTitle: 'Horizontal Table (Phone)',
+                                direction: StructuredRenderCellDirection.Horizontal,
+                                headers: [
+                                    {
+                                        key: 'name',
+                                    },
+                                    {
+                                        key: 'value',
+                                    },
+                                    {
+                                        key: 'status',
+                                    },
+                                ],
+                                entries: [
+                                    {
+                                        data: {
+                                            name: {
+                                                type: StructuredRenderSectionType.text,
+                                                text: 'Alpha',
+                                            },
+                                            value: {
+                                                type: StructuredRenderSectionType.text,
+                                                text: '100',
+                                            },
+                                            status: {
+                                                type: StructuredRenderSectionType.tag,
+                                                text: 'Active',
+                                                color: {
+                                                    variant: ViraColorVariant.Positive,
+                                                },
+                                            },
+                                        },
+                                    },
+                                    {
+                                        data: {
+                                            name: {
+                                                type: StructuredRenderSectionType.text,
+                                                text: 'Beta',
+                                            },
+                                            value: {
+                                                type: StructuredRenderSectionType.text,
+                                                text: '200',
+                                            },
+                                            status: {
+                                                type: StructuredRenderSectionType.tag,
+                                                text: 'Inactive',
+                                                color: {
+                                                    variant: ViraColorVariant.Warning,
+                                                },
+                                            },
+                                        },
+                                    },
+                                ],
+                            },
+                            options: {
+                                isPhoneSize: true,
+                            },
+                        })}></${VirStructuredRender}>
+                    </div>
                 `;
             },
         });

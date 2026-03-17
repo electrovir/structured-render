@@ -25,6 +25,7 @@ import {
 } from 'element-vir';
 import {
     defineTable,
+    ViraCard,
     ViraCollapsibleCard,
     ViraCollapsibleWrapper,
     ViraColorVariant,
@@ -260,6 +261,93 @@ const htmlRenderers: Record<
         `;
     },
     table(section, options, keyChain) {
+        if (options.isPhoneSize && section.direction === StructuredRenderCellDirection.Horizontal) {
+            const visibleHeaders = filterMap(
+                section.headers,
+                (header, headerIndex) => {
+                    if (header.hidden) {
+                        return undefined;
+                    }
+
+                    return {
+                        key: header.key,
+                        headerIndex,
+                        renderedContent: header.text
+                            ? renderInternalStructuredHtml(header.text, options, [
+                                  ...keyChain,
+                                  'headers',
+                                  headerIndex,
+                              ])
+                            : header.key,
+                    };
+                },
+                check.isTruthy,
+            );
+
+            const cards = section.entries.map((entry, rowIndex) => {
+                const rowKeyChain = [
+                    ...keyChain,
+                    rowIndex,
+                ];
+
+                const cardRows = filterMap(
+                    visibleHeaders,
+                    (header) => {
+                        const content = entry.data[header.key];
+                        const contents = ensureArray(content).filter(check.isTruthy);
+
+                        if (!contents.length) {
+                            return undefined;
+                        }
+
+                        const cellContent = Array.from(
+                            join<HtmlInterpolation, HTMLTemplateResult>(
+                                filterMap(
+                                    contents,
+                                    (innerContent, contentIndex) => {
+                                        return renderInternalStructuredHtml(innerContent, options, [
+                                            ...rowKeyChain,
+                                            header.key,
+                                            contentIndex,
+                                        ]);
+                                    },
+                                    check.isTruthy,
+                                ),
+                                html`
+                                    <br />
+                                `,
+                            ),
+                        );
+
+                        return html`
+                            <tr>
+                                <th>${header.renderedContent}</th>
+                                <td>${cellContent}</td>
+                            </tr>
+                        `;
+                    },
+                    check.isTruthy,
+                );
+
+                const rowSources = createCleanSources(entry.sources);
+
+                return html`
+                    <${ViraCard} class="phone-table-card">
+                        <table class="vertical phone-card-table" cellspacing="0" cellpadding="0">
+                            <tbody>${cardRows}</tbody>
+                        </table>
+                        ${rowSources?.length
+                            ? createSourceWrapper(html``, options, rowKeyChain, rowSources)
+                            : nothing}
+                    </${ViraCard}>
+                `;
+            });
+
+            return html`
+                <div class="phone-table-cards">${cards}</div>
+            `;
+        }
+
         const {headerRow, rows} = defineTable(
             filterMap(
                 section.headers,

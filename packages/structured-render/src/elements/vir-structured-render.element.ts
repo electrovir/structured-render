@@ -404,6 +404,21 @@ export const VirStructuredRender = defineElement<{
             & li::marker {
                 font-size: 0.7em;
             }
+
+            & .phone-table-cards {
+                display: flex;
+                flex-direction: column;
+                gap: 12px;
+
+                & .phone-table-card {
+                    padding: 8px 16px;
+
+                    & th,
+                    & td {
+                        border: none;
+                    }
+                }
+            }
         }
 
         ${hostClasses['vir-structured-render-tablet-size'].selector} {
