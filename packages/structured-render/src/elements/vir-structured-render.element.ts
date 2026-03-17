@@ -158,10 +158,6 @@ export const VirStructuredRender = defineElement<{
                 padding: 16px;
                 padding-left: 24px;
 
-                &:first-child {
-                    padding-left: 0;
-                }
-
                 &:has(+ .source-cell) {
                     border-right: none;
                     padding-right: 0;
@@ -183,6 +179,7 @@ export const VirStructuredRender = defineElement<{
                 font-weight: normal;
                 white-space: nowrap;
                 vertical-align: top;
+                background-color: #f8f9fa;
             }
 
             &.wide-table {
@@ -192,10 +189,6 @@ export const VirStructuredRender = defineElement<{
                 & td {
                     padding: 4px;
                     padding-left: 8px;
-
-                    &:first-child {
-                        padding-left: 0;
-                    }
                 }
             }
 
@@ -422,6 +415,7 @@ export const VirStructuredRender = defineElement<{
                     & th,
                     & td {
                         border: none;
+                        background-color: transparent;
                     }
                 }
             }

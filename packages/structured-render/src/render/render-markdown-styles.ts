@@ -57,6 +57,7 @@ export const defaultMarkdownStyleConfiguration = {
     contentSelector: `.${contentDivClass}`,
     tableBorderColor: viraTheme.colors['vira-grey-foreground-decoration'].foreground.value,
     tableBorderWidth: '1px',
+    tableHeaderBackgroundColor: viraTheme.colors['vira-grey-behind-bg-invisible'].background.value,
 };
 
 /**
@@ -229,6 +230,7 @@ export function configureDefaultMarkdownRenderStyles(
 
                 & th {
                     font-weight: bold;
+                    background-color: ${styles.tableHeaderBackgroundColor};
                 }
             }
 
