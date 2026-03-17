@@ -227,8 +227,9 @@ export const VirStructuredRender = defineElement<{
             gap: 8px;
         }
 
-        .raw-collapsible-card {
+        .raw-collapsible-card.raw-collapsible-card.raw-collapsible-card.raw-collapsible-card {
             display: flex;
+            padding: 0 16px;
             border-top: 1px solid
                 ${viraTheme.colors['vira-grey-foreground-decoration'].foreground.value};
 
@@ -243,10 +244,6 @@ export const VirStructuredRender = defineElement<{
 
             &:first-child {
                 border-top: none;
-            }
-
-            & .top-section-wrapper {
-                padding: 4px 16px;
             }
 
             ${ViraCollapsibleCard.cssVars['vira-collapsible-card-content-gap'].name}: 8px;

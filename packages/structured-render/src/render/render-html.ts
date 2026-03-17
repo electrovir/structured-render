@@ -742,9 +742,9 @@ function structuredRenderToHtmlArray(
                 >
                     <h2
                         slot=${ViraCollapsibleCard.slotNames.header}
-                        class=${classMap({
+                        class="card-title ${classMap({
                             'card-title-with-icon': !!data.cardTitleIcon,
-                        })}
+                        })}"
                     >
                         ${cardTitleIconTemplate}${data.cardTitle}
                     </h2>
