@@ -5,6 +5,7 @@ import {themeDefaultKey} from 'theme-vir';
 import {
     noNativeFormStyles,
     noNativeSpacing,
+    ViraCollapsibleCard,
     viraFormCssVars,
     ViraIcon,
     ViraTag,
@@ -230,6 +231,30 @@ export const VirStructuredRender = defineElement<{
             display: inline-flex;
             align-items: center;
             gap: 8px;
+        }
+
+        .raw-collapsible-card {
+            display: flex;
+            border-top: 1px solid
+                ${viraTheme.colors['vira-grey-foreground-decoration'].foreground.value};
+
+            &:not(:first-child) {
+                margin-top: -24px;
+            }
+
+            &:first-child {
+                border-top: none;
+            }
+
+            & h2 {
+                padding: 8px 0;
+            }
+
+            & .top-section-wrapper {
+                padding: 4px 16px;
+            }
+
+            ${ViraCollapsibleCard.cssVars['vira-collapsible-card-content-gap'].name}: 8px;
         }
 
         .expanded-source {

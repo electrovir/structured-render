@@ -725,44 +725,32 @@ function structuredRenderToHtmlArray(
               ])
             : nothing;
 
-        if (options.useCardStyles) {
-            return [
-                html`
-                    <${ViraCollapsibleCard.assign({
-                        expandOnPrint: true,
-                        blockExpansion: options.blockCardExpansion,
-                        hideHeader: !data.cardTitle,
-                        startExpanded:
-                            options.expandAllCards ||
-                            (options.expandFirstCard && keyChain.at(-1) === 0),
-                    })}>
-                        <h2
-                            slot=${ViraCollapsibleCard.slotNames.header}
-                            class=${classMap({
-                                'card-title-with-icon': !!data.cardTitleIcon,
-                            })}
-                        >
-                            ${cardTitleIconTemplate}${data.cardTitle}
-                        </h2>
-                        ${cardSections}
-                    </${ViraCollapsibleCard}>
-                `,
-            ];
-        }
-
         return [
-            data.cardTitle
-                ? html`
-                      <h2
-                          class=${classMap({
-                              'card-title-with-icon': !!data.cardTitleIcon,
-                          })}
-                      >
-                          ${cardTitleIconTemplate}${data.cardTitle}
-                      </h2>
-                  `
-                : undefined,
-            ...cardSections,
+            html`
+                <${ViraCollapsibleCard.assign({
+                    expandOnPrint: true,
+                    rawCollapsible: !options.useCardStyles,
+                    blockExpansion: options.blockCardExpansion,
+                    hideHeader: !data.cardTitle,
+                    startExpanded:
+                        options.expandAllCards ||
+                        (options.expandFirstCard && keyChain.at(-1) === 0),
+                })}
+                    class=${classMap({
+                        'raw-collapsible-card': !options.useCardStyles,
+                    })}
+                >
+                    <h2
+                        slot=${ViraCollapsibleCard.slotNames.header}
+                        class=${classMap({
+                            'card-title-with-icon': !!data.cardTitleIcon,
+                        })}
+                    >
+                        ${cardTitleIconTemplate}${data.cardTitle}
+                    </h2>
+                    ${cardSections}
+                </${ViraCollapsibleCard}>
+            `,
         ];
     } else {
         assert.tsType(data).equals<never>();
