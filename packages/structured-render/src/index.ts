@@ -1,4 +1,5 @@
 export * from './augments/shadow-styles.js';
+export * from './elements/vir-expandable-source.element.js';
 export * from './elements/vir-markdown.element.js';
 export * from './elements/vir-source.element.js';
 export * from './elements/vir-structured-render.element.js';
@@ -9,6 +10,8 @@ export * from './render/render-markdown-styles.js';
 export * from './render/render-markdown.js';
 export * from './render/render-pdf.js';
 export * from './render/render-types.js';
+export * from './render/source-expansion-event.js';
+export * from './render/source-styles.js';
 export * from './structured-render-data/create-section.js';
 export * from './structured-render-data/sections/code-block.section.js';
 export * from './structured-render-data/sections/collapsible.section.js';

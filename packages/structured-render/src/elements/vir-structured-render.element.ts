@@ -2,19 +2,13 @@ import {type PartialWithUndefined} from '@augment-vir/common';
 import {colorCss} from '@electrovir/color';
 import {css, defineElement, html, listen, unsafeCSS} from 'element-vir';
 import {themeDefaultKey} from 'theme-vir';
-import {
-    noNativeFormStyles,
-    noNativeSpacing,
-    ViraCollapsibleCard,
-    viraFormCssVars,
-    ViraIcon,
-    ViraTag,
-    viraTheme,
-} from 'vira';
+import {noNativeSpacing, ViraCollapsibleCard, ViraIcon, ViraTag, viraTheme} from 'vira';
 import {insertStyleSheet} from '../augments/shadow-styles.js';
-import {renderStructuredHtml, SourceExpansionEvent} from '../render/render-html.js';
+import {renderStructuredHtml} from '../render/render-html.js';
 import {contentDivClass, defaultMarkdownRenderStyles} from '../render/render-markdown-styles.js';
 import {type RenderHtmlOptions, type RenderInput} from '../render/render-types.js';
+import {SourceExpansionEvent} from '../render/source-expansion-event.js';
+import {sourceWrapperStyles} from '../render/source-styles.js';
 import {StructuredRenderTextStyle} from '../structured-render-data/sections/text.section.js';
 
 const iconRightMargin = css`4px`;
@@ -238,6 +232,11 @@ export const VirStructuredRender = defineElement<{
             border-top: 1px solid
                 ${viraTheme.colors['vira-grey-foreground-decoration'].foreground.value};
 
+            & h2 {
+                font-weight: normal;
+                padding: 8px 0;
+            }
+
             &:not(:first-child) {
                 margin-top: -24px;
             }
@@ -246,19 +245,11 @@ export const VirStructuredRender = defineElement<{
                 border-top: none;
             }
 
-            & h2 {
-                padding: 8px 0;
-            }
-
             & .top-section-wrapper {
                 padding: 4px 16px;
             }
 
             ${ViraCollapsibleCard.cssVars['vira-collapsible-card-content-gap'].name}: 8px;
-        }
-
-        .expanded-source {
-            margin: 8px 0 !important;
         }
 
         *::first-line {
@@ -276,61 +267,17 @@ export const VirStructuredRender = defineElement<{
             display: flex;
             flex-direction: column;
 
-            & .source-content-wrapper {
-                display: flex;
-            }
-
-            & .collapsible-source-wrapper {
-                border: none;
-            }
-
             & .text-section-text-content {
                 flex-grow: 1;
                 vertical-align: middle;
             }
-
-            & .source-icon-button {
-                ${noNativeFormStyles};
-                cursor: pointer;
-                color: ${viraTheme.colors['vira-grey-foreground-header'].foreground.value};
-                padding: 2px;
-                border-radius: 4px;
-
-                & ${ViraIcon} {
-                    display: flex;
-                }
-
-                &:hover {
-                    background-color: ${viraTheme.colors['vira-grey-behind-fg-small-body']
-                        .background.value};
-                    color: ${viraFormCssVars['vira-form-accent-primary-color'].value};
-                }
-
-                &:active {
-                    background-color: ${viraTheme.colors['vira-grey-behind-fg-body'].background
-                        .value};
-                    color: ${viraFormCssVars['vira-form-accent-primary-color'].value};
-                }
-            }
         }
 
-        .source-icon-wrapper.source-icon-wrapper.source-icon-wrapper.source-icon-wrapper.source-icon-wrapper {
-            margin-left: auto;
-            justify-content: flex-end;
-            align-items: center;
-            display: flex;
-            flex-shrink: 0;
-            align-self: top;
-
-            & ${ViraIcon} {
-                width: 20px;
-                height: 20px;
-            }
-        }
+        ${sourceWrapperStyles}
 
         .${unsafeCSS(contentDivClass)}.${unsafeCSS(contentDivClass)}.${unsafeCSS(
-                contentDivClass,
-            )}.${unsafeCSS(contentDivClass)} {
+            contentDivClass,
+        )}.${unsafeCSS(contentDivClass)} {
             ul {
                 ${noNativeSpacing}
                 flex-grow: 1;
@@ -338,12 +285,6 @@ export const VirStructuredRender = defineElement<{
                 display: flex;
                 flex-direction: column;
                 gap: 2px;
-            }
-        }
-
-        .source-content-wrapper {
-            > *:last-child:not(table) {
-                flex-grow: 1;
             }
         }
 
@@ -449,12 +390,6 @@ export const VirStructuredRender = defineElement<{
         ${hostClasses['vir-structured-render-tablet-size'].selector} {
             .view-header {
                 flex-wrap: wrap;
-            }
-        }
-
-        @media print {
-            .source-icon-wrapper {
-                display: none !important;
             }
         }
     `,

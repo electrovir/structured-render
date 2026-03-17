@@ -136,7 +136,7 @@ export type RenderHtmlOptions = RenderOptions & {
      *
      * This will only be used if `hideViewOnPageButtons` is not set to `true`.
      */
-    createViewOnPageString(pageNumber: number): string;
+    createViewOnPageString(this: void, pageNumber: number): string;
     /** CSS styles for rendering internal Markdown. */
     markdownStyles: string | CSSResult;
     /**

@@ -1,3 +1,4 @@
+import {mergeDefinedProperties, type PartialWithUndefined} from '@augment-vir/common';
 import {css, defineElement, defineElementEvent, html, listen, nothing} from 'element-vir';
 import {themeDefaultKey} from 'theme-vir/dist/color-theme/color-theme.js';
 import {
@@ -8,7 +9,7 @@ import {
     ViraIcon,
     viraTheme,
 } from 'vira';
-import {type RenderHtmlOptions} from '../render/render-types.js';
+import {defaultRenderHtmlOptions, type RenderHtmlOptions} from '../render/render-types.js';
 import {
     createCleanSources,
     type SourcesInput,
@@ -21,12 +22,12 @@ import {
  * @category Internal
  */
 export const VirSource = defineElement<{
-    options: Readonly<RenderHtmlOptions>;
+    options?: Readonly<PartialWithUndefined<RenderHtmlOptions>> | undefined;
     sources: SourcesInput;
 }>()({
     tagName: 'vir-source',
     hostClasses: {
-        'vir-source-phone-size': ({inputs}) => inputs.options.isPhoneSize,
+        'vir-source-phone-size': ({inputs}) => !!inputs.options?.isPhoneSize,
     },
     events: {
         viewOnPageClick: defineElementEvent<StructuredRenderSource>(),
@@ -136,19 +137,21 @@ export const VirSource = defineElement<{
             return nothing;
         }
 
+        const options = mergeDefinedProperties(defaultRenderHtmlOptions, inputs.options);
+
         return html`
             <${ViraCard}>
                 <p class="header">
                     <${ViraIcon.assign({
-                        icon: inputs.options.sourceIcon,
+                        icon: options.sourceIcon,
                         fitContainer: true,
                     })}></${ViraIcon}>
-                    <span>${inputs.options.pluralSourcesString}</span>
+                    <span>${options.pluralSourcesString}</span>
                 </p>
                 <div class="entries">
                     ${sources.map((entry) => {
                         const viewOnPageTemplate =
-                            !inputs.options.hideViewOnPageButtons &&
+                            !options.hideViewOnPageButtons &&
                             entry.fileName &&
                             entry.pageNumbers?.length
                                 ? html`
@@ -160,10 +163,10 @@ export const VirSource = defineElement<{
                                           })}
                                       >
                                           <${ViraIcon.assign({
-                                              icon: inputs.options.viewOnPageIcon,
+                                              icon: options.viewOnPageIcon,
                                               fitContainer: true,
                                           })}></${ViraIcon}>
-                                          ${inputs.options.createViewOnPageString(
+                                          ${options.createViewOnPageString(
                                               entry.pageNumbers[0] ?? 1,
                                           )}
                                       </button>

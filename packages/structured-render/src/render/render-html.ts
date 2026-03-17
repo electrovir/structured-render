@@ -12,7 +12,6 @@ import {extractEventTarget} from '@augment-vir/web';
 import {
     classMap,
     css,
-    defineTypedEvent,
     html,
     ifDefined,
     join,
@@ -55,6 +54,7 @@ import {
     type RenderHtmlOptions,
     type RenderInput,
 } from './render-types.js';
+import {SourceExpansionEvent} from './source-expansion-event.js';
 
 /**
  * Render Structured Render data to HTML templates.
@@ -758,19 +758,6 @@ function structuredRenderToHtmlArray(
     }
 }
 
-/**
- * This event is emitted when source sections have been expanded and can be used to track which
- * sections are expanded.
- *
- * @category Internal
- */
-export const SourceExpansionEvent = defineTypedEvent<
-    Readonly<{
-        expanded: boolean;
-        key: string;
-    }>
->()('source-expansion');
-
 function createSourceTrigger(
     content: HtmlInterpolation,
     options: Readonly<RenderHtmlOptions>,
@@ -851,7 +838,14 @@ function createExpandingSource(
     `;
 }
 
-function createSourceWrapper(
+/**
+ * Creates a source wrapper template that renders content alongside an expandable source icon and
+ * collapsible source panel. Used internally by {@link renderStructuredHtml} and available for
+ * external use via `VirExpandableSource`.
+ *
+ * @category Internal
+ */
+export function createSourceWrapper(
     content: HtmlInterpolation,
     options: Readonly<RenderHtmlOptions>,
     rawKeyChain: ReadonlyArray<PropertyKey>,
