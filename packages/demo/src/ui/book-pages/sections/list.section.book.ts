@@ -13,6 +13,9 @@ export const listSectionBookPage = defineBookPage({
             render() {
                 return html`
                     <${VirStructuredRender.assign({
+                        options: {
+                            useCardStyles: true,
+                        },
                         data: {
                             type: StructuredRenderSectionType.list,
                             sectionTitle: 'List Example',
@@ -47,6 +50,9 @@ export const listSectionBookPage = defineBookPage({
             render() {
                 return html`
                     <${VirStructuredRender.assign({
+                        options: {
+                            useCardStyles: true,
+                        },
                         data: {
                             type: StructuredRenderSectionType.list,
                             sectionTitle: 'List with Icons',
@@ -85,6 +91,9 @@ export const listSectionBookPage = defineBookPage({
             render() {
                 return html`
                     <${VirStructuredRender.assign({
+                        options: {
+                            useCardStyles: true,
+                        },
                         data: {
                             type: StructuredRenderSectionType.list,
                             sectionTitle: 'List with Tags',

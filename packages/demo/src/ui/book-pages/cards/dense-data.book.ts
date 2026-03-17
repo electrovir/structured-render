@@ -26,6 +26,9 @@ export const denseDataBookPage = defineBookPage({
             render() {
                 return html`
                     <${VirStructuredRender.assign({
+                        options: {
+                            useCardStyles: true,
+                        },
                         data: [
                             {
                                 cardTitle: 'Comprehensive Product Analysis',

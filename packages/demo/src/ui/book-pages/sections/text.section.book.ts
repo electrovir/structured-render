@@ -17,6 +17,9 @@ export const textSectionBookPage = defineBookPage({
             render() {
                 return html`
                     <${VirStructuredRender.assign({
+                        options: {
+                            useCardStyles: true,
+                        },
                         data: {
                             type: StructuredRenderSectionType.text,
                             sectionTitle: 'Text Example',
@@ -32,6 +35,9 @@ export const textSectionBookPage = defineBookPage({
             render() {
                 return html`
                     <${VirStructuredRender.assign({
+                        options: {
+                            useCardStyles: true,
+                        },
                         data: {
                             type: StructuredRenderSectionType.text,
                             text: 'Bold text section.',
@@ -47,6 +53,9 @@ export const textSectionBookPage = defineBookPage({
             render() {
                 return html`
                     <${VirStructuredRender.assign({
+                        options: {
+                            useCardStyles: true,
+                        },
                         data: {
                             type: StructuredRenderSectionType.text,
                             text: 'Small text section.',
@@ -62,6 +71,9 @@ export const textSectionBookPage = defineBookPage({
             render() {
                 return html`
                     <${VirStructuredRender.assign({
+                        options: {
+                            useCardStyles: true,
+                        },
                         data: {
                             type: StructuredRenderSectionType.text,
                             text: 'Faint text section.',
@@ -77,6 +89,9 @@ export const textSectionBookPage = defineBookPage({
             render() {
                 return html`
                     <${VirStructuredRender.assign({
+                        options: {
+                            useCardStyles: true,
+                        },
                         data: {
                             type: StructuredRenderSectionType.text,
                             text: 'Text with icon.',

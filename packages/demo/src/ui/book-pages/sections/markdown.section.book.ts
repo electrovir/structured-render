@@ -12,6 +12,9 @@ export const markdownSectionBookPage = defineBookPage({
             render() {
                 return html`
                     <${VirStructuredRender.assign({
+                        options: {
+                            useCardStyles: true,
+                        },
                         data: {
                             type: StructuredRenderSectionType.markdown,
                             sectionTitle: 'Markdown Example',
@@ -28,6 +31,9 @@ export const markdownSectionBookPage = defineBookPage({
             render() {
                 return html`
                     <${VirStructuredRender.assign({
+                        options: {
+                            useCardStyles: true,
+                        },
                         data: {
                             type: StructuredRenderSectionType.markdown,
                             sectionTitle: 'Markdown with Code',

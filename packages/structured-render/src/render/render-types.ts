@@ -157,6 +157,13 @@ export type RenderHtmlOptions = RenderOptions & {
      * @default false
      */
     expandFirstCard: boolean;
+    /**
+     * If `true`, cards are wrapped in collapsible card components with borders and expansion
+     * controls. If `false`, card sections are rendered without card wrapper styling.
+     *
+     * @default false
+     */
+    useCardStyles: boolean;
 };
 
 /**
@@ -181,4 +188,5 @@ export const defaultRenderHtmlOptions: Readonly<RenderHtmlOptions> = {
     expandAllCards: false,
     blockCardExpansion: false,
     expandFirstCard: false,
+    useCardStyles: false,
 };

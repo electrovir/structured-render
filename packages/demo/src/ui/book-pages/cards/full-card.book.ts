@@ -26,6 +26,9 @@ export const fullCardBookPage = defineBookPage({
             render() {
                 return html`
                     <${VirStructuredRender.assign({
+                        options: {
+                            useCardStyles: true,
+                        },
                         data: [
                             {
                                 cardTitle: 'Project Health Report',

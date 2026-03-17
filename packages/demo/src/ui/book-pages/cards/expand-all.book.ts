@@ -23,6 +23,7 @@ export const expandAllBookPage = defineBookPage({
                     <${VirStructuredRender.assign({
                         data: multiCardMock,
                         options: {
+                            useCardStyles: true,
                             expandAllCards: true,
                         },
                     })}></${VirStructuredRender}>

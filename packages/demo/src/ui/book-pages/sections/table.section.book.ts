@@ -17,6 +17,9 @@ export const tableSectionBookPage = defineBookPage({
             render() {
                 return html`
                     <${VirStructuredRender.assign({
+                        options: {
+                            useCardStyles: true,
+                        },
                         data: {
                             type: StructuredRenderSectionType.table,
                             sectionTitle: 'Horizontal Table',
@@ -66,6 +69,9 @@ export const tableSectionBookPage = defineBookPage({
             render() {
                 return html`
                     <${VirStructuredRender.assign({
+                        options: {
+                            useCardStyles: true,
+                        },
                         data: {
                             type: StructuredRenderSectionType.table,
                             sectionTitle: 'Vertical Table',
@@ -177,6 +183,7 @@ export const tableSectionBookPage = defineBookPage({
                                 ],
                             },
                             options: {
+                                useCardStyles: true,
                                 isPhoneSize: true,
                             },
                         })}></${VirStructuredRender}>
@@ -190,6 +197,9 @@ export const tableSectionBookPage = defineBookPage({
             render() {
                 return html`
                     <${VirStructuredRender.assign({
+                        options: {
+                            useCardStyles: true,
+                        },
                         data: {
                             type: StructuredRenderSectionType.table,
                             sectionTitle: 'Mixed Cell Types',

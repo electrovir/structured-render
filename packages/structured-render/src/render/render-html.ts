@@ -725,27 +725,44 @@ function structuredRenderToHtmlArray(
               ])
             : nothing;
 
+        if (options.useCardStyles) {
+            return [
+                html`
+                    <${ViraCollapsibleCard.assign({
+                        expandOnPrint: true,
+                        blockExpansion: options.blockCardExpansion,
+                        hideHeader: !data.cardTitle,
+                        startExpanded:
+                            options.expandAllCards ||
+                            (options.expandFirstCard && keyChain.at(-1) === 0),
+                    })}>
+                        <h2
+                            slot=${ViraCollapsibleCard.slotNames.header}
+                            class=${classMap({
+                                'card-title-with-icon': !!data.cardTitleIcon,
+                            })}
+                        >
+                            ${cardTitleIconTemplate}${data.cardTitle}
+                        </h2>
+                        ${cardSections}
+                    </${ViraCollapsibleCard}>
+                `,
+            ];
+        }
+
         return [
-            html`
-                <${ViraCollapsibleCard.assign({
-                    expandOnPrint: true,
-                    blockExpansion: options.blockCardExpansion,
-                    hideHeader: !data.cardTitle,
-                    startExpanded:
-                        options.expandAllCards ||
-                        (options.expandFirstCard && keyChain.at(-1) === 0),
-                })}>
-                    <h2
-                        slot=${ViraCollapsibleCard.slotNames.header}
-                        class=${classMap({
-                            'card-title-with-icon': !!data.cardTitleIcon,
-                        })}
-                    >
-                        ${cardTitleIconTemplate}${data.cardTitle}
-                    </h2>
-                    ${cardSections}
-                </${ViraCollapsibleCard}>
-            `,
+            data.cardTitle
+                ? html`
+                      <h2
+                          class=${classMap({
+                              'card-title-with-icon': !!data.cardTitleIcon,
+                          })}
+                      >
+                          ${cardTitleIconTemplate}${data.cardTitle}
+                      </h2>
+                  `
+                : undefined,
+            ...cardSections,
         ];
     } else {
         assert.tsType(data).equals<never>();

@@ -12,6 +12,9 @@ export const sourceSectionBookPage = defineBookPage({
             render() {
                 return html`
                     <${VirStructuredRender.assign({
+                        options: {
+                            useCardStyles: true,
+                        },
                         data: {
                             type: StructuredRenderSectionType.source,
                             fileName: 'example.ts',
@@ -29,6 +32,9 @@ export const sourceSectionBookPage = defineBookPage({
             render() {
                 return html`
                     <${VirStructuredRender.assign({
+                        options: {
+                            useCardStyles: true,
+                        },
                         data: {
                             type: StructuredRenderSectionType.source,
                             fileName: 'document.pdf',
@@ -49,6 +55,9 @@ export const sourceSectionBookPage = defineBookPage({
             render() {
                 return html`
                     <${VirStructuredRender.assign({
+                        options: {
+                            useCardStyles: true,
+                        },
                         data: {
                             type: StructuredRenderSectionType.source,
                             fileName: 'report.pdf',

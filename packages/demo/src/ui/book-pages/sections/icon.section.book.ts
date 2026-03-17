@@ -13,6 +13,9 @@ export const iconSectionBookPage = defineBookPage({
             render() {
                 return html`
                     <${VirStructuredRender.assign({
+                        options: {
+                            useCardStyles: true,
+                        },
                         data: {
                             type: StructuredRenderSectionType.icon,
                             iconKey: Star24Icon.name,
@@ -26,6 +29,9 @@ export const iconSectionBookPage = defineBookPage({
             render() {
                 return html`
                     <${VirStructuredRender.assign({
+                        options: {
+                            useCardStyles: true,
+                        },
                         data: {
                             type: StructuredRenderSectionType.icon,
                             iconKey: Star24Icon.name,
@@ -41,6 +47,9 @@ export const iconSectionBookPage = defineBookPage({
             render() {
                 return html`
                     <${VirStructuredRender.assign({
+                        options: {
+                            useCardStyles: true,
+                        },
                         data: {
                             type: StructuredRenderSectionType.icon,
                             iconKey: StatusSuccess24Icon.name,

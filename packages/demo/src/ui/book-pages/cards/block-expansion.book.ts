@@ -23,6 +23,7 @@ export const blockExpansionBookPage = defineBookPage({
                     <${VirStructuredRender.assign({
                         data: multiCardMock,
                         options: {
+                            useCardStyles: true,
                             blockCardExpansion: true,
                         },
                     })}></${VirStructuredRender}>

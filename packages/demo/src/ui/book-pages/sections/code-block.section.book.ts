@@ -12,6 +12,9 @@ export const codeBlockSectionBookPage = defineBookPage({
             render() {
                 return html`
                     <${VirStructuredRender.assign({
+                        options: {
+                            useCardStyles: true,
+                        },
                         data: {
                             type: StructuredRenderSectionType.codeBlock,
                             sectionTitle: 'Code Block Example',
@@ -28,6 +31,9 @@ export const codeBlockSectionBookPage = defineBookPage({
             render() {
                 return html`
                     <${VirStructuredRender.assign({
+                        options: {
+                            useCardStyles: true,
+                        },
                         data: {
                             type: StructuredRenderSectionType.codeBlock,
                             code: 'plain text code block\nwith multiple lines',

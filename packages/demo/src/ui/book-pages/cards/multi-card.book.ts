@@ -1113,6 +1113,9 @@ export const multiCardBookPage = defineBookPage({
                 return html`
                     <${VirStructuredRender.assign({
                         data: multiCardMock,
+                        options: {
+                            useCardStyles: true,
+                        },
                     })}></${VirStructuredRender}>
                 `;
             },

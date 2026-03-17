@@ -12,6 +12,9 @@ export const tagSectionBookPage = defineBookPage({
             render() {
                 return html`
                     <${VirStructuredRender.assign({
+                        options: {
+                            useCardStyles: true,
+                        },
                         data: {
                             type: StructuredRenderSectionType.tag,
                             sectionTitle: 'Tag Example',
@@ -27,6 +30,9 @@ export const tagSectionBookPage = defineBookPage({
             render() {
                 return html`
                     <${VirStructuredRender.assign({
+                        options: {
+                            useCardStyles: true,
+                        },
                         data: {
                             type: StructuredRenderSectionType.tag,
                             text: 'Custom Colors',
@@ -47,6 +53,9 @@ export const tagSectionBookPage = defineBookPage({
             render() {
                 return html`
                     <${VirStructuredRender.assign({
+                        options: {
+                            useCardStyles: true,
+                        },
                         data: {
                             type: StructuredRenderSectionType.tag,
                             text: 'Big Tag',

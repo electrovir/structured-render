@@ -12,6 +12,9 @@ export const inlineCodeSectionBookPage = defineBookPage({
             render() {
                 return html`
                     <${VirStructuredRender.assign({
+                        options: {
+                            useCardStyles: true,
+                        },
                         data: {
                             type: StructuredRenderSectionType.inlineCode,
                             sectionTitle: 'Inline Code Example',
