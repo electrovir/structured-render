@@ -3707,6 +3707,10 @@ Please report this to https://github.com/markedjs/marked.`,e){let e=`<p>An error
 
     .collapsible-source-wrapper {
         border: none;
+
+        &:not(.expanded-source) {
+            ${jF}
+        }
     }
 
     .expanded-source {
