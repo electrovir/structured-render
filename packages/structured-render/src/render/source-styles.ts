@@ -1,5 +1,5 @@
 import {css} from 'element-vir';
-import {noNativeFormStyles, viraFormCssVars, ViraIcon, viraTheme} from 'vira';
+import {noNativeFormStyles, noUserSelect, viraFormCssVars, ViraIcon, viraTheme} from 'vira';
 
 /**
  * Shared CSS styles for source icon buttons, source wrappers, and expandable source panels.
@@ -17,6 +17,10 @@ export const sourceWrapperStyles = css`
 
     .collapsible-source-wrapper {
         border: none;
+
+        &:not(.expanded-source) {
+            ${noUserSelect}
+        }
     }
 
     .expanded-source {
