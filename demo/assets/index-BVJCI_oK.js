@@ -3278,6 +3278,9 @@ Please report this to https://github.com/markedjs/marked.`,e){let e=`<p>An error
                     margin-bottom: ${t.liSpacing};
                 }
             }
+            & ol {
+                padding-left: 1.5em;
+            }
             & strong {
                 font-weight: bold;
             }
@@ -4221,6 +4224,10 @@ This is **bold** and _italic_ text.
 - Item 1
 - Item 2
 - Item 3`}})}></${$}>
+                `}}),e({title:`with ordered list`,render(){return V`
+                    <${$.assign({options:{useCardStyles:!0},data:{type:Q.markdown,sectionTitle:`Ordered List Example`,markdown:`1. **False Positives**: Name and DOB matches may not always indicate the same patient.
+2. **Data Currency**: Registry data may lag behind real-time clinical status.
+3. **Legal Compliance**: Ensure all data sharing follows applicable regulations.`}})}></${$}>
                 `}}),e({title:`with code`,render(){return V`
                     <${$.assign({options:{useCardStyles:!0},data:{type:Q.markdown,sectionTitle:`Markdown with Code`,markdown:"### Code Example\n\nHere is some `inline code` and a code block:\n\n```typescript\nconst x = 42;\n```"}})}></${$}>
                 `}})}}),fu({title:`Processing`,parent:_K,defineExamples({defineExample:e}){e({title:`basic`,render(){return V`
