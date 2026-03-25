@@ -147,6 +147,9 @@ export function configureDefaultMarkdownRenderStyles(
                     margin-bottom: ${styles.liSpacing};
                 }
             }
+            & ol {
+                padding-left: 1.5em;
+            }
             & strong {
                 font-weight: bold;
             }

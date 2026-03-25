@@ -27,6 +27,25 @@ export const markdownSectionBookPage = defineBookPage({
         });
 
         defineExample({
+            title: 'with ordered list',
+            render() {
+                return html`
+                    <${VirStructuredRender.assign({
+                        options: {
+                            useCardStyles: true,
+                        },
+                        data: {
+                            type: StructuredRenderSectionType.markdown,
+                            sectionTitle: 'Ordered List Example',
+                            markdown:
+                                '1. **False Positives**: Name and DOB matches may not always indicate the same patient.\n2. **Data Currency**: Registry data may lag behind real-time clinical status.\n3. **Legal Compliance**: Ensure all data sharing follows applicable regulations.',
+                        },
+                    })}></${VirStructuredRender}>
+                `;
+            },
+        });
+
+        defineExample({
             title: 'with code',
             render() {
                 return html`
