@@ -1120,5 +1120,25 @@ export const multiCardBookPage = defineBookPage({
                 `;
             },
         });
+
+        defineExample({
+            title: 'three cards phone size',
+            styles: css`
+                :host {
+                    max-width: 400px;
+                }
+            `,
+            render() {
+                return html`
+                    <${VirStructuredRender.assign({
+                        data: multiCardMock,
+                        options: {
+                            useCardStyles: true,
+                            isPhoneSize: true,
+                        },
+                    })}></${VirStructuredRender}>
+                `;
+            },
+        });
     },
 });

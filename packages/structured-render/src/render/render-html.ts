@@ -28,6 +28,7 @@ import {
     ViraCollapsibleCard,
     ViraCollapsibleWrapper,
     ViraColorVariant,
+    ViraDrawer,
     ViraEmphasis,
     ViraIcon,
     ViraSize,
@@ -820,6 +821,35 @@ function createExpandingSource(
     const sourceKey = makeChainKey(sourceKeyChain);
     const isSourceExpanded = !!options.currentlyExpanded[sourceKey];
 
+    const sourceTemplate = html`
+        <${VirSource.assign({
+            options,
+            sources,
+        })}></${VirSource}>
+    `;
+
+    if (options.isPhoneSize) {
+        return html`
+            <${ViraDrawer.assign({
+                open: isSourceExpanded,
+                drawerTitle: options.pluralSourcesString,
+            })}
+                ${listen(ViraDrawer.events.drawerClose, (event) => {
+                    const eventTarget = extractEventTarget(event, HTMLElement);
+
+                    eventTarget.dispatchEvent(
+                        new SourceExpansionEvent({
+                            expanded: false,
+                            key: sourceKey,
+                        }),
+                    );
+                })}
+            >
+                ${sourceTemplate}
+            </${ViraDrawer}>
+        `;
+    }
+
     return html`
         <${ViraCollapsibleWrapper.assign({
             expanded: isSourceExpanded,
@@ -830,10 +860,7 @@ function createExpandingSource(
             })}"
         >
             <span slot=${ViraCollapsibleWrapper.slotNames.header}></span>
-            <${VirSource.assign({
-                options,
-                sources,
-            })}></${VirSource}>
+            ${sourceTemplate}
         </${ViraCollapsibleWrapper}>
     `;
 }
