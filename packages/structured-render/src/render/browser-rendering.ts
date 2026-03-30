@@ -1,5 +1,6 @@
 import {assert, assertWrap} from '@augment-vir/assert';
 import {
+    awaitedForEach,
     isRuntimeEnv,
     mergeDefinedProperties,
     RuntimeEnv,
@@ -372,15 +373,25 @@ export async function renderInNode(
     ]);
 
     const dirtyHtml = await marked.parse(renderStructuredMarkdown(structuredRenderData, options));
-    const baseHtmlString = convertTemplateToString(html`
-        <style id="styles">
-            ${options.styles}
-        </style>
-    `);
 
     const browser = await chromium.launch();
     try {
         const page = await browser.newPage();
+        const userAgent = await page.evaluate(() => {
+            return navigator.userAgent;
+        });
+
+        /**
+         * Playwright pages loaded via `setContent()` have a null origin, which causes cross-origin
+         * image fetches to fail. Pre-fetch external images and embed them as base64 data URIs so
+         * html2canvas can render them without network access.
+         */
+        const htmlWithEmbeddedImages = await embedExternalImages(dirtyHtml, userAgent);
+        const baseHtmlString = convertTemplateToString(html`
+            <style id="styles">
+                ${options.styles}
+            </style>
+        `);
         await page.setContent(baseHtmlString, {
             waitUntil: 'networkidle',
         });
@@ -430,7 +441,7 @@ export async function renderInNode(
             {
                 html2pdfOptions,
                 outputType,
-                dirtyMarkdown: dirtyHtml,
+                dirtyMarkdown: htmlWithEmbeddedImages,
                 wrapperClass: contentDivClass,
                 outputImageType: OutputImageType.DataUriString,
                 outputPdfType: OutputPdfType.DataUriString,
@@ -447,4 +458,53 @@ export async function renderInNode(
     }
 
     return saveLocationPath;
+}
+
+/**
+ * Fetches external `<img src="https://...">` images and replaces the URLs with base64 data URIs.
+ * Playwright pages loaded via `setContent()` have a null origin, which causes browsers to block
+ * cross-origin image requests. Embedding images as data URIs bypasses this restriction.
+ */
+async function embedExternalImages(htmlString: string, userAgent: string): Promise<string> {
+    const {JSDOM} = await import('jsdom');
+    const dom = new JSDOM(htmlString);
+    const images = [...dom.window.document.querySelectorAll('img')];
+    const externalImages = images.filter((img) => {
+        return /^https?:\/\//.test(img.src);
+    });
+
+    if (externalImages.length === 0) {
+        return htmlString;
+    }
+
+    const urlToDataUri = new Map<string, string>();
+
+    await awaitedForEach(externalImages, async (img) => {
+        if (!urlToDataUri.has(img.src)) {
+            try {
+                const response = await fetch(img.src, {
+                    headers: {
+                        'User-Agent': userAgent,
+                    },
+                });
+                if (!response.ok) {
+                    return;
+                }
+                const contentType = response.headers.get('content-type') || 'image/jpeg';
+                const arrayBuffer = await response.arrayBuffer();
+                const base64 = Buffer.from(arrayBuffer).toString('base64');
+                urlToDataUri.set(img.src, `data:${contentType};base64,${base64}`);
+            } catch {
+                /** Silently skip images that fail to load; the original URL remains in place. */
+                return;
+            }
+        }
+
+        const dataUri = urlToDataUri.get(img.src);
+        if (dataUri) {
+            img.src = dataUri;
+        }
+    });
+
+    return dom.window.document.body.innerHTML;
 }

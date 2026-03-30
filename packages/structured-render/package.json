@@ -1,6 +1,6 @@
 {
     "name": "structured-render",
-    "version": "1.1.0",
+    "version": "1.1.1",
     "description": "A library for safely rendering arbitrary data generated from any source.",
     "keywords": [
         "render",
@@ -47,6 +47,7 @@
         "element-vir": "^26.14.6",
         "html2canvas": "^1.4.1",
         "html2pdf.js": "^0.14.0",
+        "jsdom": "^29.0.1",
         "lit-css-vars": "^3.6.2",
         "marked": "^17.0.5",
         "object-shape-tester": "^6.11.0",
@@ -56,6 +57,7 @@
     },
     "devDependencies": {
         "@augment-vir/test": "^31.68.2",
+        "@types/jsdom": "^28.0.1",
         "@virmator/test": "^14.10.3",
         "@web/dev-server-esbuild": "^1.0.5",
         "@web/test-runner": "^0.20.2",
