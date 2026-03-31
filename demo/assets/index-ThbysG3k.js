@@ -3572,7 +3572,7 @@ Please report this to https://github.com/markedjs/marked.`,e){let e=`<p>An error
                     <${LH}>
                         ${Pe(`Failed to parse markdown content.`,e)}
                     </${LH}>
-                `)}}),rG={icons:ML,sourceString:`Source`,pluralSourcesString:`Sources`},iG={...rG,styles:eG},aG={...rG,processingString:`Processing`,currentlyExpanded:{},sourceIcon:XI,viewOnPageIcon:tL,processingIcon:oL,expandSourcesOnPrint:!1,hideViewOnPageButtons:!1,isPhoneSize:!1,markdownStyles:eG,createViewOnPageString(e){return`View on page ${e}`},expandAllCards:!1,blockCardExpansion:!1,expandFirstCard:!1,useCardStyles:!1},oG=Sj({x1:-1,y1:-1,x2:-1,y2:-1}),sG=Sj({type:kj(`source`),pageNumbers:Fj([Fj(-1)]),fileName:Fj(``),fileBoundingBoxes:Fj([Fj(oG)]),quote:Fj(``)});function cG(e){return Lc.isLengthAtLeast($c(e).filter(lG),1)}function lG(e){return!!(e&&(e.quote?.trim()||e.fileName||e.pageNumbers?.filter(A.isDefined).length))}var uG=sN()({tagName:`vir-source`,hostClasses:{"vir-source-phone-size":({inputs:e})=>!!e.options?.isPhoneSize},events:{viewOnPageClick:XM()},cssVars:{"vir-source-background-color":G.colors[oF].background.value,"vir-source-borer-radius":K[`vira-form-radius`].value,"vir-source-header-color":G.colors[`vira-grey-foreground-header`].foreground.value,"vir-source-view-on-page-icon-color":K[`vira-form-accent-primary-color`].value,"vir-source-view-on-page-hover-background-color":G.colors[`vira-grey-behind-fg-small-body`].background.value,"vir-source-view-on-page-active-background-color":G.colors[`vira-grey-behind-fg-body`].background.value,"vir-source-font-size":`16px`,"vir-source-phone-font-size":`14px`},styles:({hostClasses:e,cssVars:t})=>z`
+                `)}}),rG={icons:ML,sourceString:`Source`,pluralSourcesString:`Sources`},iG={...rG,styles:eG},aG={...rG,processingString:`Processing`,currentlyExpanded:{},sourceIcon:XI,viewOnPageIcon:tL,processingIcon:oL,expandSourcesOnPrint:!1,hideViewOnPageButtons:!1,isPhoneSize:!1,useDrawerForSources:!1,markdownStyles:eG,createViewOnPageString(e){return`View on page ${e}`},expandAllCards:!1,blockCardExpansion:!1,expandFirstCard:!1,useCardStyles:!1},oG=Sj({x1:-1,y1:-1,x2:-1,y2:-1}),sG=Sj({type:kj(`source`),pageNumbers:Fj([Fj(-1)]),fileName:Fj(``),fileBoundingBoxes:Fj([Fj(oG)]),quote:Fj(``)});function cG(e){return Lc.isLengthAtLeast($c(e).filter(lG),1)}function lG(e){return!!(e&&(e.quote?.trim()||e.fileName||e.pageNumbers?.filter(A.isDefined).length))}var uG=sN()({tagName:`vir-source`,hostClasses:{"vir-source-phone-size":({inputs:e})=>!!e.options?.isPhoneSize},events:{viewOnPageClick:XM()},cssVars:{"vir-source-background-color":G.colors[oF].background.value,"vir-source-borer-radius":K[`vira-form-radius`].value,"vir-source-header-color":G.colors[`vira-grey-foreground-header`].foreground.value,"vir-source-view-on-page-icon-color":K[`vira-form-accent-primary-color`].value,"vir-source-view-on-page-hover-background-color":G.colors[`vira-grey-behind-fg-small-body`].background.value,"vir-source-view-on-page-active-background-color":G.colors[`vira-grey-behind-fg-body`].background.value,"vir-source-font-size":`16px`,"vir-source-phone-font-size":`14px`},styles:({hostClasses:e,cssVars:t})=>z`
         ${LL} {
             background: ${t[`vir-source-background-color`].value};
             border-radius: ${t[`vir-source-borer-radius`].value};
@@ -3837,7 +3837,7 @@ Please report this to https://github.com/markedjs/marked.`,e){let e=`<p>An error
           `:j}</div>
     `}function RG(e,t,n){let r=cG(n);if(!r)return;let i=BG([...t,`source-icon`]),a=!!e.currentlyExpanded[i],o=V`
         <${uG.assign({options:e,sources:r})}></${uG}>
-    `;return e.isPhoneSize?V`
+    `;return e.useDrawerForSources?V`
             <${IH.assign({open:a,drawerTitle:e.pluralSourcesString})}
                 ${B(IH.events.drawerClose,e=>{lP(e,HTMLElement).dispatchEvent(new kG({expanded:!1,key:i}))})}
             >
@@ -4287,7 +4287,7 @@ Please report this to https://github.com/markedjs/marked.`,e){let e=`<p>An error
                     max-width: 400px;
                 }
             `,render(){return V`
-                    <${$.assign({data:mK,options:{useCardStyles:!0,isPhoneSize:!0}})}></${$}>
+                    <${$.assign({data:mK,options:{useCardStyles:!0,isPhoneSize:!0,useDrawerForSources:!0}})}></${$}>
                 `}})}}),gK=_u({title:`Block Expansion`,parent:vU,descriptionParagraphs:[`Cards rendered with blockCardExpansion enabled, which forces all sections expanded and disables toggling.`],defineExamples({defineExample:e}){e({title:`all sections locked open`,styles:z`
                 :host {
                     max-width: 900px;
@@ -4408,7 +4408,7 @@ This is **bold** and _italic_ text.
                             width: 400px;
                         `}
                     >
-                        <${$.assign({data:{type:Q.table,sectionTitle:`Horizontal Table (Phone)`,direction:CG.Horizontal,headers:[{key:`name`},{key:`value`},{key:`status`}],entries:[{data:{name:{type:Q.text,text:`Alpha`},value:{type:Q.text,text:`100`},status:{type:Q.tag,text:`Active`,color:{variant:q.Positive}}}},{data:{name:{type:Q.text,text:`Beta`},value:{type:Q.text,text:`200`},status:{type:Q.tag,text:`Inactive`,color:{variant:q.Warning}}}}]},options:{useCardStyles:!0,isPhoneSize:!0}})}></${$}>
+                        <${$.assign({data:{type:Q.table,sectionTitle:`Horizontal Table (Phone)`,direction:CG.Horizontal,headers:[{key:`name`},{key:`value`},{key:`status`}],entries:[{data:{name:{type:Q.text,text:`Alpha`},value:{type:Q.text,text:`100`},status:{type:Q.tag,text:`Active`,color:{variant:q.Positive}}}},{data:{name:{type:Q.text,text:`Beta`},value:{type:Q.text,text:`200`},status:{type:Q.tag,text:`Inactive`,color:{variant:q.Warning}}}}]},options:{useCardStyles:!0,isPhoneSize:!0,useDrawerForSources:!0}})}></${$}>
                     </div>
                 `}}),e({title:`with mixed cell types`,render(){return V`
                     <${$.assign({options:{useCardStyles:!0},data:{type:Q.table,sectionTitle:`Mixed Cell Types`,direction:CG.Horizontal,headers:[{key:`label`},{key:`detail`}],entries:[{data:{label:{type:Q.text,text:`Status`},detail:{type:Q.tag,text:`Active`,color:{variant:q.Positive}}}},{data:{label:{type:Q.text,text:`Version`},detail:{type:Q.inlineCode,code:`v1.0.0`}}}]}})}></${$}>
