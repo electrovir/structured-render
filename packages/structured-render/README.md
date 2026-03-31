@@ -380,6 +380,7 @@ All options are optional and have sensible defaults.
 | `expandFirstCard`        | `false`                   | Start only the first card expanded                       |
 | `blockCardExpansion`     | `false`                   | Expand all cards and disable toggling                    |
 | `isPhoneSize`            | `false`                   | Use phone-optimized layout (tables become stacked cards) |
+| `useDrawerForSources`    | `false`                   | Render sources inside a drawer instead of collapsible    |
 | `isTabletSize`           | `false`                   | Use tablet-optimized layout (VirStructuredRender only)   |
 | `expandSourcesOnPrint`   | `false`                   | Auto-expand sources when printing                        |
 | `hideViewOnPageButtons`  | `false`                   | Hide "view on page" buttons in sources                   |

@@ -828,7 +828,7 @@ function createExpandingSource(
         })}></${VirSource}>
     `;
 
-    if (options.isPhoneSize) {
+    if (options.useDrawerForSources) {
         return html`
             <${ViraDrawer.assign({
                 open: isSourceExpanded,

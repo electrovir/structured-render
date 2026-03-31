@@ -1135,6 +1135,7 @@ export const multiCardBookPage = defineBookPage({
                         options: {
                             useCardStyles: true,
                             isPhoneSize: true,
+                            useDrawerForSources: true,
                         },
                     })}></${VirStructuredRender}>
                 `;

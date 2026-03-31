@@ -1,6 +1,6 @@
 {
     "name": "structured-render",
-    "version": "1.1.1",
+    "version": "1.2.0",
     "description": "A library for safely rendering arbitrary data generated from any source.",
     "keywords": [
         "render",

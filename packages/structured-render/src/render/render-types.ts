@@ -126,6 +126,12 @@ export type RenderHtmlOptions = RenderOptions & {
      */
     isPhoneSize: boolean;
     /**
+     * If `true`, sources will be rendered inside a drawer instead of a collapsible wrapper.
+     *
+     * @default false
+     */
+    useDrawerForSources: boolean;
+    /**
      * If `true`, the view-on-page eyeball buttons are not rendered.
      *
      * @default false
@@ -181,6 +187,7 @@ export const defaultRenderHtmlOptions: Readonly<RenderHtmlOptions> = {
     expandSourcesOnPrint: false,
     hideViewOnPageButtons: false,
     isPhoneSize: false,
+    useDrawerForSources: false,
     markdownStyles: defaultMarkdownRenderStyles,
     createViewOnPageString(pageNumber) {
         return `View on page ${pageNumber}`;

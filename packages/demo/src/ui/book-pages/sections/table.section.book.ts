@@ -185,6 +185,7 @@ export const tableSectionBookPage = defineBookPage({
                             options: {
                                 useCardStyles: true,
                                 isPhoneSize: true,
+                                useDrawerForSources: true,
                             },
                         })}></${VirStructuredRender}>
                     </div>
