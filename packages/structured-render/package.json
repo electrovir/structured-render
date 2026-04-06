@@ -34,7 +34,7 @@
         "start": "virmator frontend",
         "test": "runstorm --names web,node \"npm run test:web\" \"npm run test:node\"",
         "test:docs": "virmator docs check",
-        "test:node": "virmator test node src/render/browser-rendering.test.node.ts",
+        "test:node": "virmator test node src/render/render-pdf.test.node.ts",
         "test:update": "npm run test:web update",
         "test:web": "virmator test web"
     },
@@ -42,34 +42,28 @@
         "@augment-vir/assert": "^31.68.2",
         "@augment-vir/common": "^31.68.2",
         "@augment-vir/web": "^31.68.2",
+        "@cantoo/pdf-lib": "^2.6.5",
         "@electrovir/color": "^1.7.9",
         "dompurify": "^3.3.3",
         "element-vir": "^26.14.6",
-        "html2canvas": "^1.4.1",
-        "html2pdf.js": "^0.14.0",
-        "jsdom": "^29.0.1",
         "lit-css-vars": "^3.6.2",
         "marked": "^17.0.5",
         "object-shape-tester": "^6.11.0",
         "theme-vir": "^28.25.0",
-        "type-fest": "^5.5.0",
         "vira": "^31.10.0"
     },
     "devDependencies": {
         "@augment-vir/test": "^31.68.2",
-        "@types/jsdom": "^28.0.1",
         "@virmator/test": "^14.10.3",
         "@web/dev-server-esbuild": "^1.0.5",
         "@web/test-runner": "^0.20.2",
         "@web/test-runner-playwright": "^0.11.1",
         "istanbul-smart-text-reporter": "^1.1.5",
         "markdown-code-example-inserter": "^3.0.3",
+        "pdf-to-img": "^5.0.0",
         "typedoc": "^0.28.18",
         "typescript": "^5.9.3",
         "vite": "^8.0.3"
-    },
-    "peerDependencies": {
-        "playwright": "*"
     },
     "engines": {
         "node": ">=22"

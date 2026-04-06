@@ -9,6 +9,17 @@ const baseConfig = defineConfig({
                 'src/index\\.ts$',
             ],
         },
+        'not-to-unresolvable': {
+            to: [
+                /** This _is_ resolvable, it's already working in tests (we only use it in tests). */
+                'pdf-to-img',
+            ],
+        },
+        'not-to-mock': {
+            from: [
+                'src/ui/book-pages/examples/example-card-comparison.book.ts',
+            ],
+        },
     },
     omitRules: [
         // enter rule names here to omit

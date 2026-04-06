@@ -23,7 +23,7 @@ export const exampleCard: StructuredRenderData = [
                 type: StructuredRenderSectionType.codeBlock,
                 sectionTitle: 'Code Example',
                 syntax: 'typescript',
-                code: 'import {renderToNodeImage} from "structured-render";\n\nconst output = await renderToNodeImage(data, {saveLocationPath: "output.png"});',
+                code: 'import {renderToPdf} from "structured-render";\n\nconst pdfBytes = await renderToPdf(data);',
             },
             {
                 type: StructuredRenderSectionType.table,

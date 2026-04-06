@@ -172,12 +172,16 @@ export const VirSource = defineElement<{
                                       </button>
                                   `
                                 : undefined;
-                        const trimmedText = entry.quote?.trim() || '';
-                        const sourceTextTemplate = trimmedText
+                        const trimmedQuote = entry.quote?.trim() || '';
+                        const sourceTextTemplate = trimmedQuote
                             ? html`
-                                  <p class="source-text">"${trimmedText}"</p>
+                                  <p class="source-text">"${trimmedQuote}"</p>
                               `
-                            : undefined;
+                            : entry.fileName
+                              ? html`
+                                    <p class="source-text">${entry.fileName}</p>
+                                `
+                              : undefined;
 
                         if (sourceTextTemplate || viewOnPageTemplate) {
                             return html`

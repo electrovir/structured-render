@@ -8,6 +8,7 @@ import {multiCardBookPage} from './cards/multi-card.book.js';
 import {noCardStylesBookPage} from './cards/no-card-styles.book.js';
 import {examplesBookPage} from './examples.book.js';
 import {downloadAndPrintBookPage} from './examples/download-and-print.book.js';
+import {exampleCardComparisonBookPage} from './examples/example-card-comparison.book.js';
 import {expandableSourceBookPage} from './examples/expandable-source.book.js';
 import {sectionsBookPage} from './sections.book.js';
 import {codeBlockSectionBookPage} from './sections/code-block.section.book.js';
@@ -43,6 +44,7 @@ export const allBookPages: ReadonlyArray<BookPage> = [
     noCardStylesBookPage,
 
     downloadAndPrintBookPage,
+    exampleCardComparisonBookPage,
     expandableSourceBookPage,
 
     cardsBookPage,

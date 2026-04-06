@@ -1,7 +1,7 @@
 import {log} from '@augment-vir/common';
 import {defineBookPage} from 'element-book';
 import {html, listen} from 'element-vir';
-import {OutputPdfType, printPdf, renderToBrowserPdf} from 'structured-render';
+import {downloadPdf, printPdf} from 'structured-render';
 import {LoaderAnimated24Icon, StatusFailure24Icon, ViraButton} from 'vira';
 import {multiCardMock} from '../cards/multi-card.book.js';
 import {examplesBookPage} from '../examples.book.js';
@@ -37,9 +37,7 @@ export const downloadAndPrintBookPage = defineBookPage({
                                 isLoading: true,
                             });
                             try {
-                                await printPdf(multiCardMock, {
-                                    fileName: 'structured-render-print',
-                                });
+                                await printPdf(multiCardMock);
                             } catch (error) {
                                 log.error('Failed to print PDF', error);
                                 updateState({
@@ -80,9 +78,8 @@ export const downloadAndPrintBookPage = defineBookPage({
                                 isLoading: true,
                             });
                             try {
-                                await renderToBrowserPdf(multiCardMock, {
+                                await downloadPdf(multiCardMock, {
                                     fileName: 'structured-render-download',
-                                    pdfOutputType: OutputPdfType.Download,
                                 });
                             } catch (error) {
                                 log.error('Failed to download PDF', error);

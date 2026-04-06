@@ -1,62 +1,53 @@
 import {isRuntimeEnv, RuntimeEnv, wait, type PartialWithUndefined} from '@augment-vir/common';
 import {waitForAnimationFrame} from '@augment-vir/web';
-import {OutputPdfType, renderInBrowser, renderInNode} from './browser-rendering.js';
+import {renderToPdfBytes} from './pdf/pdf-render.js';
 import {type RenderInput, type RenderOptions} from './render-types.js';
 
 /**
- * Render to a PDF. Only works in Node.js, not a browser.
+ * Render structured data to a PDF. Works in both browser and Node.js.
  *
  * @category Render
- * @returns The output file path.
  */
-export async function renderToNodePdf(
+export async function renderToPdf(
     renderInput: Readonly<RenderInput>,
-    params: Readonly<{
-        saveLocationPath: string;
-        options?: PartialWithUndefined<RenderOptions> | undefined;
-    }>,
-): Promise<string> {
-    if (isRuntimeEnv(RuntimeEnv.Web)) {
-        throw new Error(`${renderToNodePdf.name} cannot run inside of a browser.`);
-    }
-
-    return await renderInNode(renderInput, {
-        outputType: {
-            pdf: true,
-        },
-        ...params,
-    });
+    options?: Readonly<PartialWithUndefined<RenderOptions>> | undefined,
+): Promise<Uint8Array> {
+    return await renderToPdfBytes(renderInput, options);
 }
 
 /**
- * Render to a PDF. Only works in a browser, not Node.js.
+ * Render structured data to a PDF and trigger a browser download. Only works in a browser, not
+ * Node.js.
  *
  * @category Render
  */
-export async function renderToBrowserPdf(
+export async function downloadPdf(
     renderInput: Readonly<RenderInput>,
     {
-        pdfOutputType,
-        ...params
-    }: Readonly<
-        {
-            fileName: string;
-        } & PartialWithUndefined<{
-            pdfOutputType: OutputPdfType;
-            options: RenderOptions;
-        }>
-    >,
-): Promise<unknown> {
+        fileName,
+        options,
+    }: Readonly<{
+        fileName: string;
+        options?: PartialWithUndefined<RenderOptions> | undefined;
+    }>,
+): Promise<void> {
     if (!isRuntimeEnv(RuntimeEnv.Web)) {
-        throw new Error(`${renderToBrowserPdf.name} cannot run outside of a browser.`);
+        throw new Error(`${downloadPdf.name} cannot run outside of a browser.`);
     }
 
-    return renderInBrowser(renderInput, {
-        outputType: {
-            pdf: pdfOutputType || OutputPdfType.Download,
-        },
-        ...params,
+    const pdfBytes = await renderToPdfBytes(renderInput, options);
+    const blob = new Blob([new Uint8Array(pdfBytes)], {
+        type: 'application/pdf',
     });
+    const blobUrl = URL.createObjectURL(blob);
+    const anchor = globalThis.document.createElement('a');
+    anchor.href = blobUrl;
+    anchor.download = fileName.endsWith('.pdf') ? fileName : `${fileName}.pdf`;
+    anchor.style.display = 'none';
+    globalThis.document.body.append(anchor);
+    anchor.click();
+    anchor.remove();
+    URL.revokeObjectURL(blobUrl);
 }
 
 /**
@@ -67,26 +58,17 @@ export async function renderToBrowserPdf(
  */
 export async function printPdf(
     renderInput: Readonly<RenderInput>,
-    params: Readonly<
-        {
-            fileName: string;
-        } & PartialWithUndefined<{
-            options: RenderOptions;
-        }>
-    >,
+    options?: Readonly<PartialWithUndefined<RenderOptions>> | undefined,
 ): Promise<void> {
     if (!isRuntimeEnv(RuntimeEnv.Web)) {
         throw new Error(`${printPdf.name} cannot run outside of a browser.`);
     }
 
-    const pdfBlob = (await renderInBrowser(renderInput, {
-        outputType: {
-            pdf: OutputPdfType.Blob,
-        },
-        ...params,
-    })) as Blob;
-
-    const blobUrl = URL.createObjectURL(pdfBlob);
+    const pdfBytes = await renderToPdfBytes(renderInput, options);
+    const blob = new Blob([new Uint8Array(pdfBytes)], {
+        type: 'application/pdf',
+    });
+    const blobUrl = URL.createObjectURL(blob);
 
     const userAgent = navigator.userAgent.toLowerCase();
 

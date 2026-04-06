@@ -10,7 +10,7 @@ export const sourceWrapperStyles = css`
     .source-content-wrapper {
         display: flex;
 
-        & > *:last-child:not(table) {
+        & > *:not(table):has(+ .source-icon-wrapper) {
             flex-grow: 1;
         }
     }

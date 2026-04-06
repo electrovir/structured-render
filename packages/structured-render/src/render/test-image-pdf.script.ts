@@ -1,8 +1,9 @@
 import {log} from '@augment-vir/common';
-import {join, resolve} from 'node:path';
+import {mkdir, writeFile} from 'node:fs/promises';
+import {dirname, join, resolve} from 'node:path';
 import {type StructuredRenderData} from '../structured-render-data/structured-render-data.js';
 import {StructuredRenderSectionType} from '../structured-render-data/structured-render-section.js';
-import {renderToNodePdf} from './render-pdf.js';
+import {renderToPdf} from './render-pdf.js';
 
 const monoRepoDirPath = resolve(import.meta.dirname, '..', '..', '..', '..');
 const outputPath = join(monoRepoDirPath, '.not-committed', 'test-image-pdf.pdf');
@@ -61,10 +62,12 @@ const testData: StructuredRenderData = [
 
 try {
     log.info(`Rendering PDF to ${outputPath}...`);
-    const result = await renderToNodePdf(testData, {
-        saveLocationPath: outputPath,
+    const pdfBytes = await renderToPdf(testData);
+    await mkdir(dirname(outputPath), {
+        recursive: true,
     });
-    log.success(`PDF saved to ${result}`);
+    await writeFile(outputPath, pdfBytes);
+    log.success(`PDF saved to ${outputPath}.`);
     process.exit(0);
 } catch (error) {
     log.error(error);
