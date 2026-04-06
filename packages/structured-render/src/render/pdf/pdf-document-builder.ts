@@ -219,6 +219,17 @@ export class PdfDocumentBuilder {
         const effectiveX = x ?? this.contentX;
         const lines = wrapText(text, font, size, effectiveMaxWidth);
         const lineH = this.lineHeight(size);
+        const fullHeight = lines.length * lineH;
+        const maxContentHeight = a4.height - defaultMargins.top - defaultMargins.bottom;
+
+        /**
+         * If the full text block fits on a single page but not the remaining space on the current
+         * page, start a new page to avoid splitting it across the page break.
+         */
+        if (fullHeight <= maxContentHeight) {
+            this.ensureSpace(fullHeight);
+        }
+
         let totalHeight = 0;
 
         for (const line of lines) {
