@@ -43,7 +43,7 @@ export const VirExpandableSource = defineElement<{
         ${sourceWrapperStyles}
     `,
     render({inputs, state, updateState}) {
-        const options: Readonly<RenderHtmlOptions> = mergeDefinedProperties<RenderHtmlOptions>(
+        const options: Readonly<RenderHtmlOptions> = mergeDefinedProperties(
             defaultRenderHtmlOptions,
             {
                 ...inputs.options,

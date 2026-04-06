@@ -174,7 +174,6 @@ export const VirStructuredRender = defineElement<{
                 font-weight: normal;
                 white-space: nowrap;
                 vertical-align: top;
-                background-color: #f8f9fa;
             }
 
             &.wide-table {

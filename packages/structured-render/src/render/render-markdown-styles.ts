@@ -6,7 +6,7 @@ import {
 } from '@augment-vir/common';
 import {css, CSSResult, unsafeCSS} from 'element-vir';
 import {type SingleCssVarDefinition} from 'lit-css-vars';
-import {noNativeSpacing, viraTheme} from 'vira';
+import {noNativeSpacing, viraFormCssVars, viraTheme} from 'vira';
 
 /**
  * The id attached to the content div which will be rendered to the PDF or image. Use this to create
@@ -38,7 +38,7 @@ export const baseContentResetStyles = `
  * @category Internal
  */
 export const defaultMarkdownStyleConfiguration = {
-    accentColor: 'dodgerblue',
+    accentColor: viraFormCssVars['vira-form-accent-primary-color'].value,
     bodySize: '14px',
     h1Size: '22px',
     h2Size: '18px',
@@ -52,12 +52,13 @@ export const defaultMarkdownStyleConfiguration = {
     bodyFont: 'sans-serif',
     codeFont: 'monospace',
     codeSize: '1em',
-    codeBackgroundColor: viraTheme.colors['vira-grey-behind-fg-small-body'].background.value,
+    codeBackgroundColor: viraTheme.colors['vira-grey-behind-fg-highest-contrast'].background.value,
     /** The selector used that all styles will be applied to. */
     contentSelector: `.${contentDivClass}`,
     tableBorderColor: viraTheme.colors['vira-grey-foreground-decoration'].foreground.value,
     tableBorderWidth: '1px',
-    tableHeaderBackgroundColor: viraTheme.colors['vira-grey-behind-bg-invisible'].background.value,
+    tableHeaderBackgroundColor:
+        viraTheme.colors['vira-grey-behind-fg-highest-contrast'].background.value,
 };
 
 /**

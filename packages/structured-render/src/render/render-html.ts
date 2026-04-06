@@ -20,7 +20,6 @@ import {
     testId,
     unsafeCSS,
     type HtmlInterpolation,
-    type HTMLTemplateResult,
 } from 'element-vir';
 import {
     defineTable,
@@ -66,7 +65,7 @@ export function renderStructuredHtml(
     data: Readonly<RenderInput>,
     options?: Readonly<PartialWithUndefined<RenderHtmlOptions>> | undefined,
 ): HtmlInterpolation {
-    const finalOptions: Readonly<RenderHtmlOptions> = mergeDefinedProperties<RenderHtmlOptions>(
+    const finalOptions: Readonly<RenderHtmlOptions> = mergeDefinedProperties(
         defaultRenderHtmlOptions,
         options,
     );
@@ -302,7 +301,7 @@ const htmlRenderers: Record<
                         }
 
                         const cellContent = Array.from(
-                            join<HtmlInterpolation, HTMLTemplateResult>(
+                            join(
                                 filterMap(
                                     contents,
                                     (innerContent, contentIndex) => {
@@ -379,7 +378,7 @@ const htmlRenderers: Record<
                     }
 
                     const contentTemplates = Array.from(
-                        join<HtmlInterpolation, HTMLTemplateResult>(
+                        join(
                             filterMap(
                                 contents,
                                 (innerContent, contentIndex) => {
