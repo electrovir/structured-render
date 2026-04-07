@@ -367,7 +367,7 @@ async function getTextStyleConfig(
     };
 }
 
-const iconSize = 14;
+const iconSize = 10;
 
 /**
  * Draw an icon SVG at the current cursor position. Returns the width consumed (0 if no icon was
@@ -432,7 +432,7 @@ async function renderHorizontalTable(
     builder: PdfDocumentBuilder,
     options: Readonly<RenderOptions>,
 ): Promise<void> {
-    const cellPadding = 6;
+    const cellPadding = 3;
     const columnWidths = computeColumnWidths(
         section,
         visibleHeaders,
@@ -503,7 +503,7 @@ async function renderVerticalTable(
     builder: PdfDocumentBuilder,
     options: Readonly<RenderOptions>,
 ): Promise<void> {
-    const cellPadding = 6;
+    const cellPadding = 3;
     const rowHeight = builder.lineHeight(pdfFontSizes.body) + cellPadding * 2;
 
     /** For vertical tables, each header becomes a row with entry data as columns. */
@@ -544,7 +544,7 @@ function computeColumnWidths(
     options: Readonly<RenderOptions>,
     cellPadding: number,
 ): number[] {
-    const minColumnWidth = 40;
+    const minColumnWidth = 25;
 
     const naturalWidths = visibleHeaders.map((header) => {
         const headerText = header.text ? extractSectionText(header.text, options) : header.key;

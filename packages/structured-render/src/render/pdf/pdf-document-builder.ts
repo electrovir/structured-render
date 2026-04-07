@@ -20,13 +20,13 @@ const defaultMargins = {
 
 /** Standard font sizes in points. */
 export const pdfFontSizes = {
-    body: 10,
-    h1: 18,
-    h2: 14,
-    h3: 12,
-    small: 8,
-    code: 9,
-    source: 7,
+    body: 8,
+    h1: 15,
+    h2: 12,
+    h3: 10,
+    small: 6,
+    code: 7,
+    source: 6,
 } as const;
 
 type PdfColors = {
@@ -66,10 +66,10 @@ export async function getPdfColors(): Promise<PdfColors> {
 const lineHeightMultiplier = 1.3;
 
 /** Gap between sections in points. */
-export const sectionGap = 8;
+export const sectionGap = 6;
 
 /** Gap between cards in points. */
-export const cardGap = 14;
+export const cardGap = 10;
 
 /** All embedded fonts available for PDF rendering. */
 export type PdfFonts = {

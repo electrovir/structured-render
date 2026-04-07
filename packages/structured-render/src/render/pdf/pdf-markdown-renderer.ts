@@ -464,7 +464,7 @@ async function renderMarkdownTable(
     tableToken: Tokens.Table,
     builder: PdfDocumentBuilder,
 ): Promise<void> {
-    const cellPadding = 4;
+    const cellPadding = 2;
     const rowHeight = builder.lineHeight(pdfFontSizes.body) + cellPadding * 2;
 
     /** Compute column widths from headers and cell content. */
