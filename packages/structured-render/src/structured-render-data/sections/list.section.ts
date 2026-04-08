@@ -7,14 +7,23 @@ import {structuredRenderTagShape} from './tag.section.js';
 import {structuredRenderTextShape} from './text.section.js';
 
 /**
+ * Allowed shapes for list item content.
+ *
+ * @category Internal
+ */
+export const listItemContentShape = unionShape(
+    structuredRenderTextShape,
+    structuredRenderTagShape,
+    structuredRenderEmptyShape,
+);
+
+/**
  * Shape definition for {@link StructuredRenderListItem}.
  *
  * @category Internal
  */
 export const structuredRenderListItemShape = defineShape({
-    content: nullableShape(
-        unionShape(structuredRenderTextShape, structuredRenderTagShape, structuredRenderEmptyShape),
-    ),
+    content: nullableShape(unionShape(listItemContentShape, [nullableShape(listItemContentShape)])),
     /**
      * Replaces the bullet. If a given icon key is not found in the supported list of icons, it is
      * ignored.

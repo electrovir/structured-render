@@ -140,9 +140,7 @@ async function renderSection(
 
     /** Render section-level sources. */
     if ('sources' in section && section.sources) {
-        const validSources = (
-            section.sources as (StructuredRenderSource | undefined | null)[]
-        ).filter((source): source is StructuredRenderSource => {
+        const validSources = section.sources.filter((source): source is StructuredRenderSource => {
             return !!source && sourceHasContent(source);
         });
 

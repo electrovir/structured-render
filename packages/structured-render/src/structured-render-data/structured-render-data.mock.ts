@@ -1,4 +1,4 @@
-import {Star24Icon, StatusSuccess24Icon} from 'vira';
+import {Star24Icon, StatusSuccess24Icon, ViraColorVariant} from 'vira';
 import {StructuredRenderCellDirection} from './sections/table.section.js';
 import {StructuredRenderTextStyle} from './sections/text.section.js';
 import {type StructuredRenderData} from './structured-render-data.js';
@@ -84,6 +84,30 @@ export const exampleCard: StructuredRenderData = [
                             type: StructuredRenderSectionType.text,
                             text: 'Outputs PNG',
                             style: StructuredRenderTextStyle.Small,
+                        },
+                    },
+                    {
+                        content: [
+                            {
+                                type: StructuredRenderSectionType.text,
+                                text: 'Multiple output formats:',
+                            },
+                            {
+                                type: StructuredRenderSectionType.tag,
+                                text: 'PDF',
+                                color: {
+                                    variant: ViraColorVariant.Positive,
+                                },
+                            },
+                            {
+                                type: StructuredRenderSectionType.text,
+                                text: 'Generates high-quality vector PDF documents suitable for printing.',
+                            },
+                        ],
+                        icon: {
+                            type: StructuredRenderSectionType.icon,
+                            iconKey: StatusSuccess24Icon.name,
+                            strokeColor: 'green',
                         },
                     },
                 ],

@@ -322,6 +322,11 @@ export const VirStructuredRender = defineElement<{
             gap: 4px;
         }
 
+        .list-item-content-column {
+            display: flex;
+            flex-direction: column;
+        }
+
         .collapsible-section {
             align-items: flex-start;
         }

@@ -269,6 +269,37 @@ export const multiCardMock: StructuredRenderData = [
                             },
                         ],
                     },
+                    {
+                        content: [
+                            {
+                                type: StructuredRenderSectionType.text,
+                                text: 'Optimize font loading strategy:',
+                            },
+                            {
+                                type: StructuredRenderSectionType.tag,
+                                text: 'High Priority',
+                                color: {
+                                    variant: ViraColorVariant.Danger,
+                                },
+                            },
+                            {
+                                type: StructuredRenderSectionType.text,
+                                text: 'Switch to font-display: swap and preload critical font files to eliminate render-blocking behavior.',
+                            },
+                        ],
+                        icon: {
+                            type: StructuredRenderSectionType.icon,
+                            iconKey: StatusWarning24Icon.name,
+                            strokeColor: 'orange',
+                        },
+                        sources: [
+                            {
+                                type: 'source',
+                                fileName: 'web-vitals-optimization-guide.md',
+                                quote: 'Render-blocking fonts add 200-500ms to FCP on slow connections.',
+                            },
+                        ],
+                    },
                 ],
             },
             {

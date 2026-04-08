@@ -316,7 +316,7 @@ const pdfSectionRenderers: Record<StructuredRenderSection['type'], PdfSectionRen
         const contentSections = ensureArray(rawSection.content).filter(check.isTruthy);
 
         for (const contentSection of contentSections) {
-            await renderSectionToPdf(contentSection as StructuredRenderSection, builder, options);
+            await renderSectionToPdf(contentSection, builder, options);
             builder.advanceCursor(sectionGap / 2);
         }
     },

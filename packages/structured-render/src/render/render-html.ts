@@ -158,11 +158,20 @@ const htmlRenderers: Record<
                     itemIndex,
                 ];
 
-                const itemTemplate = item.content
-                    ? renderInternalStructuredHtml(item.content, options, [
-                          ...itemKeyChain,
-                          'content',
-                      ])
+                const contentArray = ensureArray(item.content).filter(check.isTruthy);
+                const contentTemplates = contentArray.map((contentEntry, contentIndex) => {
+                    return renderInternalStructuredHtml(contentEntry, options, [
+                        ...itemKeyChain,
+                        'content',
+                        contentIndex,
+                    ]);
+                });
+                const itemTemplate = contentTemplates.length
+                    ? contentArray.length > 1
+                        ? html`
+                              <div class="list-item-content-column">${contentTemplates}</div>
+                          `
+                        : contentTemplates
                     : undefined;
 
                 const iconTemplate = item.icon
