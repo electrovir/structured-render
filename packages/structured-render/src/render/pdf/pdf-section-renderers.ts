@@ -111,7 +111,7 @@ async function renderSources(
     builder: PdfDocumentBuilder,
     options: Readonly<RenderOptions>,
 ): Promise<void> {
-    if (!sources) {
+    if (!sources || options.hideSources) {
         return;
     }
 
@@ -293,6 +293,10 @@ const pdfSectionRenderers: Record<StructuredRenderSection['type'], PdfSectionRen
     },
 
     async source(rawSection, builder, options) {
+        if (options.hideSources) {
+            return;
+        }
+
         await renderSource(rawSection, builder, options);
     },
 

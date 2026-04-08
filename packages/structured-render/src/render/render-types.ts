@@ -45,6 +45,12 @@ export type RenderOptions = Readonly<{
      * @default 'Sources'
      */
     pluralSourcesString: string;
+    /**
+     * If `true`, all sources are hidden from the rendered output.
+     *
+     * @default false
+     */
+    hideSources: boolean;
 }>;
 
 /**
@@ -56,6 +62,7 @@ export const defaultRenderOptions: Readonly<RenderOptions> = {
     icons: allIconsByName,
     sourceString: 'Source',
     pluralSourcesString: 'Sources',
+    hideSources: false,
 };
 
 /**

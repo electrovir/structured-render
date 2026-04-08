@@ -139,7 +139,7 @@ async function renderSection(
     await renderSectionToPdf(section, builder, options);
 
     /** Render section-level sources. */
-    if ('sources' in section && section.sources) {
+    if (!options.hideSources && 'sources' in section && section.sources) {
         const validSources = section.sources.filter((source): source is StructuredRenderSource => {
             return !!source && sourceHasContent(source);
         });

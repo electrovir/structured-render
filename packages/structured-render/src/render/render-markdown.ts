@@ -177,6 +177,10 @@ const markdownRenderers: Record<
         return '';
     },
     source(section: Readonly<StructuredRenderSource>, options) {
+        if (options.hideSources) {
+            return '';
+        }
+
         const filteredPageNumbers = section.pageNumbers?.filter(check.isDefined);
         const pageNumberLine = filteredPageNumbers?.length
             ? `p. ${filteredPageNumbers.join(', ')}`
@@ -269,7 +273,7 @@ function structuredRenderToMarkdownArray(
     } else if ('type' in data) {
         const sectionTitle =
             'sectionTitle' in data && !isFirstCardSection ? data.sectionTitle : undefined;
-        const sources = ('sources' in data && data.sources) || [];
+        const sources = options.hideSources ? [] : ('sources' in data && data.sources) || [];
 
         return [
             sectionTitle ? `### ${sectionTitle}` : undefined,

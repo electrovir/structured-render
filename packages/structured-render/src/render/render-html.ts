@@ -279,6 +279,10 @@ const htmlRenderers: Record<
         `;
     },
     source(section, options) {
+        if (options.hideSources) {
+            return nothing;
+        }
+
         return html`
             <${VirSource.assign({
                 options,
@@ -479,25 +483,27 @@ const htmlRenderers: Record<
             },
         );
 
-        const allRowSources = rows.map((row) => {
-            const lastCell = row.cells.at(-1);
+        const allRowSources = options.hideSources
+            ? []
+            : rows.map((row) => {
+                  const lastCell = row.cells.at(-1);
 
-            const lastCellSources =
-                section.direction === StructuredRenderCellDirection.Vertical && lastCell
-                    ? ensureArray(lastCell.data?.data[lastCell.key])
-                          .filter(check.isTruthy)
-                          .flatMap((cellContent) => {
-                              return 'sources' in cellContent
-                                  ? ensureArray(cellContent.sources)
-                                  : [];
-                          })
-                    : undefined;
+                  const lastCellSources =
+                      section.direction === StructuredRenderCellDirection.Vertical && lastCell
+                          ? ensureArray(lastCell.data?.data[lastCell.key])
+                                .filter(check.isTruthy)
+                                .flatMap((cellContent) => {
+                                    return 'sources' in cellContent
+                                        ? ensureArray(cellContent.sources)
+                                        : [];
+                                })
+                          : undefined;
 
-            return createCleanSources([
-                ...ensureArray(lastCellSources),
-                ...ensureArray(row.data?.sources),
-            ]);
-        });
+                  return createCleanSources([
+                      ...ensureArray(lastCellSources),
+                      ...ensureArray(row.data?.sources),
+                  ]);
+              });
 
         const tableHasRowSource = allRowSources.some((rowSources) => !!rowSources?.length);
         const columnCount = rows[0]?.cells.length || 0;
@@ -993,6 +999,12 @@ export function createSourceWrapper(
     rawKeyChain: ReadonlyArray<PropertyKey>,
     rawSources: SourcesInput,
 ) {
+    if (options.hideSources) {
+        return html`
+            <div class="source-content-wrapper">${content}</div>
+        `;
+    }
+
     return html`
         ${createSourceTrigger(content, options, rawKeyChain, rawSources)}
         ${createExpandingSource(options, rawKeyChain, rawSources)}
