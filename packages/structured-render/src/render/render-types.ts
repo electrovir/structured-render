@@ -11,6 +11,7 @@ import {type StructuredRenderCard} from '../structured-render-data/structured-re
 import {type StructuredRenderData} from '../structured-render-data/structured-render-data.js';
 import {type StructuredRenderSection} from '../structured-render-data/structured-render-section.js';
 import {defaultMarkdownRenderStyles} from './render-markdown-styles.js';
+import {type TableSortState} from './table-sort-event.js';
 
 /**
  * All acceptable inputs for Structured Render rendering.
@@ -89,6 +90,8 @@ export const defaultRenderMarkdownOptions: Readonly<RenderMarkdownOptions> = {
 export type RenderHtmlOptions = RenderOptions & {
     /** Currently expanded sections and sources. */
     currentlyExpanded: {[SectionKey in string]: boolean};
+    /** Current sort state for each table, keyed by the table's key chain. */
+    tableSortStates: {[TableKey in string]: TableSortState | undefined};
     /**
      * The string to use within the processing section.
      *
@@ -181,6 +184,7 @@ export const defaultRenderHtmlOptions: Readonly<RenderHtmlOptions> = {
     ...defaultRenderOptions,
     processingString: 'Processing',
     currentlyExpanded: {},
+    tableSortStates: {},
     sourceIcon: DocumentSearch24Icon,
     viewOnPageIcon: EyeOpen24Icon,
     processingIcon: LoaderAnimated24Icon,

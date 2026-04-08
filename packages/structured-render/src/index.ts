@@ -10,6 +10,7 @@ export * from './render/render-pdf.js';
 export * from './render/render-types.js';
 export * from './render/source-expansion-event.js';
 export * from './render/source-styles.js';
+export * from './render/table-sort-event.js';
 export * from './structured-render-data/create-section.js';
 export * from './structured-render-data/sections/code-block.section.js';
 export * from './structured-render-data/sections/collapsible.section.js';

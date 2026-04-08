@@ -9,6 +9,7 @@ import {contentDivClass, defaultMarkdownRenderStyles} from '../render/render-mar
 import {type RenderHtmlOptions, type RenderInput} from '../render/render-types.js';
 import {SourceExpansionEvent} from '../render/source-expansion-event.js';
 import {sourceWrapperStyles} from '../render/source-styles.js';
+import {TableSortEvent, type TableSortState} from '../render/table-sort-event.js';
 import {StructuredRenderTextStyle} from '../structured-render-data/sections/text.section.js';
 
 const iconRightMargin = css`4px`;
@@ -47,6 +48,7 @@ export const VirStructuredRender = defineElement<{
     state() {
         return {
             currentlyExpanded: {} as Record<string, boolean>,
+            tableSortStates: {} as Record<string, TableSortState | undefined>,
             lastStyleString: '',
         };
     },
@@ -196,6 +198,41 @@ export const VirStructuredRender = defineElement<{
 
             &.horizontal {
                 align-self: flex-start;
+            }
+
+            & .th-content {
+                display: inline-flex;
+                align-items: center;
+                gap: 2px;
+            }
+
+            & th.sortable {
+                cursor: pointer;
+                user-select: none;
+            }
+
+            & .sort-icon {
+                display: inline-flex;
+                align-items: center;
+                opacity: 0.25;
+                transition: opacity 0.15s;
+
+                &.sort-icon-active {
+                    opacity: 0.8;
+                }
+
+                & ${ViraIcon} {
+                    width: 16px;
+                    height: 16px;
+                }
+            }
+
+            & th.sortable:hover .sort-icon {
+                opacity: 0.6;
+
+                &.sort-icon-active {
+                    opacity: 1;
+                }
             }
 
             & .source-row td {
@@ -416,6 +453,10 @@ export const VirStructuredRender = defineElement<{
                 ...inputs.options?.currentlyExpanded,
                 ...state.currentlyExpanded,
             },
+            tableSortStates: {
+                ...inputs.options?.tableSortStates,
+                ...state.tableSortStates,
+            },
         });
 
         return html`
@@ -425,6 +466,14 @@ export const VirStructuredRender = defineElement<{
                         currentlyExpanded: {
                             ...state.currentlyExpanded,
                             [event.detail.key]: event.detail.expanded,
+                        },
+                    });
+                })}
+                ${listen(TableSortEvent, (event) => {
+                    updateState({
+                        tableSortStates: {
+                            ...state.tableSortStates,
+                            [event.detail.tableKey]: event.detail.sort,
                         },
                     });
                 })}

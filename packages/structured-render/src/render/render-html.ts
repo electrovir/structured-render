@@ -23,6 +23,7 @@ import {
 } from 'element-vir';
 import {
     defineTable,
+    lucideIcons,
     ViraCard,
     ViraCollapsibleCard,
     ViraCollapsibleWrapper,
@@ -55,6 +56,7 @@ import {
     type RenderInput,
 } from './render-types.js';
 import {SourceExpansionEvent} from './source-expansion-event.js';
+import {TableSortDirection, TableSortEvent} from './table-sort-event.js';
 
 /**
  * Render Structured Render data to HTML templates.
@@ -97,6 +99,21 @@ function formatText(text: Primitive): HtmlInterpolation {
                 : ''}
         `;
     });
+}
+
+/** Extract plain text from a section for sorting comparisons. */
+function extractCellText(section: Readonly<StructuredRenderSection> | undefined | null): string {
+    if (!section) {
+        return '';
+    } else if (section.type === StructuredRenderSectionType.text) {
+        return section.text == undefined ? '' : String(section.text);
+    } else if (section.type === StructuredRenderSectionType.inlineCode) {
+        return section.code;
+    } else if (section.type === StructuredRenderSectionType.tag) {
+        return section.text == undefined ? '' : String(section.text);
+    }
+
+    return '';
 }
 
 const htmlRenderers: Record<
@@ -357,6 +374,33 @@ const htmlRenderers: Record<
             `;
         }
 
+        const tableKey = keyChain.join('.');
+        const currentSort = options.tableSortStates[tableKey];
+        const isHorizontal = section.direction === StructuredRenderCellDirection.Horizontal;
+
+        const sortedEntries =
+            currentSort && isHorizontal
+                ? section.entries.toSorted((entryA, entryB) => {
+                      const cellA = ensureArray(entryA.data[currentSort.columnKey]).filter(
+                          check.isTruthy,
+                      );
+                      const cellB = ensureArray(entryB.data[currentSort.columnKey]).filter(
+                          check.isTruthy,
+                      );
+                      const textA = cellA.map((cell) => extractCellText(cell)).join(' ');
+                      const textB = cellB.map((cell) => extractCellText(cell)).join(' ');
+
+                      const numA = Number(textA);
+                      const numB = Number(textB);
+                      const comparison =
+                          !isNaN(numA) && !isNaN(numB) ? numA - numB : textA.localeCompare(textB);
+
+                      return currentSort.direction === TableSortDirection.Ascending
+                          ? comparison
+                          : -comparison;
+                  })
+                : section.entries;
+
         const {headerRow, rows} = defineTable(
             filterMap(
                 section.headers,
@@ -378,7 +422,7 @@ const htmlRenderers: Record<
                 },
                 check.isTruthy,
             ),
-            section.entries,
+            sortedEntries,
             (row, rowIndex) => {
                 return mapObjectValues(row.data, (key, content) => {
                     const contents = ensureArray(content).filter(check.isTruthy);
@@ -479,8 +523,71 @@ const htmlRenderers: Record<
                           <thead>
                               <tr>
                                   ${headerRow.map((headerCell) => {
+                                      const columnSortState =
+                                          currentSort?.columnKey === headerCell.key
+                                              ? currentSort.direction
+                                              : undefined;
+
+                                      const sortIcon =
+                                          columnSortState === TableSortDirection.Ascending
+                                              ? lucideIcons.SortAsc
+                                              : columnSortState === TableSortDirection.Descending
+                                                ? lucideIcons.SortDesc
+                                                : lucideIcons.ChevronsUpDown;
+
+                                      const sortIconTemplate = isHorizontal
+                                          ? html`
+                                                <span
+                                                    class=${classMap({
+                                                        'sort-icon': true,
+                                                        'sort-icon-active': !!columnSortState,
+                                                    })}
+                                                >
+                                                    <${ViraIcon.assign({
+                                                        icon: sortIcon,
+                                                    })}></${ViraIcon}>
+                                                </span>
+                                            `
+                                          : nothing;
+
                                       return html`
-                                          <th>${headerCell.content}</th>
+                                          <th
+                                              class=${classMap({
+                                                  sortable: isHorizontal,
+                                              })}
+                                              ${isHorizontal
+                                                  ? listen('click', (event) => {
+                                                        const nextSort =
+                                                            columnSortState === undefined
+                                                                ? TableSortDirection.Ascending
+                                                                : columnSortState ===
+                                                                    TableSortDirection.Ascending
+                                                                  ? TableSortDirection.Descending
+                                                                  : undefined;
+
+                                                        const eventTarget = extractEventTarget(
+                                                            event,
+                                                            HTMLElement,
+                                                        );
+
+                                                        eventTarget.dispatchEvent(
+                                                            new TableSortEvent({
+                                                                tableKey,
+                                                                sort: nextSort
+                                                                    ? {
+                                                                          columnKey: headerCell.key,
+                                                                          direction: nextSort,
+                                                                      }
+                                                                    : undefined,
+                                                            }),
+                                                        );
+                                                    })
+                                                  : nothing}
+                                          >
+                                              <span class="th-content">
+                                                  ${headerCell.content}${sortIconTemplate}
+                                              </span>
+                                          </th>
                                       `;
                                   })}
                                   ${tableHasRowSource
