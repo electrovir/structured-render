@@ -1,7 +1,7 @@
 import {log} from '@augment-vir/common';
 import {defineBookPage} from 'element-book';
 import {html, listen} from 'element-vir';
-import {downloadPdf, printPdf} from 'structured-render';
+import {downloadPdf, openPdf, printPdf} from 'structured-render';
 import {LoaderAnimated24Icon, StatusFailure24Icon, ViraButton} from 'vira';
 import {multiCardMock} from '../cards/multi-card.book.js';
 import {examplesBookPage} from '../examples.book.js';
@@ -37,9 +37,50 @@ export const downloadAndPrintBookPage = defineBookPage({
                                 isLoading: true,
                             });
                             try {
-                                await printPdf(multiCardMock);
+                                await printPdf(multiCardMock, 'mock card.pdf');
                             } catch (error) {
                                 log.error('Failed to print PDF', error);
+                                updateState({
+                                    isError: true,
+                                });
+                            } finally {
+                                updateState({
+                                    isLoading: false,
+                                });
+                            }
+                        })}
+                    ></${ViraButton}>
+                `;
+            },
+        });
+
+        defineExample({
+            title: 'open',
+            state() {
+                return {
+                    isLoading: false,
+                    isError: false,
+                };
+            },
+            render({state, updateState}) {
+                return html`
+                    <${ViraButton.assign({
+                        text: 'Open',
+                        isDisabled: state.isLoading,
+                        icon: state.isError
+                            ? StatusFailure24Icon
+                            : state.isLoading
+                              ? LoaderAnimated24Icon
+                              : undefined,
+                    })}
+                        ${listen('click', async () => {
+                            updateState({
+                                isLoading: true,
+                            });
+                            try {
+                                await openPdf(multiCardMock, 'structured-render-open');
+                            } catch (error) {
+                                log.error('Failed to open PDF', error);
                                 updateState({
                                     isError: true,
                                 });
@@ -78,9 +119,7 @@ export const downloadAndPrintBookPage = defineBookPage({
                                 isLoading: true,
                             });
                             try {
-                                await downloadPdf(multiCardMock, {
-                                    fileName: 'structured-render-download',
-                                });
+                                await downloadPdf(multiCardMock, 'structured-render-download.pdf');
                             } catch (error) {
                                 log.error('Failed to download PDF', error);
                                 updateState({

@@ -4,6 +4,15 @@ import {renderToPdfBytes} from './pdf/pdf-render.js';
 import {type RenderInput, type RenderOptions} from './render-types.js';
 
 /**
+ * Ensures that a given file name has a `.pdf` extension (case insensitive).
+ *
+ * @category Internal
+ */
+export function ensurePdfExtension(fileName: string): string {
+    return fileName.toLowerCase().endsWith('.pdf') ? fileName : `${fileName}.pdf`;
+}
+
+/**
  * Render structured data to a PDF. Works in both browser and Node.js.
  *
  * @category Render
@@ -23,13 +32,8 @@ export async function renderToPdf(
  */
 export async function downloadPdf(
     renderInput: Readonly<RenderInput>,
-    {
-        fileName,
-        options,
-    }: Readonly<{
-        fileName: string;
-        options?: PartialWithUndefined<RenderOptions> | undefined;
-    }>,
+    fileName: string,
+    options: PartialWithUndefined<RenderOptions> | undefined = {},
 ): Promise<void> {
     if (!isRuntimeEnv(RuntimeEnv.Web)) {
         throw new Error(`${downloadPdf.name} cannot run outside of a browser.`);
@@ -42,12 +46,42 @@ export async function downloadPdf(
     const blobUrl = URL.createObjectURL(blob);
     const anchor = globalThis.document.createElement('a');
     anchor.href = blobUrl;
-    anchor.download = fileName.endsWith('.pdf') ? fileName : `${fileName}.pdf`;
+    anchor.download = ensurePdfExtension(fileName);
     anchor.style.display = 'none';
     globalThis.document.body.append(anchor);
     anchor.click();
     anchor.remove();
     URL.revokeObjectURL(blobUrl);
+}
+
+/**
+ * Render structured data to a PDF and open it in a new browser tab. Only works in a browser, not
+ * Node.js.
+ *
+ * @category Render
+ */
+export async function openPdf(
+    renderInput: Readonly<RenderInput>,
+    fileName: string,
+    options: PartialWithUndefined<RenderOptions> | undefined = {},
+): Promise<void> {
+    if (!isRuntimeEnv(RuntimeEnv.Web)) {
+        throw new Error(`${openPdf.name} cannot run outside of a browser.`);
+    }
+
+    const pdfBytes = await renderToPdfBytes(renderInput, options);
+    const blob = new Blob([new Uint8Array(pdfBytes)], {
+        type: 'application/pdf',
+    });
+    const blobUrl = URL.createObjectURL(blob);
+    const pdfWindow = globalThis.window.open(blobUrl);
+
+    if (!pdfWindow) {
+        URL.revokeObjectURL(blobUrl);
+        throw new Error('Failed to open PDF tab. Check your popup blocker settings.');
+    }
+
+    pdfWindow.document.title = ensurePdfExtension(fileName);
 }
 
 /**
@@ -58,7 +92,8 @@ export async function downloadPdf(
  */
 export async function printPdf(
     renderInput: Readonly<RenderInput>,
-    options?: Readonly<PartialWithUndefined<RenderOptions>> | undefined,
+    fileName: string,
+    options: PartialWithUndefined<RenderOptions> | undefined = {},
 ): Promise<void> {
     if (!isRuntimeEnv(RuntimeEnv.Web)) {
         throw new Error(`${printPdf.name} cannot run outside of a browser.`);
@@ -95,6 +130,10 @@ export async function printPdf(
             throw new Error('Failed to open print window. Check your popup blocker settings.');
         }
 
+        if (fileName) {
+            printWindow.document.title = ensurePdfExtension(fileName);
+        }
+
         return;
     }
 
@@ -107,6 +146,11 @@ export async function printPdf(
     printFrame.style.border = 'none';
     printFrame.style.opacity = '0';
     printFrame.src = blobUrl;
+
+    if (fileName) {
+        printFrame.title = ensurePdfExtension(fileName);
+    }
+
     globalThis.document.body.append(printFrame);
 
     await new Promise<void>((resolve) => {
@@ -127,6 +171,10 @@ export async function printPdf(
         URL.revokeObjectURL(blobUrl);
         printFrame.remove();
         return;
+    }
+
+    if (fileName) {
+        contentWindow.document.title = ensurePdfExtension(fileName);
     }
 
     /**
