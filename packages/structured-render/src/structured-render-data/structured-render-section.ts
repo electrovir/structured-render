@@ -4,7 +4,6 @@ import {unionShape} from 'object-shape-tester';
 import {structuredRenderCodeBlockShape} from './sections/code-block.section.js';
 import {collapsibleSectionShape} from './sections/collapsible.section.js';
 import {structuredRenderEmptyShape} from './sections/empty.section.js';
-import {structuredRenderHeadingShape} from './sections/heading.section.js';
 import {structuredRenderIconShape} from './sections/icon.section.js';
 import {structuredRenderInlineCodeShape} from './sections/inline-code.section.js';
 import {structuredRenderListShape} from './sections/list.section.js';
@@ -14,6 +13,7 @@ import {sourceHasContent, structuredRenderSourceShape} from './sections/source.s
 import {structuredRenderTableShape, type StructuredRenderTable} from './sections/table.section.js';
 import {structuredRenderTagShape} from './sections/tag.section.js';
 import {structuredRenderTextShape} from './sections/text.section.js';
+import {structuredRenderTitleShape} from './sections/title.section.js';
 
 /**
  * All structured render section shapes.
@@ -25,7 +25,7 @@ export const allStructuredRenderSectionShapes = [
     renderDataMarkdownShape,
     structuredRenderCodeBlockShape,
     structuredRenderEmptyShape,
-    structuredRenderHeadingShape,
+    structuredRenderTitleShape,
     structuredRenderIconShape,
     structuredRenderInlineCodeShape,
     structuredRenderListShape,
@@ -111,7 +111,7 @@ export function doesSectionHaveContent(
         });
     } else if (
         section.type === StructuredRenderSectionType.text ||
-        section.type === StructuredRenderSectionType.heading
+        section.type === StructuredRenderSectionType.title
     ) {
         return !!String(section.text) || !!section.icon;
     } else if (section.type === StructuredRenderSectionType.source) {

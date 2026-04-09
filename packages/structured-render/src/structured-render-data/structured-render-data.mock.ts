@@ -6,6 +6,14 @@ import {StructuredRenderSectionType} from './structured-render-section.js';
 
 export const exampleCard: StructuredRenderData = [
     {
+        sections: [
+            {
+                type: StructuredRenderSectionType.title,
+                text: 'Structured Render Demo',
+            },
+        ],
+    },
+    {
         cardTitle: 'Example Structured Render',
         sections: [
             {

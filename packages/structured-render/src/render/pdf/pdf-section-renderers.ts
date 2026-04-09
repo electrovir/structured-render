@@ -58,7 +58,7 @@ export function extractSectionText(
         return section.code;
     } else if (
         section.type === StructuredRenderSectionType.tag ||
-        section.type === StructuredRenderSectionType.heading
+        section.type === StructuredRenderSectionType.title
     ) {
         return section.text == undefined ? '' : String(section.text);
     } else if (section.type === StructuredRenderSectionType.markdown) {
@@ -126,7 +126,7 @@ async function renderSources(
 }
 
 const pdfSectionRenderers: Record<StructuredRenderSection['type'], PdfSectionRenderer> = {
-    async heading(rawSection, builder, options) {
+    async title(rawSection, builder, options) {
         if (rawSection.text == undefined) {
             return;
         }
@@ -141,7 +141,7 @@ const pdfSectionRenderers: Record<StructuredRenderSection['type'], PdfSectionRen
 
         await builder.drawWrappedText(text, {
             font: builder.fonts.bold,
-            size: pdfFontSizes.h3,
+            size: pdfFontSizes.h1,
             x: iconWidth ? builder.contentX + iconWidth + 4 : undefined,
             maxWidth: iconWidth ? builder.contentWidth - iconWidth - 4 : undefined,
         });

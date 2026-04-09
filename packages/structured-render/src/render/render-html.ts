@@ -715,7 +715,7 @@ const htmlRenderers: Record<
             </table>
         `;
     },
-    heading(section, options, keyChain) {
+    title(section, options, keyChain) {
         const formattedText = formatText(section.text);
 
         if (!formattedText) {
@@ -727,7 +727,7 @@ const htmlRenderers: Record<
                 ...keyChain,
                 'icon',
             ])}
-            <h2 class="heading-section-text-content">${formattedText}</h2>
+            <h1 class="title-section-text-content">${formattedText}</h1>
         `;
     },
     text(section, options, keyChain) {

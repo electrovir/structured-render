@@ -11,7 +11,6 @@ import {
 } from '@augment-vir/common';
 import {convertTemplateToString} from 'element-vir';
 import {type StructuredRenderCodeBlock} from '../structured-render-data/sections/code-block.section.js';
-import {type StructuredRenderHeading} from '../structured-render-data/sections/heading.section.js';
 import {
     createStructuredRenderIcon,
     type StructuredRenderIcon,
@@ -29,6 +28,7 @@ import {
     StructuredRenderTextStyle,
     type StructuredRenderText,
 } from '../structured-render-data/sections/text.section.js';
+import {type StructuredRenderTitle} from '../structured-render-data/sections/title.section.js';
 import {type StructuredRenderSection} from '../structured-render-data/structured-render-section.js';
 import {
     defaultRenderMarkdownOptions,
@@ -213,7 +213,7 @@ const markdownRenderers: Record<
             ...dataRows.map((row) => formatRow(row, colWidths)),
         ].join('\n');
     },
-    heading(section: Readonly<StructuredRenderHeading>, options) {
+    title(section: Readonly<StructuredRenderTitle>, options) {
         if (section.text == undefined) {
             return '';
         }
@@ -221,7 +221,7 @@ const markdownRenderers: Record<
         const icon = renderStructuredMarkdown(section.icon, options);
         const text = String(section.text);
 
-        return icon ? `## ${icon} ${text}` : `## ${text}`;
+        return icon ? `# ${icon} ${text}` : `# ${text}`;
     },
     text(section: Readonly<StructuredRenderText>, options) {
         if (section.text == undefined) {
