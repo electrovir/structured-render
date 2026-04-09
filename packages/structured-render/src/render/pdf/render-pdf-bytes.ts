@@ -21,10 +21,15 @@ import {renderSectionToPdf} from './pdf-section-renderers.js';
  */
 export async function renderToPdfBytes(
     data: Readonly<RenderInput>,
-    options?: Readonly<PartialWithUndefined<RenderOptions>> | undefined,
+    fileName: string,
+    options: Readonly<PartialWithUndefined<RenderOptions>> = {},
 ): Promise<Uint8Array> {
     const finalOptions = mergeDefinedProperties(defaultRenderOptions, options);
     const builder = await PdfDocumentBuilder.create();
+
+    if (fileName) {
+        builder.pdfDoc.setTitle(fileName);
+    }
 
     await renderInput(data, builder, finalOptions);
 

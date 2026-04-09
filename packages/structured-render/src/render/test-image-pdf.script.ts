@@ -62,7 +62,7 @@ const testData: StructuredRenderData = [
 
 try {
     log.info(`Rendering PDF to ${outputPath}...`);
-    const pdfBytes = await renderToPdf(testData);
+    const pdfBytes = await renderToPdf(testData, 'test-file.pdf');
     await mkdir(dirname(outputPath), {
         recursive: true,
     });

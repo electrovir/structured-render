@@ -25,6 +25,7 @@ import {
     measureTextWidth,
     pdfFontSizes,
     sectionGap,
+    wrapText,
     type PdfDocumentBuilder,
 } from './pdf-document-builder.js';
 import {renderMarkdownTokensToPdf} from './pdf-markdown-renderer.js';
@@ -468,7 +469,6 @@ async function renderHorizontalTable(
         options,
         cellPadding,
     );
-    const rowHeight = builder.lineHeight(pdfFontSizes.body) + cellPadding * 2;
 
     /** Draw header row. */
     await drawTableRow({
@@ -476,7 +476,6 @@ async function renderHorizontalTable(
             return header.text ? extractSectionText(header.text, options) : header.key;
         }),
         columnWidths,
-        rowHeight,
         builder,
         cellPadding,
         isHeader: true,
@@ -496,7 +495,6 @@ async function renderHorizontalTable(
         await drawTableRow({
             cells,
             columnWidths,
-            rowHeight,
             builder,
             cellPadding,
             isHeader: false,
@@ -515,7 +513,8 @@ async function renderHorizontalTable(
                 .join(' ');
 
             if (text) {
-                builder.ensureSpace(rowHeight);
+                const lineH = builder.lineHeight(pdfFontSizes.body);
+                builder.ensureSpace(lineH);
                 await builder.drawWrappedText(text, {
                     font: builder.fonts.bold,
                     size: pdfFontSizes.body,
@@ -532,7 +531,6 @@ async function renderVerticalTable(
     options: Readonly<RenderOptions>,
 ): Promise<void> {
     const cellPadding = 3;
-    const rowHeight = builder.lineHeight(pdfFontSizes.body) + cellPadding * 2;
 
     /** For vertical tables, each header becomes a row with entry data as columns. */
     const columnWidth = builder.contentWidth / (section.entries.length + 1);
@@ -556,7 +554,6 @@ async function renderVerticalTable(
         await drawTableRow({
             cells,
             columnWidths,
-            rowHeight,
             builder,
             cellPadding,
             isHeader: false,
@@ -610,7 +607,6 @@ function computeColumnWidths(
 async function drawTableRow({
     cells,
     columnWidths,
-    rowHeight,
     builder,
     cellPadding,
     isHeader,
@@ -618,12 +614,25 @@ async function drawTableRow({
 }: Readonly<{
     cells: ReadonlyArray<string>;
     columnWidths: ReadonlyArray<number>;
-    rowHeight: number;
     builder: PdfDocumentBuilder;
     cellPadding: number;
     isHeader: boolean;
     boldFirstCell?: boolean | undefined;
 }>): Promise<void> {
+    const lineH = builder.lineHeight(pdfFontSizes.body);
+
+    /** Wrap each cell's text and determine the row height from the tallest cell. */
+    const cellWrappedLines = cells.map((cellText, cellIndex) => {
+        const columnWidth = columnWidths[cellIndex] ?? 60;
+        const useBold = isHeader || (boldFirstCell && cellIndex === 0);
+        const font = useBold ? builder.fonts.bold : builder.fonts.regular;
+        const maxTextWidth = columnWidth - cellPadding * 2;
+        return wrapText(cellText, font, pdfFontSizes.body, maxTextWidth);
+    });
+
+    const maxLineCount = Math.max(1, ...cellWrappedLines.map((lines) => lines.length));
+    const rowHeight = maxLineCount * lineH + cellPadding * 2;
+
     builder.ensureSpace(rowHeight);
 
     const rowTop = builder.getCursorY();
@@ -638,32 +647,23 @@ async function drawTableRow({
 
     for (const [
         cellIndex,
-        cellText,
-    ] of cells.entries()) {
+        lines,
+    ] of cellWrappedLines.entries()) {
         const columnWidth = columnWidths[cellIndex] ?? 60;
         const useBold = isHeader || (boldFirstCell && cellIndex === 0);
         const font = useBold ? builder.fonts.bold : builder.fonts.regular;
 
-        /** Truncate text to fit within column. */
-        let displayText = cellText;
-        const maxTextWidth = columnWidth - cellPadding * 2;
-
-        if (measureTextWidth(displayText, font, pdfFontSizes.body) > maxTextWidth) {
-            while (
-                displayText.length > 1 &&
-                measureTextWidth(displayText + '...', font, pdfFontSizes.body) > maxTextWidth
-            ) {
-                displayText = displayText.slice(0, -1);
-            }
-            displayText += '...';
+        for (const [
+            lineIndex,
+            line,
+        ] of lines.entries()) {
+            await builder.drawTextLine(line, {
+                font,
+                size: pdfFontSizes.body,
+                x: cellX + cellPadding,
+                y: rowTop - cellPadding - pdfFontSizes.body - lineIndex * lineH,
+            });
         }
-
-        await builder.drawTextLine(displayText, {
-            font,
-            size: pdfFontSizes.body,
-            x: cellX + cellPadding,
-            y: rowBottom + cellPadding,
-        });
 
         cellX += columnWidth;
     }

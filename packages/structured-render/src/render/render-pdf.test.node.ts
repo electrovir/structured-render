@@ -35,7 +35,7 @@ describe(renderToPdf.name, () => {
         const pngFileName = extractTestNameAsDir(testContext) + '.png';
         const comparisonOutputPath = join(testComparisonDirPath, pngFileName);
 
-        const pdfBytes = await renderToPdf(exampleCard);
+        const pdfBytes = await renderToPdf(exampleCard, 'test');
 
         await mkdir(testOutputDirPath, {
             recursive: true,
@@ -82,7 +82,7 @@ describe(renderToPdf.name, () => {
             },
         ];
 
-        const pdfBytes = await renderToPdf(dataWithImage);
+        const pdfBytes = await renderToPdf(dataWithImage, 'test');
 
         await mkdir(testOutputDirPath, {
             recursive: true,

@@ -13,6 +13,14 @@ import {cardsBookPage} from '../cards.book.js';
 
 export const multiCardMock: StructuredRenderData = [
     {
+        sections: [
+            {
+                type: StructuredRenderSectionType.title,
+                text: 'Here is my title',
+            },
+        ],
+    },
+    {
         cardTitle: 'Frontend Performance',
         cardTitleIcon: {
             type: StructuredRenderSectionType.icon,
