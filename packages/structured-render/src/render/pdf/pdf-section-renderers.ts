@@ -56,7 +56,10 @@ export function extractSectionText(
         return section.text == undefined ? '' : String(section.text);
     } else if (section.type === StructuredRenderSectionType.inlineCode) {
         return section.code;
-    } else if (section.type === StructuredRenderSectionType.tag) {
+    } else if (
+        section.type === StructuredRenderSectionType.tag ||
+        section.type === StructuredRenderSectionType.heading
+    ) {
         return section.text == undefined ? '' : String(section.text);
     } else if (section.type === StructuredRenderSectionType.markdown) {
         return section.markdown;
@@ -123,6 +126,27 @@ async function renderSources(
 }
 
 const pdfSectionRenderers: Record<StructuredRenderSection['type'], PdfSectionRenderer> = {
+    async heading(rawSection, builder, options) {
+        if (rawSection.text == undefined) {
+            return;
+        }
+
+        const text = String(rawSection.text);
+
+        if (!text) {
+            return;
+        }
+
+        const iconWidth = drawIcon(rawSection.icon, builder, options);
+
+        await builder.drawWrappedText(text, {
+            font: builder.fonts.bold,
+            size: pdfFontSizes.h3,
+            x: iconWidth ? builder.contentX + iconWidth + 4 : undefined,
+            maxWidth: iconWidth ? builder.contentWidth - iconWidth - 4 : undefined,
+        });
+    },
+
     async text(rawSection, builder, options) {
         if (rawSection.text == undefined) {
             return;

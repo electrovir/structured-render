@@ -11,6 +11,7 @@ import {
 } from '@augment-vir/common';
 import {convertTemplateToString} from 'element-vir';
 import {type StructuredRenderCodeBlock} from '../structured-render-data/sections/code-block.section.js';
+import {type StructuredRenderHeading} from '../structured-render-data/sections/heading.section.js';
 import {
     createStructuredRenderIcon,
     type StructuredRenderIcon,
@@ -211,6 +212,16 @@ const markdownRenderers: Record<
             formatSeparatorRow(colWidths),
             ...dataRows.map((row) => formatRow(row, colWidths)),
         ].join('\n');
+    },
+    heading(section: Readonly<StructuredRenderHeading>, options) {
+        if (section.text == undefined) {
+            return '';
+        }
+
+        const icon = renderStructuredMarkdown(section.icon, options);
+        const text = String(section.text);
+
+        return icon ? `## ${icon} ${text}` : `## ${text}`;
     },
     text(section: Readonly<StructuredRenderText>, options) {
         if (section.text == undefined) {

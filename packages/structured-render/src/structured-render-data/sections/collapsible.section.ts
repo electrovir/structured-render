@@ -2,6 +2,7 @@ import {primitiveShape, unionShape} from 'object-shape-tester';
 import {createStructuredRenderSection} from '../create-section.js';
 import {structuredRenderCodeBlockShape} from './code-block.section.js';
 import {structuredRenderEmptyShape} from './empty.section.js';
+import {structuredRenderHeadingShape} from './heading.section.js';
 import {structuredRenderIconShape} from './icon.section.js';
 import {structuredRenderInlineCodeShape} from './inline-code.section.js';
 import {structuredRenderListShape} from './list.section.js';
@@ -20,15 +21,16 @@ export const collapsibleSectionShape = createStructuredRenderSection('collapsibl
     header: primitiveShape(),
     content: [
         unionShape(
+            renderDataMarkdownShape,
             structuredRenderCodeBlockShape,
             structuredRenderEmptyShape,
+            structuredRenderHeadingShape,
             structuredRenderIconShape,
             structuredRenderInlineCodeShape,
             structuredRenderListShape,
-            renderDataMarkdownShape,
             structuredRenderProcessingShape,
-            structuredRenderTagShape,
             structuredRenderTableShape,
+            structuredRenderTagShape,
             structuredRenderTextShape,
         ),
     ],

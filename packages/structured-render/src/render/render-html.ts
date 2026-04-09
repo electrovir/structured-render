@@ -45,6 +45,7 @@ import {
 import {
     StructuredRenderCellDirection,
     StructuredRenderTableFooterAlignment,
+    type StructuredRenderShapesAllowedInTable,
 } from '../structured-render-data/sections/table.section.js';
 import {
     StructuredRenderSectionType,
@@ -102,7 +103,9 @@ function formatText(text: Primitive): HtmlInterpolation {
 }
 
 /** Extract plain text from a section for sorting comparisons. */
-function extractCellText(section: Readonly<StructuredRenderSection> | undefined | null): string {
+function extractCellText(
+    section: Readonly<StructuredRenderShapesAllowedInTable> | undefined | null,
+): string {
     if (!section) {
         return '';
     } else if (section.type === StructuredRenderSectionType.text) {
@@ -710,6 +713,21 @@ const htmlRenderers: Record<
                       `
                     : nothing}
             </table>
+        `;
+    },
+    heading(section, options, keyChain) {
+        const formattedText = formatText(section.text);
+
+        if (!formattedText) {
+            return undefined;
+        }
+
+        return html`
+            ${renderInternalStructuredHtml(section.icon, options, [
+                ...keyChain,
+                'icon',
+            ])}
+            <h2 class="heading-section-text-content">${formattedText}</h2>
         `;
     },
     text(section, options, keyChain) {

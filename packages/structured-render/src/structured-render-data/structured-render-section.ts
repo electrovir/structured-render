@@ -4,6 +4,7 @@ import {unionShape} from 'object-shape-tester';
 import {structuredRenderCodeBlockShape} from './sections/code-block.section.js';
 import {collapsibleSectionShape} from './sections/collapsible.section.js';
 import {structuredRenderEmptyShape} from './sections/empty.section.js';
+import {structuredRenderHeadingShape} from './sections/heading.section.js';
 import {structuredRenderIconShape} from './sections/icon.section.js';
 import {structuredRenderInlineCodeShape} from './sections/inline-code.section.js';
 import {structuredRenderListShape} from './sections/list.section.js';
@@ -20,18 +21,19 @@ import {structuredRenderTextShape} from './sections/text.section.js';
  * @category Internal
  */
 export const allStructuredRenderSectionShapes = [
-    structuredRenderCodeBlockShape,
-    structuredRenderInlineCodeShape,
-    structuredRenderEmptyShape,
-    structuredRenderListShape,
+    collapsibleSectionShape,
     renderDataMarkdownShape,
-    structuredRenderTagShape,
+    structuredRenderCodeBlockShape,
+    structuredRenderEmptyShape,
+    structuredRenderHeadingShape,
+    structuredRenderIconShape,
+    structuredRenderInlineCodeShape,
+    structuredRenderListShape,
     structuredRenderProcessingShape,
     structuredRenderSourceShape,
     structuredRenderTableShape,
+    structuredRenderTagShape,
     structuredRenderTextShape,
-    structuredRenderIconShape,
-    collapsibleSectionShape,
 ] as const;
 
 /**
@@ -107,7 +109,10 @@ export function doesSectionHaveContent(
                 ensureArray(value).some((innerValue) => doesSectionHaveContent(innerValue)),
             );
         });
-    } else if (section.type === StructuredRenderSectionType.text) {
+    } else if (
+        section.type === StructuredRenderSectionType.text ||
+        section.type === StructuredRenderSectionType.heading
+    ) {
         return !!String(section.text) || !!section.icon;
     } else if (section.type === StructuredRenderSectionType.source) {
         return sourceHasContent(section);
