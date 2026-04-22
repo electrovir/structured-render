@@ -1,11 +1,11 @@
-import {defineShape, exactShape} from 'object-shape-tester';
+import {exactShape, unsafeShape} from 'object-shape-tester';
 
 /**
  * Shape definition for {@link StructuredRenderProcessing}.
  *
  * @category Internal
  */
-export const structuredRenderProcessingShape = defineShape({
+export const structuredRenderProcessingShape = unsafeShape<StructuredRenderProcessing>({
     type: exactShape('processing'),
 });
 
@@ -14,4 +14,6 @@ export const structuredRenderProcessingShape = defineShape({
  *
  * @category Section
  */
-export type StructuredRenderProcessing = typeof structuredRenderProcessingShape.runtimeType;
+export type StructuredRenderProcessing = {
+    type: 'processing';
+};

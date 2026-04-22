@@ -1,20 +1,28 @@
-import {defineShape, nullableShape} from 'object-shape-tester';
-import {structuredRenderIconShape} from './sections/icon.section.js';
-import {structuredRenderSectionShape} from './structured-render-section.js';
+import {nullableShape, unsafeShape} from 'object-shape-tester';
+import {structuredRenderIconShape, type StructuredRenderIcon} from './sections/icon.section.js';
+import {
+    structuredRenderSectionShape,
+    type StructuredRenderSection,
+} from './structured-render-section.js';
+
+/**
+ * A card with structured render sections.
+ *
+ * @category Structured Render Data
+ */
+export type StructuredRenderCard = {
+    cardTitle?: string | null | undefined;
+    cardTitleIcon?: StructuredRenderIcon | null | undefined;
+    sections: (StructuredRenderSection | null | undefined)[];
+};
 
 /**
  * Shape definition for {@link StructuredRenderCard}.
  *
  * @category Internal
  */
-export const structuredRenderCardShape = defineShape({
+export const structuredRenderCardShape = unsafeShape<StructuredRenderCard>({
     cardTitle: nullableShape(''),
     cardTitleIcon: nullableShape(structuredRenderIconShape),
     sections: [nullableShape(structuredRenderSectionShape)],
 });
-/**
- * A card with structured render sections.
- *
- * @category Structured Render Data
- */
-export type StructuredRenderCard = typeof structuredRenderCardShape.runtimeType;

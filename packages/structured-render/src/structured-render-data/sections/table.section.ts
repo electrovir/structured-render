@@ -1,14 +1,20 @@
 import {type ArrayElement} from '@augment-vir/common';
 import {enumShape, nullableShape, recordShape, unionShape} from 'object-shape-tester';
-import {createStructuredRenderSection} from '../create-section.js';
-import {structuredRenderEmptyShape} from './empty.section.js';
-import {structuredRenderInlineCodeShape} from './inline-code.section.js';
-import {structuredRenderListShape} from './list.section.js';
-import {renderDataMarkdownShape} from './markdown.section.js';
-import {structuredRenderProcessingShape} from './processing.section.js';
+import {createStructuredRenderSection, type SectionType} from '../create-section.js';
+import {structuredRenderEmptyShape, type StructuredRenderEmpty} from './empty.section.js';
+import {
+    structuredRenderInlineCodeShape,
+    type StructuredRenderInlineCode,
+} from './inline-code.section.js';
+import {structuredRenderListShape, type StructuredRenderList} from './list.section.js';
+import {renderDataMarkdownShape, type RenderDataMarkdown} from './markdown.section.js';
+import {
+    structuredRenderProcessingShape,
+    type StructuredRenderProcessing,
+} from './processing.section.js';
 import {structuredRenderSourceShape, type StructuredRenderSource} from './source.section.js';
-import {structuredRenderTagShape} from './tag.section.js';
-import {structuredRenderTextShape} from './text.section.js';
+import {structuredRenderTagShape, type StructuredRenderTag} from './tag.section.js';
+import {structuredRenderTextShape, type StructuredRenderText} from './text.section.js';
 
 /**
  * Footer alignment options for {@link StructuredRenderTable}.
@@ -43,6 +49,20 @@ export enum StructuredRenderCellDirection {
 }
 
 /**
+ * All sections allowed inside {@link StructuredRenderTable} cells.
+ *
+ * @category Internal
+ */
+export type StructuredRenderShapesAllowedInTable =
+    | StructuredRenderText
+    | StructuredRenderInlineCode
+    | RenderDataMarkdown
+    | StructuredRenderTag
+    | StructuredRenderList
+    | StructuredRenderEmpty
+    | StructuredRenderProcessing;
+
+/**
  * All section shapes allowed inside {@link StructuredRenderTable} cells.
  *
  * @category Internal
@@ -56,29 +76,59 @@ export const structuredRenderShapesAllowedInTableShape = unionShape(
     structuredRenderEmptyShape,
     structuredRenderProcessingShape,
 );
+
 /**
- * All section shapes allowed inside {@link StructuredRenderTable} cells.
+ * A section that renders a table.
  *
- * @category Internal
+ * @category Section
  */
-export type StructuredRenderShapesAllowedInTable =
-    typeof structuredRenderShapesAllowedInTableShape.runtimeType;
+export type StructuredRenderTable = SectionType<
+    'table',
+    {
+        direction: StructuredRenderCellDirection;
+        headers: {
+            key: string;
+            text?: StructuredRenderText | null | undefined;
+            /**
+             * If `true`, all data associated with this header (the column / row) is not rendered at
+             * all.
+             */
+            hidden?: boolean | null | undefined;
+        }[];
+        entries: {
+            data: Record<
+                string,
+                | (StructuredRenderShapesAllowedInTable | null | undefined)
+                | (StructuredRenderShapesAllowedInTable | null | undefined)[]
+            >;
+            sources?: (StructuredRenderSource | null | undefined)[] | null | undefined;
+        }[];
+        footerRows?:
+            | {
+                  /** @default StructuredRenderTableFooterAlignment.Left */
+                  alignment?: StructuredRenderTableFooterAlignment | null | undefined;
+                  cells:
+                      | (StructuredRenderShapesAllowedInTable | null | undefined)
+                      | (StructuredRenderShapesAllowedInTable | null | undefined)[];
+              }[]
+            | null
+            | undefined;
+    }
+>;
 
 /**
  * Shape definition for {@link StructuredRenderTable}.
  *
  * @category Internal
  */
-export const structuredRenderTableShape = createStructuredRenderSection('table', {
+export const structuredRenderTableShape = createStructuredRenderSection(
+    'table',
+)<StructuredRenderTable>({
     direction: enumShape(StructuredRenderCellDirection),
     headers: [
         {
             key: '',
             text: nullableShape(structuredRenderTextShape),
-            /**
-             * If `true`, all data associated with this header (the column / row) is not rendered at
-             * all.
-             */
             hidden: nullableShape(false),
         },
     ],
@@ -95,7 +145,6 @@ export const structuredRenderTableShape = createStructuredRenderSection('table',
     ],
     footerRows: nullableShape([
         {
-            /** @default StructuredRenderTableFooterAlignment.Left */
             alignment: nullableShape(enumShape(StructuredRenderTableFooterAlignment)),
             cells: unionShape(nullableShape(structuredRenderShapesAllowedInTableShape), [
                 nullableShape(structuredRenderShapesAllowedInTableShape),
@@ -103,13 +152,6 @@ export const structuredRenderTableShape = createStructuredRenderSection('table',
         },
     ]),
 });
-
-/**
- * A section that renders a table.
- *
- * @category Section
- */
-export type StructuredRenderTable = typeof structuredRenderTableShape.runtimeType;
 
 /**
  * A helper for defining a {@link StructuredRenderTable} instance.

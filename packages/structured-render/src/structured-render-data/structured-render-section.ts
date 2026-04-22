@@ -1,19 +1,32 @@
 import {assert} from '@augment-vir/assert';
 import {arrayToObject, ensureArray, type AnyObject} from '@augment-vir/common';
 import {unionShape} from 'object-shape-tester';
-import {structuredRenderCodeBlockShape} from './sections/code-block.section.js';
-import {collapsibleSectionShape} from './sections/collapsible.section.js';
-import {structuredRenderEmptyShape} from './sections/empty.section.js';
-import {structuredRenderIconShape} from './sections/icon.section.js';
-import {structuredRenderInlineCodeShape} from './sections/inline-code.section.js';
-import {structuredRenderListShape} from './sections/list.section.js';
-import {renderDataMarkdownShape} from './sections/markdown.section.js';
-import {structuredRenderProcessingShape} from './sections/processing.section.js';
-import {sourceHasContent, structuredRenderSourceShape} from './sections/source.section.js';
+import {
+    structuredRenderCodeBlockShape,
+    type StructuredRenderCodeBlock,
+} from './sections/code-block.section.js';
+import {collapsibleSectionShape, type CollapsibleSection} from './sections/collapsible.section.js';
+import {structuredRenderEmptyShape, type StructuredRenderEmpty} from './sections/empty.section.js';
+import {structuredRenderIconShape, type StructuredRenderIcon} from './sections/icon.section.js';
+import {
+    structuredRenderInlineCodeShape,
+    type StructuredRenderInlineCode,
+} from './sections/inline-code.section.js';
+import {structuredRenderListShape, type StructuredRenderList} from './sections/list.section.js';
+import {renderDataMarkdownShape, type RenderDataMarkdown} from './sections/markdown.section.js';
+import {
+    structuredRenderProcessingShape,
+    type StructuredRenderProcessing,
+} from './sections/processing.section.js';
+import {
+    sourceHasContent,
+    structuredRenderSourceShape,
+    type StructuredRenderSource,
+} from './sections/source.section.js';
 import {structuredRenderTableShape, type StructuredRenderTable} from './sections/table.section.js';
-import {structuredRenderTagShape} from './sections/tag.section.js';
-import {structuredRenderTextShape} from './sections/text.section.js';
-import {structuredRenderTitleShape} from './sections/title.section.js';
+import {structuredRenderTagShape, type StructuredRenderTag} from './sections/tag.section.js';
+import {structuredRenderTextShape, type StructuredRenderText} from './sections/text.section.js';
+import {structuredRenderTitleShape, type StructuredRenderTitle} from './sections/title.section.js';
 
 /**
  * All structured render section shapes.
@@ -37,17 +50,31 @@ export const allStructuredRenderSectionShapes = [
 ] as const;
 
 /**
+ * Any supported structured render section.
+ *
+ * @category Internal
+ */
+export type StructuredRenderSection =
+    | CollapsibleSection
+    | RenderDataMarkdown
+    | StructuredRenderCodeBlock
+    | StructuredRenderEmpty
+    | StructuredRenderTitle
+    | StructuredRenderIcon
+    | StructuredRenderInlineCode
+    | StructuredRenderList
+    | StructuredRenderProcessing
+    | StructuredRenderSource
+    | StructuredRenderTable
+    | StructuredRenderTag
+    | StructuredRenderText;
+
+/**
  * A union of all structured render section shapes.
  *
  * @category Internal
  */
 export const structuredRenderSectionShape = unionShape(...allStructuredRenderSectionShapes);
-/**
- * Any supported structured render section.
- *
- * @category Internal
- */
-export type StructuredRenderSection = typeof structuredRenderSectionShape.runtimeType;
 /**
  * Any supported structured render section type.
  *

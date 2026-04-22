@@ -1,17 +1,19 @@
-import {defineShape, exactShape} from 'object-shape-tester';
-
-/**
- * Shape definition for {@link StructuredRenderEmpty}.
- *
- * @category Internal
- */
-export const structuredRenderEmptyShape = defineShape({
-    type: exactShape('empty'),
-});
+import {exactShape, unsafeShape} from 'object-shape-tester';
 
 /**
  * A section that renders nothing.
  *
  * @category Section
  */
-export type StructuredRenderEmpty = typeof structuredRenderEmptyShape.runtimeType;
+export type StructuredRenderEmpty = {
+    type: 'empty';
+};
+
+/**
+ * Shape definition for {@link StructuredRenderEmpty}.
+ *
+ * @category Internal
+ */
+export const structuredRenderEmptyShape = unsafeShape<StructuredRenderEmpty>({
+    type: exactShape('empty'),
+});

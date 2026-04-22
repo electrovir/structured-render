@@ -1,6 +1,7 @@
+import {type Primitive} from '@augment-vir/assert';
 import {enumShape, nullableShape, primitiveShape} from 'object-shape-tester';
-import {createStructuredRenderSection} from '../create-section.js';
-import {structuredRenderIconShape} from './icon.section.js';
+import {createStructuredRenderSection, type SectionType} from '../create-section.js';
+import {structuredRenderIconShape, type StructuredRenderIcon} from './icon.section.js';
 
 /**
  * Style options for {@link StructuredRenderText}.
@@ -14,20 +15,29 @@ export enum StructuredRenderTextStyle {
 }
 
 /**
- * Shape definition for {@link StructuredRenderText}.
- *
- * @category Internal
- */
-export const structuredRenderTextShape = createStructuredRenderSection('text', {
-    text: nullableShape(primitiveShape()),
-    style: nullableShape(enumShape(StructuredRenderTextStyle)),
-    /** Rendered before the text. */
-    icon: nullableShape(structuredRenderIconShape),
-});
-
-/**
  * A section that renders text.
  *
  * @category Section
  */
-export type StructuredRenderText = typeof structuredRenderTextShape.runtimeType;
+export type StructuredRenderText = SectionType<
+    'text',
+    {
+        text?: Primitive | null | undefined;
+        style?: StructuredRenderTextStyle | null | undefined;
+        /** Rendered before the text. */
+        icon?: StructuredRenderIcon | null | undefined;
+    }
+>;
+
+/**
+ * Shape definition for {@link StructuredRenderText}.
+ *
+ * @category Internal
+ */
+export const structuredRenderTextShape = createStructuredRenderSection(
+    'text',
+)<StructuredRenderText>({
+    text: nullableShape(primitiveShape()),
+    style: nullableShape(enumShape(StructuredRenderTextStyle)),
+    icon: nullableShape(structuredRenderIconShape),
+});

@@ -1,13 +1,25 @@
 import {check, checkWrap} from '@augment-vir/assert';
 import {ensureArray, type AtLeastTuple, type MaybeArray} from '@augment-vir/common';
-import {defineShape, exactShape, nullableShape} from 'object-shape-tester';
+import {exactShape, nullableShape, unsafeShape} from 'object-shape-tester';
+
+/**
+ * A bounding box within a source file.
+ *
+ * @category Section
+ */
+export type StructuredRenderFileBoundingBox = {
+    x1: number;
+    y1: number;
+    x2: number;
+    y2: number;
+};
 
 /**
  * Shape definition for {@link StructuredRenderFileBoundingBox}.
  *
  * @category Internal
  */
-export const structuredRenderFileBoundingBoxShape = defineShape({
+export const structuredRenderFileBoundingBoxShape = unsafeShape<StructuredRenderFileBoundingBox>({
     x1: -1,
     y1: -1,
     x2: -1,
@@ -15,19 +27,11 @@ export const structuredRenderFileBoundingBoxShape = defineShape({
 });
 
 /**
- * A bounding box within a source file.
- *
- * @category Section
- */
-export type StructuredRenderFileBoundingBox =
-    typeof structuredRenderFileBoundingBoxShape.runtimeType;
-
-/**
  * A shape definition for structured render sources. Any structured render can have sources.
  *
  * @category Internal
  */
-export const structuredRenderSourceShape = defineShape({
+export const structuredRenderSourceShape = unsafeShape<StructuredRenderSource>({
     type: exactShape('source'),
     pageNumbers: nullableShape([nullableShape(-1)]),
     fileName: nullableShape(''),
@@ -42,7 +46,13 @@ export const structuredRenderSourceShape = defineShape({
  *
  * @category Section
  */
-export type StructuredRenderSource = typeof structuredRenderSourceShape.runtimeType;
+export type StructuredRenderSource = {
+    type: 'source';
+    pageNumbers?: (number | null | undefined)[] | null | undefined;
+    fileName?: string | null | undefined;
+    fileBoundingBoxes?: (StructuredRenderFileBoundingBox | null | undefined)[] | null | undefined;
+    quote?: string | null | undefined;
+};
 
 /**
  * All acceptable configurations of a source section that can be rendered.

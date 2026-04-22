@@ -265,7 +265,7 @@ const htmlRenderers: Record<
         return html`
             <${ViraTag.assign({
                 text: section.text,
-                color: customColorStyles ? ViraColorVariant.None : colorVariant,
+                color: customColorStyles ? ViraColorVariant.Custom : colorVariant,
                 size: section.useBigTag ? ViraSize.Medium : ViraSize.Small,
                 emphasis: ViraEmphasis.Subtle,
             })}

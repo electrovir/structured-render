@@ -1,28 +1,34 @@
 import {check} from '@augment-vir/assert';
 import {addSuffix} from '@augment-vir/common';
-import {defineShape, exactShape, nullableShape, unionShape} from 'object-shape-tester';
+import {exactShape, nullableShape, unionShape, unsafeShape} from 'object-shape-tester';
 import {createColoredIcon} from 'vira';
 import {type RenderOptions} from '../../render/render-types.js';
-
-/**
- * Shape definition for {@link StructuredRenderIcon}.
- *
- * @category Internal
- */
-export const structuredRenderIconShape = defineShape({
-    type: exactShape('icon'),
-    iconKey: '',
-    strokeColor: nullableShape(''),
-    fillColor: nullableShape(''),
-    strokeWidth: nullableShape(unionShape('', -1)),
-});
 
 /**
  * A section that renders an icon in HTML.
  *
  * @category Section
  */
-export type StructuredRenderIcon = typeof structuredRenderIconShape.runtimeType;
+export type StructuredRenderIcon = {
+    type: 'icon';
+    iconKey: string;
+    strokeColor?: string | null | undefined;
+    fillColor?: string | null | undefined;
+    strokeWidth?: string | number | null | undefined;
+};
+
+/**
+ * Shape definition for {@link StructuredRenderIcon}.
+ *
+ * @category Internal
+ */
+export const structuredRenderIconShape = unsafeShape<StructuredRenderIcon>({
+    type: exactShape('icon'),
+    iconKey: '',
+    strokeColor: nullableShape(''),
+    fillColor: nullableShape(''),
+    strokeWidth: nullableShape(unionShape('', -1)),
+});
 
 /**
  * Create a Colored Vira icon from {@link StructuredRenderIcon}.
