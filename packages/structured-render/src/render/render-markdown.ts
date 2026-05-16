@@ -64,15 +64,16 @@ function buildVerticalTableRows(
     section: Readonly<StructuredRenderTable>,
     visibleHeaders: ReadonlyArray<StructuredRenderTableHeader>,
     options: Readonly<RenderOptions>,
+    wrapCell: (text: string) => string,
 ): AtLeastTuple<string[], 1> {
     const columnCount = section.entries.length + 1;
 
     const dataRows = visibleHeaders.map((header) => {
-        const headerText = header.text
-            ? renderStructuredMarkdown(header.text, options)
-            : header.key;
+        const headerText = wrapCell(
+            header.text ? renderStructuredMarkdown(header.text, options) : header.key,
+        );
         const cells = section.entries.map((entry) =>
-            renderStructuredMarkdown(entry.data[header.key], options),
+            wrapCell(renderStructuredMarkdown(entry.data[header.key], options)),
         );
 
         return [
@@ -91,13 +92,16 @@ function buildHorizontalTableRows(
     section: Readonly<StructuredRenderTable>,
     visibleHeaders: ReadonlyArray<StructuredRenderTableHeader>,
     options: Readonly<RenderOptions>,
+    wrapCell: (text: string) => string,
 ): AtLeastTuple<string[], 1> {
     const headerRow = visibleHeaders.map((header) =>
-        header.text ? renderStructuredMarkdown(header.text, options) : header.key,
+        wrapCell(header.text ? renderStructuredMarkdown(header.text, options) : header.key),
     );
 
     const dataRows = section.entries.map((entry) =>
-        visibleHeaders.map((header) => renderStructuredMarkdown(entry.data[header.key], options)),
+        visibleHeaders.map((header) =>
+            wrapCell(renderStructuredMarkdown(entry.data[header.key], options)),
+        ),
     );
 
     return [
@@ -112,6 +116,7 @@ const tableRowBuilders: Record<
         section: Readonly<StructuredRenderTable>,
         visibleHeaders: ReadonlyArray<StructuredRenderTableHeader>,
         options: Readonly<RenderOptions>,
+        wrapCell: (text: string) => string,
     ) => AtLeastTuple<string[], 1>
 > = {
     [StructuredRenderCellDirection.Vertical]: buildVerticalTableRows,
@@ -198,8 +203,21 @@ const markdownRenderers: Record<
     },
     table(section: Readonly<StructuredRenderTable>, options) {
         const visibleHeaders = section.headers.filter((header) => !header.hidden);
+        const styleWrapper = (section.style && markdownStyleWrapper[section.style]) || '';
+        const wrapCell = (text: string): string =>
+            text && styleWrapper
+                ? wrapString({
+                      value: text,
+                      wrapper: styleWrapper,
+                  })
+                : text;
 
-        const rows = tableRowBuilders[section.direction](section, visibleHeaders, options);
+        const rows = tableRowBuilders[section.direction](
+            section,
+            visibleHeaders,
+            options,
+            wrapCell,
+        );
         const columnCount = rows[0].length || 0;
         const colWidths = computeColumnWidths(rows, columnCount);
         const [

@@ -14,7 +14,11 @@ import {
 } from './processing.section.js';
 import {structuredRenderSourceShape, type StructuredRenderSource} from './source.section.js';
 import {structuredRenderTagShape, type StructuredRenderTag} from './tag.section.js';
-import {structuredRenderTextShape, type StructuredRenderText} from './text.section.js';
+import {
+    StructuredRenderTextStyle,
+    structuredRenderTextShape,
+    type StructuredRenderText,
+} from './text.section.js';
 
 /**
  * Footer alignment options for {@link StructuredRenderTable}.
@@ -86,6 +90,8 @@ export type StructuredRenderTable = SectionType<
     'table',
     {
         direction: StructuredRenderCellDirection;
+        /** Applies a text style to all text rendered within the table. */
+        style?: StructuredRenderTextStyle | null | undefined;
         headers: {
             key: string;
             text?: StructuredRenderText | null | undefined;
@@ -125,6 +131,7 @@ export const structuredRenderTableShape = createStructuredRenderSection(
     'table',
 )<StructuredRenderTable>({
     direction: enumShape(StructuredRenderCellDirection),
+    style: nullableShape(enumShape(StructuredRenderTextStyle)),
     headers: [
         {
             key: '',

@@ -294,6 +294,8 @@ const htmlRenderers: Record<
         `;
     },
     table(section, options, keyChain) {
+        const tableStyleClass = section.style ? `text-style-${section.style}` : undefined;
+
         if (options.isPhoneSize && section.direction === StructuredRenderCellDirection.Horizontal) {
             const visibleHeaders = filterMap(
                 section.headers,
@@ -377,7 +379,16 @@ const htmlRenderers: Record<
             });
 
             return html`
-                <div class="phone-table-cards">${cards}</div>
+                <div
+                    class=${[
+                        'phone-table-cards',
+                        tableStyleClass,
+                    ]
+                        .filter(check.isTruthy)
+                        .join(' ')}
+                >
+                    ${cards}
+                </div>
             `;
         }
 
@@ -525,6 +536,11 @@ const htmlRenderers: Record<
                                 rows[0]
                               ? rows[0].cells.length > 5
                               : false,
+                    ...(tableStyleClass
+                        ? {
+                              [tableStyleClass]: true,
+                          }
+                        : {}),
                 })}
             >
                 ${headerRow

@@ -302,10 +302,12 @@ const pdfSectionRenderers: Record<StructuredRenderSection['type'], PdfSectionRen
             return;
         }
 
+        const styleConfig = await getTextStyleConfig(rawSection.style, builder);
+
         if (rawSection.direction === StructuredRenderCellDirection.Horizontal) {
-            await renderHorizontalTable(rawSection, visibleHeaders, builder, options);
+            await renderHorizontalTable(rawSection, visibleHeaders, builder, options, styleConfig);
         } else {
-            await renderVerticalTable(rawSection, visibleHeaders, builder, options);
+            await renderVerticalTable(rawSection, visibleHeaders, builder, options, styleConfig);
         }
     },
 
@@ -455,11 +457,14 @@ function drawIcon(
 
 type TableHeader = StructuredRenderTable['headers'][number];
 
+type TableStyleConfig = {font: PDFFont; size: number; color: Color};
+
 async function renderHorizontalTable(
     section: Readonly<StructuredRenderTable>,
     visibleHeaders: ReadonlyArray<TableHeader>,
     builder: PdfDocumentBuilder,
     options: Readonly<RenderOptions>,
+    styleConfig: Readonly<TableStyleConfig>,
 ): Promise<void> {
     const cellPadding = 3;
     const columnWidths = computeColumnWidths(
@@ -468,6 +473,7 @@ async function renderHorizontalTable(
         builder,
         options,
         cellPadding,
+        styleConfig,
     );
 
     /** Draw header row. */
@@ -479,6 +485,7 @@ async function renderHorizontalTable(
         builder,
         cellPadding,
         isHeader: true,
+        styleConfig,
     });
 
     /** Draw data rows. */
@@ -498,6 +505,7 @@ async function renderHorizontalTable(
             builder,
             cellPadding,
             isHeader: false,
+            styleConfig,
         });
 
         await renderSources(entry.sources, builder, options);
@@ -513,11 +521,12 @@ async function renderHorizontalTable(
                 .join(' ');
 
             if (text) {
-                const lineH = builder.lineHeight(pdfFontSizes.body);
+                const lineH = builder.lineHeight(styleConfig.size);
                 builder.ensureSpace(lineH);
                 await builder.drawWrappedText(text, {
                     font: builder.fonts.bold,
-                    size: pdfFontSizes.body,
+                    size: styleConfig.size,
+                    color: styleConfig.color,
                 });
             }
         }
@@ -529,6 +538,7 @@ async function renderVerticalTable(
     visibleHeaders: ReadonlyArray<TableHeader>,
     builder: PdfDocumentBuilder,
     options: Readonly<RenderOptions>,
+    styleConfig: Readonly<TableStyleConfig>,
 ): Promise<void> {
     const cellPadding = 3;
 
@@ -558,6 +568,7 @@ async function renderVerticalTable(
             cellPadding,
             isHeader: false,
             boldFirstCell: true,
+            styleConfig,
         });
     }
 }
@@ -568,12 +579,14 @@ function computeColumnWidths(
     builder: PdfDocumentBuilder,
     options: Readonly<RenderOptions>,
     cellPadding: number,
+    styleConfig: Readonly<TableStyleConfig>,
 ): number[] {
     const minColumnWidth = 25;
+    const dataFont = styleConfig.font;
 
     const naturalWidths = visibleHeaders.map((header) => {
         const headerText = header.text ? extractSectionText(header.text, options) : header.key;
-        let maxWidth = measureTextWidth(headerText, builder.fonts.bold, pdfFontSizes.body);
+        let maxWidth = measureTextWidth(headerText, builder.fonts.bold, styleConfig.size);
 
         section.entries.forEach((entry) => {
             const cellData = entry.data[header.key];
@@ -582,7 +595,7 @@ function computeColumnWidths(
                 .map((cellSection) => extractSectionText(cellSection, options))
                 .filter(check.isTruthy)
                 .join(' ');
-            const cellWidth = measureTextWidth(cellText, builder.fonts.regular, pdfFontSizes.body);
+            const cellWidth = measureTextWidth(cellText, dataFont, styleConfig.size);
             maxWidth = Math.max(maxWidth, cellWidth);
         });
 
@@ -611,6 +624,7 @@ async function drawTableRow({
     cellPadding,
     isHeader,
     boldFirstCell,
+    styleConfig,
 }: Readonly<{
     cells: ReadonlyArray<string>;
     columnWidths: ReadonlyArray<number>;
@@ -618,16 +632,18 @@ async function drawTableRow({
     cellPadding: number;
     isHeader: boolean;
     boldFirstCell?: boolean | undefined;
+    styleConfig: Readonly<TableStyleConfig>;
 }>): Promise<void> {
-    const lineH = builder.lineHeight(pdfFontSizes.body);
+    const fontSize = styleConfig.size;
+    const lineH = builder.lineHeight(fontSize);
 
     /** Wrap each cell's text and determine the row height from the tallest cell. */
     const cellWrappedLines = cells.map((cellText, cellIndex) => {
         const columnWidth = columnWidths[cellIndex] ?? 60;
         const useBold = isHeader || (boldFirstCell && cellIndex === 0);
-        const font = useBold ? builder.fonts.bold : builder.fonts.regular;
+        const font = useBold ? builder.fonts.bold : styleConfig.font;
         const maxTextWidth = columnWidth - cellPadding * 2;
-        return wrapText(cellText, font, pdfFontSizes.body, maxTextWidth);
+        return wrapText(cellText, font, fontSize, maxTextWidth);
     });
 
     const maxLineCount = Math.max(1, ...cellWrappedLines.map((lines) => lines.length));
@@ -651,7 +667,7 @@ async function drawTableRow({
     ] of cellWrappedLines.entries()) {
         const columnWidth = columnWidths[cellIndex] ?? 60;
         const useBold = isHeader || (boldFirstCell && cellIndex === 0);
-        const font = useBold ? builder.fonts.bold : builder.fonts.regular;
+        const font = useBold ? builder.fonts.bold : styleConfig.font;
 
         for (const [
             lineIndex,
@@ -659,9 +675,10 @@ async function drawTableRow({
         ] of lines.entries()) {
             await builder.drawTextLine(line, {
                 font,
-                size: pdfFontSizes.body,
+                size: fontSize,
+                color: styleConfig.color,
                 x: cellX + cellPadding,
-                y: rowTop - cellPadding - pdfFontSizes.body - lineIndex * lineH,
+                y: rowTop - cellPadding - fontSize - lineIndex * lineH,
             });
         }
 

@@ -428,6 +428,81 @@ describe(renderStructuredMarkdown.name, () => {
                 `,
             },
             {
+                it: 'handles a table section with bold style',
+                inputs: [
+                    {
+                        type: StructuredRenderSectionType.table,
+                        direction: StructuredRenderCellDirection.Horizontal,
+                        style: StructuredRenderTextStyle.Bold,
+                        headers: [
+                            {
+                                key: 'name',
+                                text: {
+                                    type: StructuredRenderSectionType.text,
+                                    text: 'Name',
+                                },
+                            },
+                            {
+                                key: 'value',
+                                text: {
+                                    type: StructuredRenderSectionType.text,
+                                    text: 'Value',
+                                },
+                            },
+                        ],
+                        entries: [
+                            {
+                                data: {
+                                    name: {
+                                        type: StructuredRenderSectionType.text,
+                                        text: 'Alpha',
+                                    },
+                                    value: {
+                                        type: StructuredRenderSectionType.text,
+                                        text: '100',
+                                    },
+                                },
+                            },
+                        ],
+                    } satisfies StructuredRenderTable,
+                ],
+                expect: `
+                    | **Name**  | **Value** |
+                    | --------- | --------- |
+                    | **Alpha** | **100**   |
+                `,
+            },
+            {
+                it: 'handles a table section with small style',
+                inputs: [
+                    {
+                        type: StructuredRenderSectionType.table,
+                        direction: StructuredRenderCellDirection.Horizontal,
+                        style: StructuredRenderTextStyle.Small,
+                        headers: [
+                            {
+                                key: 'name',
+                            },
+                        ],
+                        entries: [
+                            {
+                                data: {
+                                    name: {
+                                        type: StructuredRenderSectionType.text,
+                                        text: 'Alpha',
+                                    },
+                                },
+                            },
+                        ],
+                    } satisfies StructuredRenderTable,
+                ],
+                expect: `
+                    | name  |
+                    | ----- |
+                    | Alpha |
+                `,
+            },
+            {
                 it: 'handles a table section with hidden headers',
                 inputs: [
                     {
