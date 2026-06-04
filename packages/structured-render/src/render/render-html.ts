@@ -150,7 +150,9 @@ const htmlRenderers: Record<
             <${ViraCollapsibleCard.assign({
                 rawCollapsible: true,
             })}>
-                <span slot=${ViraCollapsibleCard.slotNames.header}>${String(section.header)}</span>
+                <span slot=${ViraCollapsibleCard.slotNames['vira-collapsible-card-header']}>
+                    ${String(section.header)}
+                </span>
                 ${renderInternalStructuredHtml(section.content, options, [
                     ...keyChain,
                     'collapsible',
@@ -897,7 +899,7 @@ function structuredRenderToHtmlArray(
                     })}
                 >
                     <h2
-                        slot=${ViraCollapsibleCard.slotNames.header}
+                        slot=${ViraCollapsibleCard.slotNames['vira-collapsible-card-header']}
                         class="card-title ${classMap({
                             'card-title-with-icon': !!data.cardTitleIcon,
                         })}"
@@ -1014,7 +1016,9 @@ function createExpandingSource(
                 'expanded-source': isSourceExpanded,
             })}"
         >
-            <span slot=${ViraCollapsibleWrapper.slotNames.header}></span>
+            <span
+                slot=${ViraCollapsibleWrapper.slotNames['vira-collapsible-wrapper-header']}
+            ></span>
             ${sourceTemplate}
         </${ViraCollapsibleWrapper}>
     `;
