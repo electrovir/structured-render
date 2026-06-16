@@ -11,6 +11,7 @@ import {SourceExpansionEvent} from '../render/source-expansion-event.js';
 import {sourceWrapperStyles} from '../render/source-styles.js';
 import {TableSortEvent, type TableSortState} from '../render/table-sort-event.js';
 import {StructuredRenderTextStyle} from '../structured-render-data/sections/text.section.js';
+import {VirCopy} from './vir-copy.element.js';
 
 const iconRightMargin = css`4px`;
 
@@ -366,6 +367,36 @@ export const VirStructuredRender = defineElement<{
 
         .collapsible-section {
             align-items: flex-start;
+        }
+
+        .copy-card-wrapper.copy-card-wrapper {
+            display: flex;
+            flex-direction: column;
+            border: 1px solid
+                ${viraTheme.colors['vira-grey-foreground-decoration'].foreground.value};
+            border-radius: 8px;
+            padding: 16px 20px 20px;
+            gap: 8px;
+
+            & .copy-card-top {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+
+                & ${VirCopy} {
+                    margin-left: auto;
+                    margin-right: -8px;
+                }
+            }
+
+            & .copy-card-header {
+                font-weight: bold;
+                font-size: inherit;
+            }
+
+            & .copy-card-body::first-line {
+                line-height: unset;
+            }
         }
 
         .tag-section {

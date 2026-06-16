@@ -739,6 +739,17 @@ export const multiCardMock: StructuredRenderData = [
                     'LIMIT 100;',
                 ].join('\n'),
             },
+            {
+                type: StructuredRenderSectionType.copyCard,
+                sectionTitle: 'On-Call Summary',
+                header: 'Summary',
+                text: [
+                    'All twelve services are healthy with average uptime of 99.97% over the past',
+                    'thirty days. The getReport endpoint exhibits high p99 latency driven by the',
+                    'slow query shown above; reducing the time window or adding an index on the',
+                    'created_at column should bring p99 back under one second.',
+                ].join(' '),
+            },
         ],
     },
     {

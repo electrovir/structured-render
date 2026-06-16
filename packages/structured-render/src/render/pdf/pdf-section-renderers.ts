@@ -148,6 +148,30 @@ const pdfSectionRenderers: Record<StructuredRenderSection['type'], PdfSectionRen
         });
     },
 
+    async copyCard(rawSection, builder) {
+        const text = rawSection.text == undefined ? '' : String(rawSection.text);
+        const headerText = rawSection.header == undefined ? '' : String(rawSection.header);
+
+        if (!text && !headerText) {
+            return;
+        }
+
+        if (headerText) {
+            await builder.drawWrappedText(headerText, {
+                font: builder.fonts.bold,
+                size: pdfFontSizes.body,
+            });
+            builder.advanceCursor(4);
+        }
+
+        if (text) {
+            await builder.drawWrappedText(text, {
+                font: builder.fonts.regular,
+                size: pdfFontSizes.body,
+            });
+        }
+    },
+
     async text(rawSection, builder, options) {
         if (rawSection.text == undefined) {
             return;

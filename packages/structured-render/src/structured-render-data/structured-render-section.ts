@@ -6,6 +6,10 @@ import {
     type StructuredRenderCodeBlock,
 } from './sections/code-block.section.js';
 import {collapsibleSectionShape, type CollapsibleSection} from './sections/collapsible.section.js';
+import {
+    structuredRenderCopyCardShape,
+    type StructuredRenderCopyCard,
+} from './sections/copy-card.section.js';
 import {structuredRenderEmptyShape, type StructuredRenderEmpty} from './sections/empty.section.js';
 import {structuredRenderIconShape, type StructuredRenderIcon} from './sections/icon.section.js';
 import {
@@ -37,6 +41,7 @@ export const allStructuredRenderSectionShapes = [
     collapsibleSectionShape,
     renderDataMarkdownShape,
     structuredRenderCodeBlockShape,
+    structuredRenderCopyCardShape,
     structuredRenderEmptyShape,
     structuredRenderTitleShape,
     structuredRenderIconShape,
@@ -58,6 +63,7 @@ export type StructuredRenderSection =
     | CollapsibleSection
     | RenderDataMarkdown
     | StructuredRenderCodeBlock
+    | StructuredRenderCopyCard
     | StructuredRenderEmpty
     | StructuredRenderTitle
     | StructuredRenderIcon
@@ -126,6 +132,8 @@ export function doesSectionHaveContent(
         return !!section.text;
     } else if (section.type === StructuredRenderSectionType.codeBlock) {
         return !!section.code;
+    } else if (section.type === StructuredRenderSectionType.copyCard) {
+        return !!String(section.text) || !!section.header;
     } else if (section.type === StructuredRenderSectionType.inlineCode) {
         return !!section.code;
     } else if (section.type === StructuredRenderSectionType.markdown) {

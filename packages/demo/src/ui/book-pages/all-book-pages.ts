@@ -12,6 +12,7 @@ import {exampleCardComparisonBookPage} from './examples/example-card-comparison.
 import {expandableSourceBookPage} from './examples/expandable-source.book.js';
 import {sectionsBookPage} from './sections.book.js';
 import {codeBlockSectionBookPage} from './sections/code-block.section.book.js';
+import {copyCardSectionBookPage} from './sections/copy-card.section.book.js';
 import {emptySectionBookPage} from './sections/empty.section.book.js';
 import {iconSectionBookPage} from './sections/icon.section.book.js';
 import {inlineCodeSectionBookPage} from './sections/inline-code.section.book.js';
@@ -25,6 +26,7 @@ import {textSectionBookPage} from './sections/text.section.book.js';
 
 export const allBookPages: ReadonlyArray<BookPage> = [
     codeBlockSectionBookPage,
+    copyCardSectionBookPage,
     emptySectionBookPage,
     iconSectionBookPage,
     inlineCodeSectionBookPage,

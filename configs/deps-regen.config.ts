@@ -12,4 +12,5 @@ import {
 export const depsRegenAllowList: RecentDepsAllowList = [
     ...baseAllowedRecentDeps,
     'esbuild',
+    '@esbuild/*',
 ];

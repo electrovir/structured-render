@@ -1,4 +1,5 @@
 export * from './augments/shadow-styles.js';
+export * from './elements/vir-copy.element.js';
 export * from './elements/vir-expandable-source.element.js';
 export * from './elements/vir-markdown.element.js';
 export * from './elements/vir-source.element.js';
@@ -14,6 +15,7 @@ export * from './render/table-sort-event.js';
 export * from './structured-render-data/create-section.js';
 export * from './structured-render-data/sections/code-block.section.js';
 export * from './structured-render-data/sections/collapsible.section.js';
+export * from './structured-render-data/sections/copy-card.section.js';
 export * from './structured-render-data/sections/empty.section.js';
 export * from './structured-render-data/sections/icon.section.js';
 export * from './structured-render-data/sections/inline-code.section.js';

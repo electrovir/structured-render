@@ -1006,9 +1006,9 @@ describe(renderStructuredMarkdown.name, () => {
             {
                 it: 'throws for an unsupported table direction',
                 inputs: [
+                    // @ts-expect-error: intentionally invalid direction type
                     {
                         type: StructuredRenderSectionType.table,
-                        // @ts-expect-error: intentionally invalid direction type
                         direction: 'diagonal',
                         headers: [
                             {

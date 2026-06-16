@@ -11,6 +11,7 @@ import {
 } from '@augment-vir/common';
 import {convertTemplateToString} from 'element-vir';
 import {type StructuredRenderCodeBlock} from '../structured-render-data/sections/code-block.section.js';
+import {type StructuredRenderCopyCard} from '../structured-render-data/sections/copy-card.section.js';
 import {
     createStructuredRenderIcon,
     type StructuredRenderIcon,
@@ -141,6 +142,21 @@ const markdownRenderers: Record<
     },
     codeBlock(section: Readonly<StructuredRenderCodeBlock>): string {
         return `\`\`\`${section.syntax || ''}\n${section.code}\n\`\`\``;
+    },
+    copyCard(section: Readonly<StructuredRenderCopyCard>) {
+        const text = section.text == undefined ? '' : String(section.text);
+        const headerText = section.header == undefined ? '' : String(section.header);
+
+        if (!text && !headerText) {
+            return '';
+        }
+
+        return [
+            headerText && `### ${headerText}`,
+            text,
+        ]
+            .filter(check.isTruthy)
+            .join('\n\n');
     },
     inlineCode(section: Readonly<StructuredRenderInlineCode>): string {
         return `\`${section.code}\``;

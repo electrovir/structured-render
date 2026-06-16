@@ -35,6 +35,7 @@ import {
     ViraTableOrientation,
     ViraTag,
 } from 'vira';
+import {VirCopy} from '../elements/vir-copy.element.js';
 import {VirMarkdown} from '../elements/vir-markdown.element.js';
 import {VirSource} from '../elements/vir-source.element.js';
 import {createStructuredRenderIcon} from '../structured-render-data/sections/icon.section.js';
@@ -143,6 +144,35 @@ const htmlRenderers: Record<
     codeBlock(section) {
         return html`
             <pre>${section.code}</pre>
+        `;
+    },
+    copyCard(section) {
+        const text = section.text == undefined ? '' : String(section.text);
+        const headerText = section.header == undefined ? '' : String(section.header);
+
+        if (!text && !headerText) {
+            return undefined;
+        }
+
+        const headerTemplate = headerText
+            ? html`
+                  <h3 class="copy-card-header">${headerText}</h3>
+              `
+            : nothing;
+
+        const copyTemplate = section.disableCopy
+            ? nothing
+            : html`
+                  <${VirCopy.assign({
+                      text,
+                  })}></${VirCopy}>
+              `;
+
+        return html`
+            <div class="copy-card-wrapper">
+                <div class="copy-card-top">${headerTemplate}${copyTemplate}</div>
+                <div class="copy-card-body">${formatText(text)}</div>
+            </div>
         `;
     },
     collapsible(section, options, keyChain) {
