@@ -23,13 +23,13 @@
         "test": "exit 0"
     },
     "dependencies": {
-        "@augment-vir/common": "^31.71.3",
-        "@augment-vir/node": "^31.71.3",
+        "@augment-vir/common": "^31.73.0",
+        "@augment-vir/node": "^31.73.0",
         "element-vir": "^26.17.0",
-        "tsx": "^4.22.3"
+        "tsx": "^4.22.4"
     },
     "devDependencies": {
-        "@types/node": "^25.9.1"
+        "@types/node": "^25.9.3"
     },
     "engines": {
         "node": ">=22"

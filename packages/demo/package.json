@@ -24,15 +24,15 @@
         "test": "npm run build"
     },
     "dependencies": {
-        "@augment-vir/common": "^31.71.3",
+        "@augment-vir/common": "^31.73.0",
         "element-book": "^26.17.3",
         "element-vir": "^26.17.0",
         "structured-render": "^2.7.1",
-        "vira": "^31.22.2"
+        "vira": "^31.24.0"
     },
     "devDependencies": {
         "typescript": "^6.0.3",
-        "vite": "^8.0.14"
+        "vite": "^8.0.16"
     },
     "engines": {
         "node": ">=22"
