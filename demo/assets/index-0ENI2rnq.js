@@ -34436,7 +34436,7 @@ Please report this to https://github.com/markedjs/marked.`,e){let e=`<p>An error
                     <${X6}>
                         ${Ae(`Failed to parse markdown content.`,e)}
                     </${X6}>
-                `)}}),V7={icons:rfe,sourceString:`Source`,pluralSourcesString:`Sources`,hideSources:!1};({...V7});var H7={...V7,processingString:`Processing`,currentlyExpanded:{},tableSortStates:{},sourceIcon:bO,viewOnPageIcon:TO,processingIcon:AO,expandSourcesOnPrint:!1,hideViewOnPageButtons:!1,isPhoneSize:!1,useDrawerForSources:!1,markdownStyles:z7,createViewOnPageString(e){return`View on page ${e}`},expandAllCards:!1,blockCardExpansion:!1,expandFirstCard:!1,useCardStyles:!1},qhe=QC({x1:-1,y1:-1,x2:-1,y2:-1}),U7=QC({type:ow(`source`),pageNumbers:uw([uw(-1)]),fileName:uw(``),fileBoundingBoxes:uw([uw(qhe)]),quote:uw(``)});function W7(e){return Rs.isLengthAtLeast(Js(e).filter(G7),1)}function G7(e){return!!(e&&(e.quote?.trim()||e.fileName||e.pageNumbers?.filter(j.isDefined).length))}var K7=PT()({tagName:`vir-source`,hostClasses:{"vir-source-phone-size":({inputs:e})=>!!e.options?.isPhoneSize},events:{viewOnPageClick:ST()},cssVars:{"vir-source-background-color":G.colors[vE].background.value,"vir-source-borer-radius":K[`vira-form-radius`].value,"vir-source-header-color":G.colors[`vira-grey-foreground-header`].foreground.value,"vir-source-view-on-page-icon-color":K[`vira-form-accent-primary-color`].value,"vir-source-view-on-page-hover-background-color":G.colors[`vira-grey-behind-fg-small-body`].background.value,"vir-source-view-on-page-active-background-color":G.colors[`vira-grey-behind-fg-body`].background.value,"vir-source-font-size":`16px`,"vir-source-phone-font-size":`14px`},styles:({hostClasses:e,cssVars:t})=>z`
+                `)}}),V7={icons:rfe,sourceString:`Source`,pluralSourcesString:`Sources`,hideSources:!1};({...V7});var H7={...V7,processingString:`Processing`,currentlyExpanded:{},tableSortStates:{},sourceIcon:bO,viewOnPageIcon:TO,processingIcon:AO,expandSourcesOnPrint:!1,hideViewOnPageButtons:!1,isPhoneSize:!1,useDrawerForSources:!1,markdownStyles:z7,createViewOnPageString(e){return`View on page ${e}`},expandAllCards:!1,blockCardExpansion:!1,expandFirstCard:!1,useCardStyles:!1,hideCardTitles:!1},qhe=QC({x1:-1,y1:-1,x2:-1,y2:-1}),U7=QC({type:ow(`source`),pageNumbers:uw([uw(-1)]),fileName:uw(``),fileBoundingBoxes:uw([uw(qhe)]),quote:uw(``)});function W7(e){return Rs.isLengthAtLeast(Js(e).filter(G7),1)}function G7(e){return!!(e&&(e.quote?.trim()||e.fileName||e.pageNumbers?.filter(j.isDefined).length))}var K7=PT()({tagName:`vir-source`,hostClasses:{"vir-source-phone-size":({inputs:e})=>!!e.options?.isPhoneSize},events:{viewOnPageClick:ST()},cssVars:{"vir-source-background-color":G.colors[vE].background.value,"vir-source-borer-radius":K[`vira-form-radius`].value,"vir-source-header-color":G.colors[`vira-grey-foreground-header`].foreground.value,"vir-source-view-on-page-icon-color":K[`vira-form-accent-primary-color`].value,"vir-source-view-on-page-hover-background-color":G.colors[`vira-grey-behind-fg-small-body`].background.value,"vir-source-view-on-page-active-background-color":G.colors[`vira-grey-behind-fg-body`].background.value,"vir-source-font-size":`16px`,"vir-source-phone-font-size":`14px`},styles:({hostClasses:e,cssVars:t})=>z`
         ${G2} {
             background: ${t[`vir-source-background-color`].value};
             border-radius: ${t[`vir-source-borer-radius`].value};
@@ -34712,17 +34712,18 @@ Please report this to https://github.com/markedjs/marked.`,e){let e=`<p>An error
             </div>
         `;return[i?V`
                       <h3>${i}</h3>
-                  `:void 0,s]}else if(`sections`in e){let r=v9(e.sections,t,[...n,`sections`],!0),i=e.cardTitleIcon?g9(e.cardTitleIcon,t,[...n,`cardTitleIcon`]):M;return[V`
-                <${J2.assign({expandOnPrint:!0,rawCollapsible:!t.useCardStyles,blockExpansion:t.blockCardExpansion,hideHeader:!e.cardTitle,startExpanded:t.expandAllCards||t.expandFirstCard&&n.at(-1)===0})}
+                  `:void 0,s]}else if(`sections`in e){let r=v9(e.sections,t,[...n,`sections`],!0),i=e.cardTitleIcon&&!t.hideCardTitles?g9(e.cardTitleIcon,t,[...n,`cardTitleIcon`]):M,a=t.hideCardTitles?M:V`
+                  <h2
+                      slot=${J2.slotNames[`vira-collapsible-card-header`]}
+                      class="card-title ${Zw({"card-title-with-icon":!!e.cardTitleIcon})}"
+                  >
+                      ${i}${e.cardTitle}
+                  </h2>
+              `;return[V`
+                <${J2.assign({expandOnPrint:!0,rawCollapsible:!t.useCardStyles,blockExpansion:t.blockCardExpansion,hideHeader:t.hideCardTitles||!e.cardTitle,startExpanded:t.expandAllCards||t.expandFirstCard&&n.at(-1)===0})}
                     class=${Zw({"raw-collapsible-card":!t.useCardStyles})}
                 >
-                    <h2
-                        slot=${J2.slotNames[`vira-collapsible-card-header`]}
-                        class="card-title ${Zw({"card-title-with-icon":!!e.cardTitleIcon})}"
-                    >
-                        ${i}${e.cardTitle}
-                    </h2>
-                    ${r}
+                    ${a} ${r}
                 </${J2}>
             `]}else throw Ls.tsType(e).equals(),Error(`Unexpected structured render type: ${v(e)}`)}function y9(e,t,n,r){let i=W7(r),a=[...n,`source-icon`],o=S9(a),s=!!t.currentlyExpanded[o];return V`
         <div class="source-content-wrapper">${e}${i?V`
