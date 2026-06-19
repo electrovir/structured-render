@@ -1,6 +1,6 @@
 {
     "name": "@evir/structured-render-root",
-    "version": "2.8.0",
+    "version": "2.9.0",
     "private": true,
     "homepage": "https://github.com/electrovir/structured-render",
     "bugs": {

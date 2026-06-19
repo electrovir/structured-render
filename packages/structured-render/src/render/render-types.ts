@@ -180,6 +180,12 @@ export type RenderHtmlOptions = RenderOptions & {
      * @default false
      */
     useCardStyles: boolean;
+    /**
+     * If `true`, card titles (and their icons) are not rendered, even when set on the card data.
+     *
+     * @default false
+     */
+    hideCardTitles: boolean;
 };
 
 /**
@@ -207,4 +213,5 @@ export const defaultRenderHtmlOptions: Readonly<RenderHtmlOptions> = {
     blockCardExpansion: false,
     expandFirstCard: false,
     useCardStyles: false,
+    hideCardTitles: false,
 };

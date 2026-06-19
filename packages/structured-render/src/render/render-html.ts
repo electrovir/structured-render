@@ -906,12 +906,26 @@ function structuredRenderToHtmlArray(
             true,
         );
 
-        const cardTitleIconTemplate = data.cardTitleIcon
-            ? renderInternalStructuredHtml(data.cardTitleIcon, options, [
-                  ...keyChain,
-                  'cardTitleIcon',
-              ])
-            : nothing;
+        const cardTitleIconTemplate =
+            data.cardTitleIcon && !options.hideCardTitles
+                ? renderInternalStructuredHtml(data.cardTitleIcon, options, [
+                      ...keyChain,
+                      'cardTitleIcon',
+                  ])
+                : nothing;
+
+        const headerTemplate = options.hideCardTitles
+            ? nothing
+            : html`
+                  <h2
+                      slot=${ViraCollapsibleCard.slotNames['vira-collapsible-card-header']}
+                      class="card-title ${classMap({
+                          'card-title-with-icon': !!data.cardTitleIcon,
+                      })}"
+                  >
+                      ${cardTitleIconTemplate}${data.cardTitle}
+                  </h2>
+              `;
 
         return [
             html`
@@ -919,7 +933,7 @@ function structuredRenderToHtmlArray(
                     expandOnPrint: true,
                     rawCollapsible: !options.useCardStyles,
                     blockExpansion: options.blockCardExpansion,
-                    hideHeader: !data.cardTitle,
+                    hideHeader: options.hideCardTitles || !data.cardTitle,
                     startExpanded:
                         options.expandAllCards ||
                         (options.expandFirstCard && keyChain.at(-1) === 0),
@@ -928,15 +942,7 @@ function structuredRenderToHtmlArray(
                         'raw-collapsible-card': !options.useCardStyles,
                     })}
                 >
-                    <h2
-                        slot=${ViraCollapsibleCard.slotNames['vira-collapsible-card-header']}
-                        class="card-title ${classMap({
-                            'card-title-with-icon': !!data.cardTitleIcon,
-                        })}"
-                    >
-                        ${cardTitleIconTemplate}${data.cardTitle}
-                    </h2>
-                    ${cardSections}
+                    ${headerTemplate} ${cardSections}
                 </${ViraCollapsibleCard}>
             `,
         ];
