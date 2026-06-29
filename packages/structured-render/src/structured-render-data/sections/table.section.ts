@@ -100,6 +100,20 @@ export type StructuredRenderTable = SectionType<
              * all.
              */
             hidden?: boolean | null | undefined;
+            /**
+             * If set, sorting this column uses the value found at this data key in each entry
+             * instead of the column's own `key`. Use this when the displayed content differs from
+             * the value you want to sort by (e.g. a human-readable date is displayed but an ISO or
+             * epoch value is used for sorting). The referenced key is typically provided by a
+             * separate `hidden` header.
+             */
+            sortKey?: string | null | undefined;
+            /**
+             * If `true`, this column cannot be sorted by the user: its header is not interactive
+             * and no sort indicator is shown. Only applies to horizontal tables, which are the only
+             * sortable kind.
+             */
+            disableSort?: boolean | null | undefined;
         }[];
         entries: {
             data: Record<
@@ -137,6 +151,8 @@ export const structuredRenderTableShape = createStructuredRenderSection(
             key: '',
             text: nullableShape(structuredRenderTextShape),
             hidden: nullableShape(false),
+            sortKey: nullableShape(''),
+            disableSort: nullableShape(false),
         },
     ],
     entries: [

@@ -47,6 +47,7 @@ import {
     StructuredRenderCellDirection,
     StructuredRenderTableFooterAlignment,
     type StructuredRenderShapesAllowedInTable,
+    type StructuredRenderTable,
 } from '../structured-render-data/sections/table.section.js';
 import {
     StructuredRenderSectionType,
@@ -58,7 +59,7 @@ import {
     type RenderInput,
 } from './render-types.js';
 import {SourceExpansionEvent} from './source-expansion-event.js';
-import {TableSortDirection, TableSortEvent} from './table-sort-event.js';
+import {TableSortDirection, TableSortEvent, type TableSortState} from './table-sort-event.js';
 
 /**
  * Render Structured Render data to HTML templates.
@@ -118,6 +119,47 @@ function extractCellText(
     }
 
     return '';
+}
+
+/**
+ * Sorts a horizontal table's entries according to the current sort state. A column may declare a
+ * `sortKey` to sort by a different data value than the one it displays; otherwise the column's own
+ * `key` is used. Columns marked with `disableSort`, non-horizontal tables, and tables without an
+ * active sort are returned unchanged.
+ *
+ * @category Internal
+ */
+export function sortTableEntries({
+    section,
+    currentSort,
+}: Readonly<{
+    section: Readonly<StructuredRenderTable>;
+    currentSort: TableSortState | undefined;
+}>): StructuredRenderTable['entries'] {
+    if (!currentSort || section.direction !== StructuredRenderCellDirection.Horizontal) {
+        return section.entries;
+    }
+
+    const sortHeader = section.headers.find((header) => header.key === currentSort.columnKey);
+
+    if (sortHeader?.disableSort) {
+        return section.entries;
+    }
+
+    const sortDataKey = sortHeader?.sortKey || currentSort.columnKey;
+
+    return section.entries.toSorted((entryA, entryB) => {
+        const cellsA = ensureArray(entryA.data[sortDataKey]).filter(check.isTruthy);
+        const cellsB = ensureArray(entryB.data[sortDataKey]).filter(check.isTruthy);
+        const textA = cellsA.map((cell) => extractCellText(cell)).join(' ');
+        const textB = cellsB.map((cell) => extractCellText(cell)).join(' ');
+
+        const numA = Number(textA);
+        const numB = Number(textB);
+        const comparison = !isNaN(numA) && !isNaN(numB) ? numA - numB : textA.localeCompare(textB);
+
+        return currentSort.direction === TableSortDirection.Ascending ? comparison : -comparison;
+    });
 }
 
 const htmlRenderers: Record<
@@ -438,28 +480,10 @@ const htmlRenderers: Record<
         const currentSort = options.tableSortStates[tableKey];
         const isHorizontal = section.direction === StructuredRenderCellDirection.Horizontal;
 
-        const sortedEntries =
-            currentSort && isHorizontal
-                ? section.entries.toSorted((entryA, entryB) => {
-                      const cellA = ensureArray(entryA.data[currentSort.columnKey]).filter(
-                          check.isTruthy,
-                      );
-                      const cellB = ensureArray(entryB.data[currentSort.columnKey]).filter(
-                          check.isTruthy,
-                      );
-                      const textA = cellA.map((cell) => extractCellText(cell)).join(' ');
-                      const textB = cellB.map((cell) => extractCellText(cell)).join(' ');
-
-                      const numA = Number(textA);
-                      const numB = Number(textB);
-                      const comparison =
-                          !isNaN(numA) && !isNaN(numB) ? numA - numB : textA.localeCompare(textB);
-
-                      return currentSort.direction === TableSortDirection.Ascending
-                          ? comparison
-                          : -comparison;
-                  })
-                : section.entries;
+        const sortedEntries = sortTableEntries({
+            section,
+            currentSort,
+        });
 
         const {headerRow, rows} = defineTable(
             filterMap(
@@ -595,6 +619,12 @@ const htmlRenderers: Record<
                                               ? currentSort.direction
                                               : undefined;
 
+                                      const isColumnSortable =
+                                          isHorizontal &&
+                                          !section.headers.find(
+                                              (header) => header.key === headerCell.key,
+                                          )?.disableSort;
+
                                       const sortIcon =
                                           columnSortState === TableSortDirection.Ascending
                                               ? lucideIcons.SortAsc
@@ -602,7 +632,7 @@ const htmlRenderers: Record<
                                                 ? lucideIcons.SortDesc
                                                 : lucideIcons.ChevronsUpDown;
 
-                                      const sortIconTemplate = isHorizontal
+                                      const sortIconTemplate = isColumnSortable
                                           ? html`
                                                 <span
                                                     class=${classMap({
@@ -620,9 +650,9 @@ const htmlRenderers: Record<
                                       return html`
                                           <th
                                               class=${classMap({
-                                                  sortable: isHorizontal,
+                                                  sortable: isColumnSortable,
                                               })}
-                                              ${isHorizontal
+                                              ${isColumnSortable
                                                   ? listen('click', (event) => {
                                                         const nextSort =
                                                             columnSortState === undefined
