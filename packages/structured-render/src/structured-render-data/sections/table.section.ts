@@ -165,18 +165,23 @@ export const structuredRenderTableShape = createStructuredRenderSection(
  *
  * @category Util
  */
-export function createRenderDataTable<const Headers extends StructuredRenderTable['headers']>(
-    direction: StructuredRenderCellDirection,
-    headers: Headers,
+export function createRenderDataTable<const Headers extends StructuredRenderTable['headers']>({
+    direction,
+    headers,
+    entries,
+    footerRows,
+}: Readonly<{
+    direction: StructuredRenderCellDirection;
+    headers: Headers;
     entries: {
         data: Record<
             ArrayElement<Headers>['key'],
             StructuredRenderShapesAllowedInTable | undefined
         >;
         sources?: (StructuredRenderSource | undefined)[] | undefined;
-    }[],
-    footerRows?: StructuredRenderTable['footerRows'],
-): StructuredRenderTable {
+    }[];
+    footerRows?: StructuredRenderTable['footerRows'];
+}>): StructuredRenderTable {
     return {
         type: 'table',
         direction,

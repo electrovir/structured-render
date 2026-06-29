@@ -38,7 +38,12 @@ async function renderBlockToken(token: Token, builder: PdfDocumentBuilder): Prom
         const segments = await flattenInlineTokens(headingToken.tokens, builder, {
             bold: true,
         });
-        await renderTextSegments(segments, builder, fontSize, builder.contentWidth);
+        await renderTextSegments({
+            segments,
+            builder,
+            fontSize,
+            maxWidth: builder.contentWidth,
+        });
 
         builder.advanceCursor(sectionGap / 2);
     } else if (token.type === 'paragraph') {
@@ -51,7 +56,11 @@ async function renderBlockToken(token: Token, builder: PdfDocumentBuilder): Prom
         if (imageSegments.length > 0) {
             for (const segment of imageSegments) {
                 if (segment.imageUrl) {
-                    await renderImageFromUrl(segment.imageUrl, segment.text, builder);
+                    await renderImageFromUrl({
+                        url: segment.imageUrl,
+                        altText: segment.text,
+                        builder,
+                    });
                 }
             }
 
@@ -59,15 +68,20 @@ async function renderBlockToken(token: Token, builder: PdfDocumentBuilder): Prom
             const textSegments = segments.filter((segment) => !segment.isImage);
 
             if (textSegments.length > 0) {
-                await renderTextSegments(
-                    textSegments,
+                await renderTextSegments({
+                    segments: textSegments,
                     builder,
-                    pdfFontSizes.body,
-                    builder.contentWidth,
-                );
+                    fontSize: pdfFontSizes.body,
+                    maxWidth: builder.contentWidth,
+                });
             }
         } else {
-            await renderTextSegments(segments, builder, pdfFontSizes.body, builder.contentWidth);
+            await renderTextSegments({
+                segments,
+                builder,
+                fontSize: pdfFontSizes.body,
+                maxWidth: builder.contentWidth,
+            });
         }
 
         builder.advanceCursor(sectionGap / 2);
@@ -83,15 +97,13 @@ async function renderBlockToken(token: Token, builder: PdfDocumentBuilder): Prom
 
         builder.ensureSpace(Math.min(totalHeight, builder.lineHeight(pdfFontSizes.code) * 3));
 
-        builder.drawRect(
-            builder.contentX,
-            builder.getCursorY() - totalHeight,
-            builder.contentWidth,
-            totalHeight,
-            {
-                fillColor: (await getPdfColors()).codeBackground,
-            },
-        );
+        builder.drawRect({
+            x: builder.contentX,
+            y: builder.getCursorY() - totalHeight,
+            width: builder.contentWidth,
+            height: totalHeight,
+            fillColor: (await getPdfColors()).codeBackground,
+        });
 
         const savedY = builder.getCursorY();
         builder.advanceCursor(padding);
@@ -130,7 +142,11 @@ async function renderBlockToken(token: Token, builder: PdfDocumentBuilder): Prom
         const barHeight = startY - endY;
 
         /** Draw the left bar. */
-        builder.drawRect(savedContentX + 4, endY, barWidth, barHeight, {
+        builder.drawRect({
+            x: savedContentX + 4,
+            y: endY,
+            width: barWidth,
+            height: barHeight,
             fillColor: (await getPdfColors()).lightGray,
         });
 
@@ -158,37 +174,34 @@ async function renderBlockToken(token: Token, builder: PdfDocumentBuilder): Prom
             });
 
             const segments = await flattenBlockToInlineSegments(item.tokens, builder);
-            await renderTextSegments(
+            await renderTextSegments({
                 segments,
                 builder,
-                pdfFontSizes.body,
-                builder.contentWidth - bulletIndent,
-                builder.contentX + bulletIndent,
-            );
+                fontSize: pdfFontSizes.body,
+                maxWidth: builder.contentWidth - bulletIndent,
+                startX: builder.contentX + bulletIndent,
+            });
         }
 
         builder.advanceCursor(sectionGap / 2);
     } else if (token.type === 'hr') {
         builder.ensureSpace(sectionGap);
         builder.advanceCursor(sectionGap / 2);
-        await builder.drawLine(
-            builder.contentX,
-            builder.getCursorY(),
-            builder.contentX + builder.contentWidth,
-            builder.getCursorY(),
-            {
-                color: (await getPdfColors()).lightGray,
-                thickness: 1,
-            },
-        );
+        await builder.drawLine({
+            x1: builder.contentX,
+            y1: builder.getCursorY(),
+            x2: builder.contentX + builder.contentWidth,
+            y2: builder.getCursorY(),
+            color: (await getPdfColors()).lightGray,
+            thickness: 1,
+        });
         builder.advanceCursor(sectionGap / 2);
     } else if (token.type === 'table') {
         await renderMarkdownTable(token as Tokens.Table, builder);
         builder.advanceCursor(sectionGap / 2);
     } else if (token.type === 'html') {
         /** Strip HTML tags and render as plain text. */
-        // eslint-disable-next-line sonarjs/slow-regex
-        const plainText = (token as Tokens.HTML).text.replace(/<[^>]*>/g, '').trim();
+        const plainText = (token as Tokens.HTML).text.replace(/<[^<>]*>/g, '').trim();
 
         if (plainText) {
             await builder.drawWrappedText(plainText, {
@@ -337,13 +350,19 @@ async function flattenBlockToInlineSegments(
 }
 
 /** Render text segments with word wrapping, handling font/color changes across segments. */
-async function renderTextSegments(
-    segments: ReadonlyArray<TextSegment>,
-    builder: PdfDocumentBuilder,
-    fontSize: number,
-    maxWidth: number,
-    startX?: number,
-): Promise<void> {
+async function renderTextSegments({
+    segments,
+    builder,
+    fontSize,
+    maxWidth,
+    startX,
+}: Readonly<{
+    segments: ReadonlyArray<TextSegment>;
+    builder: PdfDocumentBuilder;
+    fontSize: number;
+    maxWidth: number;
+    startX?: number;
+}>): Promise<void> {
     const effectiveX = startX ?? builder.contentX;
     const lineH = builder.lineHeight(fontSize);
     let currentLineX = effectiveX;
@@ -500,7 +519,11 @@ async function renderMarkdownTable(
     const headerRowTop = builder.getCursorY();
     const headerRowBottom = headerRowTop - rowHeight;
 
-    builder.drawRect(builder.contentX, headerRowBottom, builder.contentWidth, rowHeight, {
+    builder.drawRect({
+        x: builder.contentX,
+        y: headerRowBottom,
+        width: builder.contentWidth,
+        height: rowHeight,
         fillColor: (await getPdfColors()).headerBackground,
     });
 
@@ -519,15 +542,13 @@ async function renderMarkdownTable(
         cellX += columnWidths[colIndex] ?? 60;
     }
 
-    await builder.drawLine(
-        builder.contentX,
-        headerRowBottom,
-        builder.contentX + builder.contentWidth,
-        headerRowBottom,
-        {
-            color: (await getPdfColors()).tableBorder,
-        },
-    );
+    await builder.drawLine({
+        x1: builder.contentX,
+        y1: headerRowBottom,
+        x2: builder.contentX + builder.contentWidth,
+        y2: headerRowBottom,
+        color: (await getPdfColors()).tableBorder,
+    });
 
     builder.advanceCursor(rowHeight);
 
@@ -550,25 +571,23 @@ async function renderMarkdownTable(
             dataCellX += columnWidths[colIndex] ?? 60;
         }
 
-        await builder.drawLine(
-            builder.contentX,
-            dataRowBottom,
-            builder.contentX + builder.contentWidth,
-            dataRowBottom,
-            {
-                color: (await getPdfColors()).tableBorder,
-            },
-        );
+        await builder.drawLine({
+            x1: builder.contentX,
+            y1: dataRowBottom,
+            x2: builder.contentX + builder.contentWidth,
+            y2: dataRowBottom,
+            color: (await getPdfColors()).tableBorder,
+        });
 
         builder.advanceCursor(rowHeight);
     }
 }
 
-async function renderImageFromUrl(
-    url: string,
-    altText: string,
-    builder: PdfDocumentBuilder,
-): Promise<void> {
+async function renderImageFromUrl({
+    url,
+    altText,
+    builder,
+}: Readonly<{url: string; altText: string; builder: PdfDocumentBuilder}>): Promise<void> {
     try {
         const response = await fetch(url);
 

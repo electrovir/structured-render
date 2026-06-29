@@ -61,7 +61,12 @@ async function renderInput(
             await renderInput(entry, builder, options);
         }
     } else if ('type' in data) {
-        await renderSection(data, builder, options, false);
+        await renderSection({
+            section: data,
+            builder,
+            options,
+            isFirstCardSection: false,
+        });
     } else if ('sections' in data) {
         await renderCard(data, builder, options);
     } else {
@@ -90,16 +95,14 @@ async function renderCard(
         builder.advanceCursor(sectionGap / 2);
 
         /** Draw a separator line under the card title. */
-        await builder.drawLine(
-            builder.contentX,
-            builder.getCursorY(),
-            builder.contentX + builder.contentWidth,
-            builder.getCursorY(),
-            {
-                color: (await getPdfColors()).lightGray,
-                thickness: 1,
-            },
-        );
+        await builder.drawLine({
+            x1: builder.contentX,
+            y1: builder.getCursorY(),
+            x2: builder.contentX + builder.contentWidth,
+            y2: builder.getCursorY(),
+            color: (await getPdfColors()).lightGray,
+            thickness: 1,
+        });
 
         builder.advanceCursor(sectionGap / 2);
     }
@@ -116,16 +119,26 @@ async function renderCard(
             builder.advanceCursor(sectionGap);
         }
 
-        await renderSection(section, builder, options, index === 0);
+        await renderSection({
+            section,
+            builder,
+            options,
+            isFirstCardSection: index === 0,
+        });
     }
 }
 
-async function renderSection(
-    section: Readonly<StructuredRenderSection>,
-    builder: PdfDocumentBuilder,
-    options: Readonly<RenderOptions>,
-    isFirstCardSection: boolean,
-): Promise<void> {
+async function renderSection({
+    section,
+    builder,
+    options,
+    isFirstCardSection,
+}: Readonly<{
+    section: Readonly<StructuredRenderSection>;
+    builder: PdfDocumentBuilder;
+    options: Readonly<RenderOptions>;
+    isFirstCardSection: boolean;
+}>): Promise<void> {
     /** Render section title. */
     if ('sectionTitle' in section && section.sectionTitle && !isFirstCardSection) {
         const lineH = builder.lineHeight(pdfFontSizes.h3);

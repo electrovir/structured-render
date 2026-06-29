@@ -349,9 +349,9 @@ export const multiCardMock: StructuredRenderData = [
                     },
                 ],
             },
-            createRenderDataTable(
-                StructuredRenderCellDirection.Vertical,
-                [
+            createRenderDataTable({
+                direction: StructuredRenderCellDirection.Vertical,
+                headers: [
                     {
                         key: 'age',
                         text: {
@@ -451,7 +451,7 @@ export const multiCardMock: StructuredRenderData = [
                         },
                     },
                 ],
-                [
+                entries: [
                     {
                         data: {
                             age: {
@@ -623,7 +623,7 @@ export const multiCardMock: StructuredRenderData = [
                         },
                     },
                 ],
-            ),
+            }),
         ],
     },
     {

@@ -214,7 +214,11 @@ const pdfSectionRenderers: Record<StructuredRenderSection['type'], PdfSectionRen
 
         builder.ensureSpace(tagHeight);
 
-        builder.drawRect(builder.contentX, builder.getCursorY() - tagHeight, tagWidth, tagHeight, {
+        builder.drawRect({
+            x: builder.contentX,
+            y: builder.getCursorY() - tagHeight,
+            width: tagWidth,
+            height: tagHeight,
             fillColor: (await getPdfColors()).lightGray,
         });
 
@@ -243,15 +247,13 @@ const pdfSectionRenderers: Record<StructuredRenderSection['type'], PdfSectionRen
 
         builder.ensureSpace(Math.min(totalHeight, builder.lineHeight(pdfFontSizes.code) * 3));
 
-        builder.drawRect(
-            builder.contentX,
-            builder.getCursorY() - totalHeight,
-            builder.contentWidth,
-            totalHeight,
-            {
-                fillColor: (await getPdfColors()).codeBackground,
-            },
-        );
+        builder.drawRect({
+            x: builder.contentX,
+            y: builder.getCursorY() - totalHeight,
+            width: builder.contentWidth,
+            height: totalHeight,
+            fillColor: (await getPdfColors()).codeBackground,
+        });
 
         const savedY = builder.getCursorY();
         builder.advanceCursor(padding);
@@ -329,9 +331,21 @@ const pdfSectionRenderers: Record<StructuredRenderSection['type'], PdfSectionRen
         const styleConfig = await getTextStyleConfig(rawSection.style, builder);
 
         if (rawSection.direction === StructuredRenderCellDirection.Horizontal) {
-            await renderHorizontalTable(rawSection, visibleHeaders, builder, options, styleConfig);
+            await renderHorizontalTable({
+                section: rawSection,
+                visibleHeaders,
+                builder,
+                options,
+                styleConfig,
+            });
         } else {
-            await renderVerticalTable(rawSection, visibleHeaders, builder, options, styleConfig);
+            await renderVerticalTable({
+                section: rawSection,
+                visibleHeaders,
+                builder,
+                options,
+                styleConfig,
+            });
         }
     },
 
@@ -454,8 +468,7 @@ function drawIcon(
         '--vira-icon-fill-color': iconSection.fillColor || 'none',
     };
 
-    // eslint-disable-next-line sonarjs/slow-regex
-    const cssVarPattern = /var\(--([^,)]+),\s*([^)]+)\)/g;
+    const cssVarPattern = /var\(--([^,)]+),([^)]+)\)/g;
     const svgString = rawSvg.replace(cssVarPattern, (_match, varName, fallback) => {
         return cssVarValues[`--${varName.trim()}`] || fallback.trim();
     });
@@ -483,22 +496,28 @@ type TableHeader = StructuredRenderTable['headers'][number];
 
 type TableStyleConfig = {font: PDFFont; size: number; color: Color};
 
-async function renderHorizontalTable(
-    section: Readonly<StructuredRenderTable>,
-    visibleHeaders: ReadonlyArray<TableHeader>,
-    builder: PdfDocumentBuilder,
-    options: Readonly<RenderOptions>,
-    styleConfig: Readonly<TableStyleConfig>,
-): Promise<void> {
+async function renderHorizontalTable({
+    section,
+    visibleHeaders,
+    builder,
+    options,
+    styleConfig,
+}: Readonly<{
+    section: Readonly<StructuredRenderTable>;
+    visibleHeaders: ReadonlyArray<TableHeader>;
+    builder: PdfDocumentBuilder;
+    options: Readonly<RenderOptions>;
+    styleConfig: Readonly<TableStyleConfig>;
+}>): Promise<void> {
     const cellPadding = 3;
-    const columnWidths = computeColumnWidths(
+    const columnWidths = computeColumnWidths({
         section,
         visibleHeaders,
         builder,
         options,
         cellPadding,
         styleConfig,
-    );
+    });
 
     /** Draw header row. */
     await drawTableRow({
@@ -557,13 +576,19 @@ async function renderHorizontalTable(
     }
 }
 
-async function renderVerticalTable(
-    section: Readonly<StructuredRenderTable>,
-    visibleHeaders: ReadonlyArray<TableHeader>,
-    builder: PdfDocumentBuilder,
-    options: Readonly<RenderOptions>,
-    styleConfig: Readonly<TableStyleConfig>,
-): Promise<void> {
+async function renderVerticalTable({
+    section,
+    visibleHeaders,
+    builder,
+    options,
+    styleConfig,
+}: Readonly<{
+    section: Readonly<StructuredRenderTable>;
+    visibleHeaders: ReadonlyArray<TableHeader>;
+    builder: PdfDocumentBuilder;
+    options: Readonly<RenderOptions>;
+    styleConfig: Readonly<TableStyleConfig>;
+}>): Promise<void> {
     const cellPadding = 3;
 
     /** For vertical tables, each header becomes a row with entry data as columns. */
@@ -597,14 +622,21 @@ async function renderVerticalTable(
     }
 }
 
-function computeColumnWidths(
-    section: Readonly<StructuredRenderTable>,
-    visibleHeaders: ReadonlyArray<TableHeader>,
-    builder: PdfDocumentBuilder,
-    options: Readonly<RenderOptions>,
-    cellPadding: number,
-    styleConfig: Readonly<TableStyleConfig>,
-): number[] {
+function computeColumnWidths({
+    section,
+    visibleHeaders,
+    builder,
+    options,
+    cellPadding,
+    styleConfig,
+}: Readonly<{
+    section: Readonly<StructuredRenderTable>;
+    visibleHeaders: ReadonlyArray<TableHeader>;
+    builder: PdfDocumentBuilder;
+    options: Readonly<RenderOptions>;
+    cellPadding: number;
+    styleConfig: Readonly<TableStyleConfig>;
+}>): number[] {
     const minColumnWidth = 25;
     const dataFont = styleConfig.font;
 
@@ -667,7 +699,12 @@ async function drawTableRow({
         const useBold = isHeader || (boldFirstCell && cellIndex === 0);
         const font = useBold ? builder.fonts.bold : styleConfig.font;
         const maxTextWidth = columnWidth - cellPadding * 2;
-        return wrapText(cellText, font, fontSize, maxTextWidth);
+        return wrapText({
+            text: cellText,
+            font,
+            fontSize,
+            maxWidth: maxTextWidth,
+        });
     });
 
     const maxLineCount = Math.max(1, ...cellWrappedLines.map((lines) => lines.length));
@@ -680,7 +717,11 @@ async function drawTableRow({
     let cellX = builder.contentX;
 
     if (isHeader) {
-        builder.drawRect(builder.contentX, rowBottom, builder.contentWidth, rowHeight, {
+        builder.drawRect({
+            x: builder.contentX,
+            y: rowBottom,
+            width: builder.contentWidth,
+            height: rowHeight,
             fillColor: (await getPdfColors()).headerBackground,
         });
     }
@@ -710,15 +751,13 @@ async function drawTableRow({
     }
 
     /** Draw row border. */
-    await builder.drawLine(
-        builder.contentX,
-        rowBottom,
-        builder.contentX + builder.contentWidth,
-        rowBottom,
-        {
-            color: (await getPdfColors()).tableBorder,
-        },
-    );
+    await builder.drawLine({
+        x1: builder.contentX,
+        y1: rowBottom,
+        x2: builder.contentX + builder.contentWidth,
+        y2: rowBottom,
+        color: (await getPdfColors()).tableBorder,
+    });
 
     builder.advanceCursor(rowHeight);
 }

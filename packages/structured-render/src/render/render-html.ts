@@ -243,7 +243,12 @@ const htmlRenderers: Record<
                             'list-item-with-icon': !!item.icon,
                         })}
                     >
-                        ${createSourceWrapper(itemContent, options, itemKeyChain, item.sources)}
+                        ${createSourceWrapper({
+                            content: itemContent,
+                            options,
+                            rawKeyChain: itemKeyChain,
+                            rawSources: item.sources,
+                        })}
                     </li>
                 `;
             },
@@ -404,7 +409,12 @@ const htmlRenderers: Record<
                             <tbody>${cardRows}</tbody>
                         </table>
                         ${rowSources?.length
-                            ? createSourceWrapper(html``, options, rowKeyChain, rowSources)
+                            ? createSourceWrapper({
+                                  content: html``,
+                                  options,
+                                  rawKeyChain: rowKeyChain,
+                                  rawSources: rowSources,
+                              })
                             : nothing}
                     </${ViraCard}>
                 `;
@@ -682,7 +692,12 @@ const htmlRenderers: Record<
                                 return html`
                                     ${cellTemplate}
                                     <td class="source-cell">
-                                        ${createSourceTrigger('', options, rowKeyChain, rowSources)}
+                                        ${createSourceTrigger({
+                                            content: '',
+                                            options,
+                                            rawKeyChain: rowKeyChain,
+                                            rawSources: rowSources,
+                                        })}
                                     </td>
                                 `;
                             } else {
@@ -821,7 +836,12 @@ function renderInternalStructuredHtml(
     options: Readonly<RenderHtmlOptions>,
     keyChain: ReadonlyArray<PropertyKey>,
 ) {
-    return structuredRenderToHtmlArray(data, options, keyChain, false).filter(check.isTruthy);
+    return structuredRenderToHtmlArray({
+        data,
+        options,
+        keyChain,
+        isTopSection: false,
+    }).filter(check.isTruthy);
 }
 
 /**
@@ -843,25 +863,30 @@ export const structuredRenderSectionHtmlNames: Record<StructuredRenderSectionTyp
  */
 export const structuredRenderSectionHtmlTestId = 'structured-render-section';
 
-function structuredRenderToHtmlArray(
-    data: Readonly<RenderInput>,
-    options: Readonly<RenderHtmlOptions>,
-    keyChain: ReadonlyArray<PropertyKey>,
-    isTopSection: boolean,
-): HtmlInterpolation[] {
+function structuredRenderToHtmlArray({
+    data,
+    options,
+    keyChain,
+    isTopSection,
+}: Readonly<{
+    data: Readonly<RenderInput>;
+    options: Readonly<RenderHtmlOptions>;
+    keyChain: ReadonlyArray<PropertyKey>;
+    isTopSection: boolean;
+}>): HtmlInterpolation[] {
     if (!data) {
         return [];
     } else if (check.isArray(data)) {
         return data.flatMap((entry, index) =>
-            structuredRenderToHtmlArray(
-                entry,
+            structuredRenderToHtmlArray({
+                data: entry,
                 options,
-                [
+                keyChain: [
                     ...keyChain,
                     index,
                 ],
                 isTopSection,
-            ),
+            }),
         );
     } else if ('type' in data) {
         const sectionTitle: string | undefined =
@@ -883,7 +908,12 @@ function structuredRenderToHtmlArray(
                 ${testId(structuredRenderSectionHtmlTestId)}
                 ${testId(structuredRenderSectionHtmlNames[data.type])}
             >
-                ${createSourceWrapper(sectionTemplate, options, keyChain, sources)}
+                ${createSourceWrapper({
+                    content: sectionTemplate,
+                    options,
+                    rawKeyChain: keyChain,
+                    rawSources: sources,
+                })}
             </div>
         `;
 
@@ -896,15 +926,15 @@ function structuredRenderToHtmlArray(
             sectionContent,
         ];
     } else if ('sections' in data) {
-        const cardSections = structuredRenderToHtmlArray(
-            data.sections,
+        const cardSections = structuredRenderToHtmlArray({
+            data: data.sections,
             options,
-            [
+            keyChain: [
                 ...keyChain,
                 'sections',
             ],
-            true,
-        );
+            isTopSection: true,
+        });
 
         const cardTitleIconTemplate =
             data.cardTitleIcon && !options.hideCardTitles
@@ -952,12 +982,17 @@ function structuredRenderToHtmlArray(
     }
 }
 
-function createSourceTrigger(
-    content: HtmlInterpolation,
-    options: Readonly<RenderHtmlOptions>,
-    rawKeyChain: ReadonlyArray<PropertyKey>,
-    rawSources: SourcesInput,
-) {
+function createSourceTrigger({
+    content,
+    options,
+    rawKeyChain,
+    rawSources,
+}: Readonly<{
+    content: HtmlInterpolation;
+    options: Readonly<RenderHtmlOptions>;
+    rawKeyChain: ReadonlyArray<PropertyKey>;
+    rawSources: SourcesInput;
+}>) {
     const sources = createCleanSources(rawSources);
 
     const sourceKeyChain = [
@@ -1067,12 +1102,17 @@ function createExpandingSource(
  *
  * @category Internal
  */
-export function createSourceWrapper(
-    content: HtmlInterpolation,
-    options: Readonly<RenderHtmlOptions>,
-    rawKeyChain: ReadonlyArray<PropertyKey>,
-    rawSources: SourcesInput,
-) {
+export function createSourceWrapper({
+    content,
+    options,
+    rawKeyChain,
+    rawSources,
+}: Readonly<{
+    content: HtmlInterpolation;
+    options: Readonly<RenderHtmlOptions>;
+    rawKeyChain: ReadonlyArray<PropertyKey>;
+    rawSources: SourcesInput;
+}>) {
     if (options.hideSources) {
         return html`
             <div class="source-content-wrapper">${content}</div>
@@ -1080,7 +1120,12 @@ export function createSourceWrapper(
     }
 
     return html`
-        ${createSourceTrigger(content, options, rawKeyChain, rawSources)}
+        ${createSourceTrigger({
+            content,
+            options,
+            rawKeyChain,
+            rawSources,
+        })}
         ${createExpandingSource(options, rawKeyChain, rawSources)}
     `;
 }

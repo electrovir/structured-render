@@ -51,8 +51,12 @@ describe(renderToPdf.name, () => {
         }
 
         assert.isTrue(
-            (await compareImages(await readFile(testPngPath), await readFile(comparisonOutputPath)))
-                .passed,
+            (
+                await compareImages({
+                    baseImageBuffer: await readFile(testPngPath),
+                    currentImageBuffer: await readFile(comparisonOutputPath),
+                })
+            ).passed,
         );
     });
 
@@ -98,8 +102,12 @@ describe(renderToPdf.name, () => {
         }
 
         assert.isTrue(
-            (await compareImages(await readFile(testPngPath), await readFile(comparisonOutputPath)))
-                .passed,
+            (
+                await compareImages({
+                    baseImageBuffer: await readFile(testPngPath),
+                    currentImageBuffer: await readFile(comparisonOutputPath),
+                })
+            ).passed,
         );
     });
 });

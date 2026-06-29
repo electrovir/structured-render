@@ -26,20 +26,24 @@ describe(createRenderDataTable.name, () => {
             },
         ];
 
-        const result = createRenderDataTable(StructuredRenderCellDirection.Horizontal, headers, [
-            {
-                data: {
-                    name: {
-                        type: StructuredRenderSectionType.text,
-                        text: 'Alpha',
-                    },
-                    value: {
-                        type: StructuredRenderSectionType.text,
-                        text: '100',
+        const result = createRenderDataTable({
+            direction: StructuredRenderCellDirection.Horizontal,
+            headers,
+            entries: [
+                {
+                    data: {
+                        name: {
+                            type: StructuredRenderSectionType.text,
+                            text: 'Alpha',
+                        },
+                        value: {
+                            type: StructuredRenderSectionType.text,
+                            text: '100',
+                        },
                     },
                 },
-            },
-        ]);
+            ],
+        });
 
         assert.deepEquals(result.headers, headers);
         assert.strictEquals(result.entries.length, 1);
@@ -62,10 +66,10 @@ describe(createRenderDataTable.name, () => {
             },
         ];
 
-        const result = createRenderDataTable(
-            StructuredRenderCellDirection.Horizontal,
+        const result = createRenderDataTable({
+            direction: StructuredRenderCellDirection.Horizontal,
             headers,
-            [
+            entries: [
                 {
                     data: {
                         col1: {
@@ -76,7 +80,7 @@ describe(createRenderDataTable.name, () => {
                 },
             ],
             footerRows,
-        );
+        });
 
         assert.deepEquals(result.footerRows, footerRows);
     });
@@ -88,23 +92,27 @@ describe(createRenderDataTable.name, () => {
             },
         ];
 
-        const result = createRenderDataTable(StructuredRenderCellDirection.Horizontal, headers, [
-            {
-                data: {
-                    col1: {
-                        type: StructuredRenderSectionType.text,
-                        text: 'data',
+        const result = createRenderDataTable({
+            direction: StructuredRenderCellDirection.Horizontal,
+            headers,
+            entries: [
+                {
+                    data: {
+                        col1: {
+                            type: StructuredRenderSectionType.text,
+                            text: 'data',
+                        },
                     },
+                    sources: [
+                        {
+                            type: 'source',
+                            fileName: 'test.pdf',
+                            pageNumbers: [1],
+                        },
+                    ],
                 },
-                sources: [
-                    {
-                        type: 'source',
-                        fileName: 'test.pdf',
-                        pageNumbers: [1],
-                    },
-                ],
-            },
-        ]);
+            ],
+        });
 
         assert.strictEquals(result.entries.length, 1);
         assert.isDefined(result.entries[0]?.sources);
@@ -117,7 +125,11 @@ describe(createRenderDataTable.name, () => {
             },
         ];
 
-        const result = createRenderDataTable(StructuredRenderCellDirection.Horizontal, headers, []);
+        const result = createRenderDataTable({
+            direction: StructuredRenderCellDirection.Horizontal,
+            headers,
+            entries: [],
+        });
 
         assert.deepEquals(result.headers, headers);
         assert.strictEquals(result.entries.length, 0);

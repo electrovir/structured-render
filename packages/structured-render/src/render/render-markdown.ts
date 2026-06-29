@@ -61,12 +61,17 @@ const markdownStyleWrapper: Partial<Record<StructuredRenderTextStyle, string>> =
 
 type StructuredRenderTableHeader = ArrayElement<StructuredRenderTable['headers']>;
 
-function buildVerticalTableRows(
-    section: Readonly<StructuredRenderTable>,
-    visibleHeaders: ReadonlyArray<StructuredRenderTableHeader>,
-    options: Readonly<RenderOptions>,
-    wrapCell: (text: string) => string,
-): AtLeastTuple<string[], 1> {
+function buildVerticalTableRows({
+    section,
+    visibleHeaders,
+    options,
+    wrapCell,
+}: Readonly<{
+    section: Readonly<StructuredRenderTable>;
+    visibleHeaders: ReadonlyArray<StructuredRenderTableHeader>;
+    options: Readonly<RenderOptions>;
+    wrapCell: (text: string) => string;
+}>): AtLeastTuple<string[], 1> {
     const columnCount = section.entries.length + 1;
 
     const dataRows = visibleHeaders.map((header) => {
@@ -89,12 +94,17 @@ function buildVerticalTableRows(
     ];
 }
 
-function buildHorizontalTableRows(
-    section: Readonly<StructuredRenderTable>,
-    visibleHeaders: ReadonlyArray<StructuredRenderTableHeader>,
-    options: Readonly<RenderOptions>,
-    wrapCell: (text: string) => string,
-): AtLeastTuple<string[], 1> {
+function buildHorizontalTableRows({
+    section,
+    visibleHeaders,
+    options,
+    wrapCell,
+}: Readonly<{
+    section: Readonly<StructuredRenderTable>;
+    visibleHeaders: ReadonlyArray<StructuredRenderTableHeader>;
+    options: Readonly<RenderOptions>;
+    wrapCell: (text: string) => string;
+}>): AtLeastTuple<string[], 1> {
     const headerRow = visibleHeaders.map((header) =>
         wrapCell(header.text ? renderStructuredMarkdown(header.text, options) : header.key),
     );
@@ -114,10 +124,12 @@ function buildHorizontalTableRows(
 const tableRowBuilders: Record<
     StructuredRenderCellDirection,
     (
-        section: Readonly<StructuredRenderTable>,
-        visibleHeaders: ReadonlyArray<StructuredRenderTableHeader>,
-        options: Readonly<RenderOptions>,
-        wrapCell: (text: string) => string,
+        params: Readonly<{
+            section: Readonly<StructuredRenderTable>;
+            visibleHeaders: ReadonlyArray<StructuredRenderTableHeader>;
+            options: Readonly<RenderOptions>;
+            wrapCell: (text: string) => string;
+        }>,
     ) => AtLeastTuple<string[], 1>
 > = {
     [StructuredRenderCellDirection.Vertical]: buildVerticalTableRows,
@@ -228,12 +240,12 @@ const markdownRenderers: Record<
                   })
                 : text;
 
-        const rows = tableRowBuilders[section.direction](
+        const rows = tableRowBuilders[section.direction]({
             section,
             visibleHeaders,
             options,
             wrapCell,
-        );
+        });
         const columnCount = rows[0].length || 0;
         const colWidths = computeColumnWidths(rows, columnCount);
         const [

@@ -91,10 +91,10 @@ export class PdfDocumentBuilder {
     public readonly contentWidth: number;
     public readonly contentX: number;
 
-    private currentPage: PDFPage;
-    private cursorY: number;
+    protected currentPage: PDFPage;
+    protected cursorY: number;
 
-    private constructor(pdfDoc: PDFDocument, fonts: PdfFonts) {
+    protected constructor(pdfDoc: PDFDocument, fonts: PdfFonts) {
         this.pdfDoc = pdfDoc;
         this.fonts = fonts;
         this.contentWidth = a4.width - defaultMargins.left - defaultMargins.right;
@@ -217,7 +217,12 @@ export class PdfDocumentBuilder {
     ): Promise<number> {
         const effectiveMaxWidth = maxWidth ?? this.contentWidth;
         const effectiveX = x ?? this.contentX;
-        const lines = wrapText(text, font, size, effectiveMaxWidth);
+        const lines = wrapText({
+            text,
+            font,
+            fontSize: size,
+            maxWidth: effectiveMaxWidth,
+        });
         const lineH = this.lineHeight(size);
         const fullHeight = lines.length * lineH;
         const maxContentHeight = a4.height - defaultMargins.top - defaultMargins.bottom;
@@ -260,24 +265,31 @@ export class PdfDocumentBuilder {
             maxWidth?: number | undefined;
         }>,
     ): number {
-        const lines = wrapText(text, font, size, maxWidth ?? this.contentWidth);
+        const lines = wrapText({
+            text,
+            font,
+            fontSize: size,
+            maxWidth: maxWidth ?? this.contentWidth,
+        });
         return lines.length * this.lineHeight(size);
     }
 
     /** Draw a horizontal line. */
-    public async drawLine(
-        x1: number,
-        y1: number,
-        x2: number,
-        y2: number,
-        {
-            thickness,
-            color,
-        }: Readonly<{
-            thickness?: number | undefined;
-            color?: Color | undefined;
-        }> = {},
-    ): Promise<void> {
+    public async drawLine({
+        x1,
+        y1,
+        x2,
+        y2,
+        thickness,
+        color,
+    }: Readonly<{
+        x1: number;
+        y1: number;
+        x2: number;
+        y2: number;
+        thickness?: number | undefined;
+        color?: Color | undefined;
+    }>): Promise<void> {
         const colors = await getPdfColors();
         this.currentPage.drawLine({
             start: {
@@ -294,21 +306,23 @@ export class PdfDocumentBuilder {
     }
 
     /** Draw a filled and/or bordered rectangle. */
-    public drawRect(
-        x: number,
-        y: number,
-        width: number,
-        height: number,
-        {
-            fillColor,
-            borderColor,
-            borderWidth,
-        }: Readonly<{
-            fillColor?: Color | undefined;
-            borderColor?: Color | undefined;
-            borderWidth?: number | undefined;
-        }> = {},
-    ): void {
+    public drawRect({
+        x,
+        y,
+        width,
+        height,
+        fillColor,
+        borderColor,
+        borderWidth,
+    }: Readonly<{
+        x: number;
+        y: number;
+        width: number;
+        height: number;
+        fillColor?: Color | undefined;
+        borderColor?: Color | undefined;
+        borderWidth?: number | undefined;
+    }>): void {
         this.currentPage.drawRectangle({
             x,
             y,
@@ -332,7 +346,7 @@ export class PdfDocumentBuilder {
         return await this.pdfDoc.save();
     }
 
-    private createNewPage(): PDFPage {
+    protected createNewPage(): PDFPage {
         return this.pdfDoc.addPage([
             a4.width,
             a4.height,
@@ -341,12 +355,12 @@ export class PdfDocumentBuilder {
 }
 
 /** Wrap text into lines that fit within maxWidth. */
-export function wrapText(
-    text: string,
-    font: PDFFont,
-    fontSize: number,
-    maxWidth: number,
-): string[] {
+export function wrapText({
+    text,
+    font,
+    fontSize,
+    maxWidth,
+}: Readonly<{text: string; font: PDFFont; fontSize: number; maxWidth: number}>): string[] {
     if (!text) {
         return [''];
     }

@@ -65,14 +65,14 @@ export const VirExpandableSource = defineElement<{
                     });
                 })}
             >
-                ${createSourceWrapper(
-                    html`
+                ${createSourceWrapper({
+                    content: html`
                         <slot></slot>
                     `,
                     options,
-                    ['expandable-source'],
-                    inputs.sources,
-                )}
+                    rawKeyChain: ['expandable-source'],
+                    rawSources: inputs.sources,
+                })}
             </div>
         `;
     },
