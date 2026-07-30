@@ -72,9 +72,9 @@ export function extractSectionText(
                     .join(' ');
             })
             .join(', ');
+    } else {
+        return '';
     }
-
-    return '';
 }
 
 async function renderSource(
@@ -427,13 +427,13 @@ async function getTextStyleConfig(
             size: pdfFontSizes.small,
             color: (await getPdfColors()).black,
         };
+    } else {
+        return {
+            font: builder.fonts.regular,
+            size: pdfFontSizes.body,
+            color: (await getPdfColors()).black,
+        };
     }
-
-    return {
-        font: builder.fonts.regular,
-        size: pdfFontSizes.body,
-        color: (await getPdfColors()).black,
-    };
 }
 
 const iconSize = 10;

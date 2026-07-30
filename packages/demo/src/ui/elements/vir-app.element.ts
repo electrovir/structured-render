@@ -33,7 +33,11 @@ export const VirApp = defineElement()({
                     basePath: 'structured-render/demo',
                 },
             })}>
-                <p slot=${ElementBookApp.slotNames.navHeader}>Structured<br>Render</p>
+                <p slot=${ElementBookApp.slotNames['element-book-app-nav-header']}>
+                    Structured
+                    <br />
+                    Render
+                </p>
             </${ElementBookApp}>
         `;
     },

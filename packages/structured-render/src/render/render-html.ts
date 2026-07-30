@@ -1,4 +1,4 @@
-import {assert, check, type Primitive} from '@augment-vir/assert';
+import {assert, assertWrap, check, type Primitive} from '@augment-vir/assert';
 import {
     ensureArray,
     filterMap,
@@ -116,9 +116,9 @@ function extractCellText(
         return section.code;
     } else if (section.type === StructuredRenderSectionType.tag) {
         return section.text == undefined ? '' : String(section.text);
+    } else {
+        return '';
     }
-
-    return '';
 }
 
 /**
@@ -485,8 +485,13 @@ const htmlRenderers: Record<
             currentSort,
         });
 
-        const {headerRow, rows} = defineTable(
-            filterMap(
+        const orientation =
+            section.direction === StructuredRenderCellDirection.Horizontal
+                ? ViraTableOrientation.Vertical
+                : ViraTableOrientation.Horizontal;
+
+        const {headerRow, rows} = defineTable({
+            headers: filterMap(
                 section.headers,
                 (header, headerIndex) => {
                     if (header.hidden) {
@@ -506,8 +511,8 @@ const htmlRenderers: Record<
                 },
                 check.isTruthy,
             ),
-            sortedEntries,
-            (row, rowIndex) => {
+            originalData: sortedEntries,
+            dataMap: (row, rowIndex) => {
                 return mapObjectValues(row.data, (key, content) => {
                     const contents = ensureArray(content).filter(check.isTruthy);
                     if (!contents.length) {
@@ -555,13 +560,10 @@ const htmlRenderers: Record<
                     return contentTemplates;
                 });
             },
-            {
-                orientation:
-                    section.direction === StructuredRenderCellDirection.Horizontal
-                        ? ViraTableOrientation.Vertical
-                        : ViraTableOrientation.Horizontal,
+            options: {
+                orientation,
             },
-        );
+        });
 
         const allRowSources = options.hideSources
             ? []
@@ -672,7 +674,10 @@ const htmlRenderers: Record<
                                                                 tableKey,
                                                                 sort: nextSort
                                                                     ? {
-                                                                          columnKey: headerCell.key,
+                                                                          columnKey:
+                                                                              assertWrap.isString(
+                                                                                  headerCell.key,
+                                                                              ),
                                                                           direction: nextSort,
                                                                       }
                                                                     : undefined,

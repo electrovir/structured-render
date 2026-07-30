@@ -462,9 +462,9 @@ function getInlineFont(
         return builder.fonts.bold;
     } else if (context.italic) {
         return builder.fonts.italic;
+    } else {
+        return builder.fonts.regular;
     }
-
-    return builder.fonts.regular;
 }
 
 function getHeadingFontSize(depth: number): number {
@@ -474,9 +474,9 @@ function getHeadingFontSize(depth: number): number {
         return pdfFontSizes.h2;
     } else if (depth === 3) {
         return pdfFontSizes.h3;
+    } else {
+        return pdfFontSizes.body;
     }
-
-    return pdfFontSizes.body;
 }
 
 async function renderMarkdownTable(
