@@ -5,7 +5,12 @@ import {
     type StructuredRenderSource,
 } from '../../structured-render-data/sections/source.section.js';
 import {type StructuredRenderSection} from '../../structured-render-data/structured-render-section.js';
-import {defaultRenderOptions, type RenderInput, type RenderOptions} from '../render-types.js';
+import {
+    defaultRenderOptions,
+    type RenderInput,
+    type RenderOptions,
+    type RenderPdfOptions,
+} from '../render-types.js';
 import {
     PdfDocumentBuilder,
     cardGap,
@@ -22,10 +27,12 @@ import {renderSectionToPdf} from './pdf-section-renderers.js';
 export async function renderToPdfBytes(
     data: Readonly<RenderInput>,
     fileName: string,
-    options: Readonly<PartialWithUndefined<RenderOptions>> = {},
+    options: Readonly<PartialWithUndefined<RenderPdfOptions>> = {},
 ): Promise<Uint8Array> {
     const finalOptions = mergeDefinedProperties(defaultRenderOptions, options);
-    const builder = await PdfDocumentBuilder.create();
+    const builder = await PdfDocumentBuilder.create({
+        pageHeader: options.pageHeader,
+    });
 
     if (fileName) {
         builder.pdfDoc.setTitle(fileName);

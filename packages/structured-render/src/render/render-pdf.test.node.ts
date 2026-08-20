@@ -1,5 +1,7 @@
 import {assert} from '@augment-vir/assert';
+import {createArray} from '@augment-vir/common';
 import {describe, extractTestNameAsDir, it} from '@augment-vir/test';
+import {PDFDocument} from '@cantoo/pdf-lib';
 import {compareImages} from '@virmator/test/dist/web-screenshot-plugin/compare-images.js';
 import {existsSync} from 'node:fs';
 import {cp, mkdir, readFile, writeFile} from 'node:fs/promises';
@@ -26,6 +28,74 @@ async function renderPdfToFirstPagePng(pdfBytes: Uint8Array): Promise<Buffer> {
 }
 
 describe(renderToPdf.name, () => {
+    it('renders consumer-defined headers on every page', async (testContext) => {
+        const headerPageNumbers = new Set<number>();
+        const pdfBytes = await renderToPdf(
+            [
+                {
+                    sections: [
+                        {
+                            type: StructuredRenderSectionType.text,
+                            text: createArray(160, () => {
+                                return 'Example report detail.';
+                            }).join('\n'),
+                        },
+                    ],
+                },
+            ],
+            'custom-page-header.pdf',
+            {
+                pageHeader: {
+                    height: 36,
+                    create({pdfDocument, fonts}) {
+                        pdfDocument.setAuthor('Test report generator');
+
+                        return ({page, pageNumber, headerBounds}) => {
+                            headerPageNumbers.add(pageNumber);
+                            page.drawText(`Example header ${pageNumber}`, {
+                                x: headerBounds.x + 6,
+                                y: headerBounds.y + headerBounds.height - 14,
+                                font: fonts.bold,
+                                size: 10,
+                            });
+                            page.drawLine({
+                                start: {
+                                    x: headerBounds.x,
+                                    y: headerBounds.y + 2,
+                                },
+                                end: {
+                                    x: headerBounds.x + headerBounds.width,
+                                    y: headerBounds.y + 2,
+                                },
+                                thickness: 1,
+                            });
+                        };
+                    },
+                },
+            },
+        );
+        const pdfFileName = extractTestNameAsDir(testContext) + '.pdf';
+        const pngFileName = extractTestNameAsDir(testContext) + '.png';
+
+        await mkdir(testOutputDirPath, {
+            recursive: true,
+        });
+        await writeFile(join(testOutputDirPath, pdfFileName), pdfBytes);
+        await writeFile(
+            join(testOutputDirPath, pngFileName),
+            await renderPdfToFirstPagePng(pdfBytes),
+        );
+
+        const pdfDocument = await PDFDocument.load(pdfBytes);
+        const pageNumbers = createArray(pdfDocument.getPageCount(), (index) => {
+            return index + 1;
+        });
+
+        assert.isLengthAtLeast(pdfDocument.getPages(), 2);
+        assert.strictEquals(pdfDocument.getAuthor(), 'Test report generator');
+        assert.deepEquals([...headerPageNumbers], pageNumbers);
+    });
+
     /**
      * This test is used to manually verify what the generated PDF looks like. The output i saved
      * into the test-files directory.

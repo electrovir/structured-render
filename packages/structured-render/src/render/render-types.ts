@@ -10,6 +10,7 @@ import {
 import {type StructuredRenderCard} from '../structured-render-data/structured-render-card.js';
 import {type StructuredRenderData} from '../structured-render-data/structured-render-data.js';
 import {type StructuredRenderSection} from '../structured-render-data/structured-render-section.js';
+import {type PdfPageHeader} from './pdf-page-header.js';
 import {defaultMarkdownRenderStyles} from './render-markdown-styles.js';
 import {type TableSortState} from './table-sort-event.js';
 
@@ -63,6 +64,16 @@ export const defaultRenderOptions: Readonly<RenderOptions> = {
     sourceString: 'Source',
     pluralSourcesString: 'Sources',
     hideSources: false,
+};
+
+/**
+ * Option values for Structured Render PDF rendering.
+ *
+ * @category Internal
+ */
+export type RenderPdfOptions = RenderOptions & {
+    /** An optional consumer-defined header rendered on every PDF page. */
+    pageHeader?: PdfPageHeader | undefined;
 };
 
 /**

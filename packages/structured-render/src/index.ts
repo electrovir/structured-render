@@ -4,6 +4,7 @@ export * from './elements/vir-expandable-source.element.js';
 export * from './elements/vir-markdown.element.js';
 export * from './elements/vir-source.element.js';
 export * from './elements/vir-structured-render.element.js';
+export * from './render/pdf-page-header.js';
 export * from './render/render-html.js';
 export * from './render/render-markdown-styles.js';
 export * from './render/render-markdown.js';

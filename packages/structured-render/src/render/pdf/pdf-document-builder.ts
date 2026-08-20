@@ -1,5 +1,10 @@
 import {check} from '@augment-vir/assert';
 import {type Color, type PDFDocument, type PDFFont, type PDFPage} from '@cantoo/pdf-lib';
+import {
+    type PdfPageHeader,
+    type PdfPageHeaderFonts,
+    type PdfPageHeaderRenderer,
+} from '../pdf-page-header.js';
 
 /** Millimeters to PDF points conversion factor. */
 const mmToPoints = 2.835;
@@ -72,14 +77,7 @@ export const sectionGap = 6;
 export const cardGap = 10;
 
 /** All embedded fonts available for PDF rendering. */
-export type PdfFonts = {
-    regular: PDFFont;
-    bold: PDFFont;
-    italic: PDFFont;
-    boldItalic: PDFFont;
-    mono: PDFFont;
-    monoBold: PDFFont;
-};
+export type PdfFonts = PdfPageHeaderFonts;
 
 /**
  * Core layout engine for building PDF documents. Manages cursor position, page creation, font
@@ -91,19 +89,38 @@ export class PdfDocumentBuilder {
     public readonly contentWidth: number;
     public readonly contentX: number;
 
+    protected readonly pageHeaderHeight: number;
+    protected readonly renderPageHeader: PdfPageHeaderRenderer | undefined;
+
     protected currentPage: PDFPage;
     protected cursorY: number;
 
-    protected constructor(pdfDoc: PDFDocument, fonts: PdfFonts) {
+    protected constructor(
+        pdfDoc: PDFDocument,
+        fonts: PdfFonts,
+        {
+            pageHeaderHeight,
+            renderPageHeader,
+        }: Readonly<{
+            pageHeaderHeight: number;
+            renderPageHeader?: PdfPageHeaderRenderer | undefined;
+        }>,
+    ) {
         this.pdfDoc = pdfDoc;
         this.fonts = fonts;
         this.contentWidth = a4.width - defaultMargins.left - defaultMargins.right;
         this.contentX = defaultMargins.left;
+        this.pageHeaderHeight = pageHeaderHeight;
+        this.renderPageHeader = renderPageHeader;
         this.currentPage = this.createNewPage();
-        this.cursorY = a4.height - defaultMargins.top;
+        this.cursorY = this.getContentStartY();
     }
 
-    public static async create(): Promise<PdfDocumentBuilder> {
+    public static async create({
+        pageHeader,
+    }: Readonly<{
+        pageHeader?: PdfPageHeader | undefined;
+    }> = {}): Promise<PdfDocumentBuilder> {
         const {PDFDocument, StandardFonts} = await import('@cantoo/pdf-lib');
 
         const pdfDoc = await PDFDocument.create();
@@ -124,13 +141,23 @@ export class PdfDocumentBuilder {
             pdfDoc.embedFont(StandardFonts.CourierBold),
         ]);
 
-        return new PdfDocumentBuilder(pdfDoc, {
+        const fonts = {
             regular,
             bold,
             italic,
             boldItalic,
             mono,
             monoBold,
+        };
+
+        return new PdfDocumentBuilder(pdfDoc, fonts, {
+            pageHeaderHeight: pageHeader?.height ?? 0,
+            renderPageHeader: pageHeader
+                ? await pageHeader.create({
+                      pdfDocument: pdfDoc,
+                      fonts,
+                  })
+                : undefined,
         });
     }
 
@@ -157,7 +184,7 @@ export class PdfDocumentBuilder {
     /** Create a new page and reset the cursor. */
     public newPage(): void {
         this.currentPage = this.createNewPage();
-        this.cursorY = a4.height - defaultMargins.top;
+        this.cursorY = this.getContentStartY();
     }
 
     /** Move the cursor down by the given amount. */
@@ -225,7 +252,7 @@ export class PdfDocumentBuilder {
         });
         const lineH = this.lineHeight(size);
         const fullHeight = lines.length * lineH;
-        const maxContentHeight = a4.height - defaultMargins.top - defaultMargins.bottom;
+        const maxContentHeight = this.getContentStartY() - defaultMargins.bottom;
 
         /**
          * If the full text block fits on a single page but not the remaining space on the current
@@ -347,10 +374,27 @@ export class PdfDocumentBuilder {
     }
 
     protected createNewPage(): PDFPage {
-        return this.pdfDoc.addPage([
+        const page = this.pdfDoc.addPage([
             a4.width,
             a4.height,
         ]);
+
+        this.renderPageHeader?.({
+            page,
+            pageNumber: this.pdfDoc.getPageCount(),
+            headerBounds: {
+                x: this.contentX,
+                y: this.getContentStartY(),
+                width: this.contentWidth,
+                height: this.pageHeaderHeight,
+            },
+        });
+
+        return page;
+    }
+
+    protected getContentStartY(): number {
+        return a4.height - defaultMargins.top - this.pageHeaderHeight;
     }
 }
 
