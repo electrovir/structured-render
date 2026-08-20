@@ -42,7 +42,7 @@ export const VirSource = defineElement<{
             viraTheme.colors['vira-grey-behind-fg-small-body'].background.value,
         'vir-source-view-on-page-active-background-color':
             viraTheme.colors['vira-grey-behind-fg-body'].background.value,
-        'vir-source-font-size': '16px',
+        'vir-source-font-size': '14px',
         'vir-source-phone-font-size': '14px',
     },
     styles: ({hostClasses, cssVars}) => css`
@@ -70,6 +70,7 @@ export const VirSource = defineElement<{
             display: flex;
             flex-direction: column;
             gap: 16px;
+            font-size: ${cssVars['vir-source-font-size'].value};
 
             & .entry {
                 display: flex;
@@ -120,7 +121,7 @@ export const VirSource = defineElement<{
 
         ${hostClasses['vir-source-phone-size'].selector} {
             padding: 4px;
-            ${cssVars['vir-source-phone-font-size'].value}
+            font-size: ${cssVars['vir-source-phone-font-size'].value};
 
             gap: 4px;
 
