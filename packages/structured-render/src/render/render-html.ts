@@ -912,8 +912,8 @@ function structuredRenderToHtmlArray({
     if (!data) {
         return [];
     } else if (check.isArray(data)) {
-        return data.flatMap((entry, index) =>
-            structuredRenderToHtmlArray({
+        return data.flatMap((entry, index) => {
+            return structuredRenderToHtmlArray({
                 data: entry,
                 options,
                 keyChain: [
@@ -921,8 +921,8 @@ function structuredRenderToHtmlArray({
                     index,
                 ],
                 isTopSection,
-            }),
-        );
+            });
+        });
     } else if ('type' in data) {
         const sectionTitle: string | undefined =
             ('sectionTitle' in data &&

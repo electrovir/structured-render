@@ -45,92 +45,94 @@ export const VirSource = defineElement<{
         'vir-source-font-size': '14px',
         'vir-source-phone-font-size': '14px',
     },
-    styles: ({hostClasses, cssVars}) => css`
-        ${ViraCard} {
-            background: ${cssVars['vir-source-background-color'].value};
-            border-radius: ${cssVars['vir-source-borer-radius'].value};
-            padding: 24px;
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-
-        p {
-            ${noNativeSpacing}
-        }
-
-        .header {
-            display: flex;
-            align-items: center;
-            gap: 4px;
-            color: ${cssVars['vir-source-header-color'].value};
-        }
-
-        .entries {
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-            font-size: ${cssVars['vir-source-font-size'].value};
-
-            & .entry {
+    styles: ({hostClasses, cssVars}) => {
+        return css`
+            ${ViraCard} {
+                background: ${cssVars['vir-source-background-color'].value};
+                border-radius: ${cssVars['vir-source-borer-radius'].value};
+                padding: 24px;
                 display: flex;
                 flex-direction: column;
-                align-items: flex-start;
-                gap: 2px;
+                gap: 20px;
+            }
 
-                & .source-text {
-                    margin: 0;
-                    line-height: 1.5em;
-                }
+            p {
+                ${noNativeSpacing}
+            }
 
-                & .view-on-page-button {
-                    ${noNativeFormStyles};
-                    cursor: pointer;
-                    color: ${cssVars['vir-source-view-on-page-icon-color'].value};
-                    display: inline-flex;
-                    align-items: center;
-                    vertical-align: middle;
-                    gap: 4px;
-                    padding: 2px 6px;
-                    border-radius: 4px;
+            .header {
+                display: flex;
+                align-items: center;
+                gap: 4px;
+                color: ${cssVars['vir-source-header-color'].value};
+            }
 
-                    &:hover {
-                        background-color: ${cssVars[
-                            'vir-source-view-on-page-hover-background-color'
-                        ].value};
+            .entries {
+                display: flex;
+                flex-direction: column;
+                gap: 16px;
+                font-size: ${cssVars['vir-source-font-size'].value};
+
+                & .entry {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: flex-start;
+                    gap: 2px;
+
+                    & .source-text {
+                        margin: 0;
+                        line-height: 1.5em;
                     }
 
-                    &:active {
-                        background-color: ${cssVars[
-                            'vir-source-view-on-page-active-background-color'
-                        ].value};
-                    }
+                    & .view-on-page-button {
+                        ${noNativeFormStyles};
+                        cursor: pointer;
+                        color: ${cssVars['vir-source-view-on-page-icon-color'].value};
+                        display: inline-flex;
+                        align-items: center;
+                        vertical-align: middle;
+                        gap: 4px;
+                        padding: 2px 6px;
+                        border-radius: 4px;
 
-                    & ${ViraIcon} {
-                        width: ${cssVars['vir-source-font-size'].value};
-                        height: ${cssVars['vir-source-font-size'].value};
+                        &:hover {
+                            background-color: ${cssVars[
+                                'vir-source-view-on-page-hover-background-color'
+                            ].value};
+                        }
+
+                        &:active {
+                            background-color: ${cssVars[
+                                'vir-source-view-on-page-active-background-color'
+                            ].value};
+                        }
+
+                        & ${ViraIcon} {
+                            width: ${cssVars['vir-source-font-size'].value};
+                            height: ${cssVars['vir-source-font-size'].value};
+                        }
                     }
                 }
             }
-        }
 
-        ${ViraIcon} {
-            width: 20px;
-            height: 20px;
-        }
-
-        ${hostClasses['vir-source-phone-size'].selector} {
-            padding: 4px;
-            font-size: ${cssVars['vir-source-phone-font-size'].value};
-
-            gap: 4px;
-
-            & ${ViraIcon} {
-                width: 18px;
-                height: 18px;
+            ${ViraIcon} {
+                width: 20px;
+                height: 20px;
             }
-        }
-    `,
+
+            ${hostClasses['vir-source-phone-size'].selector} {
+                padding: 4px;
+                font-size: ${cssVars['vir-source-phone-font-size'].value};
+
+                gap: 4px;
+
+                & ${ViraIcon} {
+                    width: 18px;
+                    height: 18px;
+                }
+            }
+        `;
+    },
     render({inputs, dispatch, events}) {
         const sources = createCleanSources(inputs.sources);
 

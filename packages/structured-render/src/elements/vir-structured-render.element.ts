@@ -63,405 +63,409 @@ export const VirStructuredRender = defineElement<{
         'vir-structured-render-phone-size': ({inputs}) => !!inputs.options?.isPhoneSize,
         'vir-structured-render-tablet-size': ({inputs}) => !!inputs.options?.isTabletSize,
     },
-    styles: ({cssVars, hostClasses}) => css`
-        :host {
-            ${colorCss(viraTheme.colors[themeDefaultKey])}
-        }
+    styles: ({cssVars, hostClasses}) => {
+        return css`
+            :host {
+                ${colorCss(viraTheme.colors[themeDefaultKey])}
+            }
 
-        ${ViraIcon} {
-            flex-shrink: 0;
-        }
+            ${ViraIcon} {
+                flex-shrink: 0;
+            }
 
-        :host,
-        .${unsafeCSS(contentDivClass)}.${unsafeCSS(contentDivClass)}.${unsafeCSS(contentDivClass)} {
-            display: flex;
-            flex-direction: column;
-            align-items: stretch;
-        }
-
-        .view-header {
-            display: flex;
-            flex-grow: 1;
-            justify-content: space-between;
-
-            & .title-wrapper {
+            :host,
+            .${unsafeCSS(contentDivClass)}.${unsafeCSS(contentDivClass)}.${unsafeCSS(
+                    contentDivClass,
+                )} {
                 display: flex;
-                gap: 32px;
-                align-items: center;
-                text-align: left;
+                flex-direction: column;
+                align-items: stretch;
+            }
 
-                & h2 {
-                    font-size: ${cssVars['vir-structured-render-h2-font-size'].value};
+            .view-header {
+                display: flex;
+                flex-grow: 1;
+                justify-content: space-between;
+
+                & .title-wrapper {
+                    display: flex;
+                    gap: 32px;
+                    align-items: center;
+                    text-align: left;
+
+                    & h2 {
+                        font-size: ${cssVars['vir-structured-render-h2-font-size'].value};
+                    }
+                }
+
+                & ${ViraTag} {
+                    font-size: 14px;
+                }
+
+                & .risk-counts {
+                    display: flex;
+                    gap: 4px;
+                }
+
+                & .header-risk {
+                    flex-wrap: wrap;
+                    margin-left: auto;
+                    display: flex;
+                    gap: 8px;
+                }
+
+                & .risk-count {
+                    display: flex;
+                    align-items: center;
+                    gap: 4px;
+
+                    & .risk-count-number {
+                        font-size: 16px;
+                        font-family: monospace;
+                        width: 3ch;
+                        text-align: left;
+                    }
                 }
             }
 
-            & ${ViraTag} {
-                font-size: 14px;
+            .text-style-${unsafeCSS(StructuredRenderTextStyle.Faint)}.text-style-${unsafeCSS(
+                    StructuredRenderTextStyle.Faint,
+                )}.text-style-${unsafeCSS(StructuredRenderTextStyle.Faint)}.text-style-${unsafeCSS(
+                    StructuredRenderTextStyle.Faint,
+                )} {
+                color: ${viraTheme.colors['vira-grey-foreground-non-body'].foreground.value};
+            }
+            .text-style-${unsafeCSS(StructuredRenderTextStyle.Bold)}.text-style-${unsafeCSS(
+                    StructuredRenderTextStyle.Bold,
+                )}.text-style-${unsafeCSS(StructuredRenderTextStyle.Bold)}.text-style-${unsafeCSS(
+                    StructuredRenderTextStyle.Bold,
+                )} {
+                font-weight: bold;
+            }
+            .text-style-${unsafeCSS(StructuredRenderTextStyle.Small)}.text-style-${unsafeCSS(
+                    StructuredRenderTextStyle.Small,
+                )}.text-style-${unsafeCSS(StructuredRenderTextStyle.Small)}.text-style-${unsafeCSS(
+                    StructuredRenderTextStyle.Small,
+                )} {
+                font-size: ${cssVars['vir-structured-render-small-font-size'].value};
             }
 
-            & .risk-counts {
-                display: flex;
-                gap: 4px;
+            table {
+                border-collapse: collapse;
+                max-width: 100%;
+
+                & th,
+                & td {
+                    padding: 16px;
+                    padding-left: 24px;
+
+                    &:has(+ .source-cell) {
+                        border-right: none;
+                        padding-right: 0;
+                    }
+
+                    &.source-cell {
+                        border-left: none !important;
+                        padding: 0;
+                        padding-left: 4px;
+                    }
+                }
+
+                & td {
+                    word-break: break-word;
+                }
+
+                & th {
+                    text-align: left;
+                    font-weight: normal;
+                    white-space: nowrap;
+                    vertical-align: top;
+                }
+
+                &.wide-table {
+                    font-size: 14px;
+
+                    & th,
+                    & td {
+                        padding: 4px;
+                        padding-left: 8px;
+                    }
+                }
+
+                &.vertical {
+                    align-self: flex-start;
+
+                    & th {
+                        font-weight: bold;
+                    }
+                }
+
+                &.horizontal {
+                    align-self: flex-start;
+                }
+
+                & .th-content {
+                    display: inline-flex;
+                    align-items: center;
+                    gap: 2px;
+                }
+
+                & th.sortable {
+                    cursor: pointer;
+                    user-select: none;
+                }
+
+                & .sort-icon {
+                    display: inline-flex;
+                    align-items: center;
+                    opacity: 0.25;
+                    transition: opacity 0.15s;
+
+                    &.sort-icon-active {
+                        opacity: 0.8;
+                    }
+
+                    & ${ViraIcon} {
+                        width: 16px;
+                        height: 16px;
+                    }
+                }
+
+                & th.sortable:hover .sort-icon {
+                    opacity: 0.6;
+
+                    &.sort-icon-active {
+                        opacity: 1;
+                    }
+                }
+
+                & .source-row td {
+                    border: none !important;
+                    padding: 0 !important;
+                }
+
+                & tfoot {
+                    font-size: ${cssVars['vir-structured-render-h2-font-size'].value};
+                    font-weight: bold;
+
+                    & td {
+                        border: none;
+                    }
+
+                    & td.right-aligned-footer-cell {
+                        text-align: right;
+                        & > .section-wrapper {
+                            display: inline-flex;
+                        }
+                    }
+                }
             }
 
-            & .header-risk {
-                flex-wrap: wrap;
-                margin-left: auto;
-                display: flex;
+            .card-title-with-icon {
+                display: inline-flex;
+                align-items: center;
                 gap: 8px;
             }
 
-            & .risk-count {
+            .raw-collapsible-card.raw-collapsible-card.raw-collapsible-card.raw-collapsible-card {
                 display: flex;
+                padding: 0 16px;
+                border-top: 1px solid
+                    ${viraTheme.colors['vira-grey-foreground-decoration'].foreground.value};
+
+                & h2 {
+                    font-weight: normal;
+                    padding: 8px 0;
+                }
+
+                &:not(:first-child) {
+                    margin-top: -24px;
+                }
+
+                &:first-child {
+                    border-top: none;
+                }
+
+                ${ViraCollapsibleCard.cssVars['vira-collapsible-card-content-gap'].name}: 8px;
+            }
+
+            *::first-line {
+                /* this height must match the icon size */
+                line-height: 24px;
+            }
+
+            .processing-wrapper {
+                display: flex;
+                gap: 8px;
                 align-items: center;
+            }
+
+            .section-wrapper {
+                display: flex;
+                flex-direction: column;
+
+                & .text-section-text-content {
+                    flex-grow: 1;
+                    vertical-align: middle;
+                }
+            }
+
+            ${sourceWrapperStyles}
+
+            .${unsafeCSS(contentDivClass)}.${unsafeCSS(contentDivClass)}.${unsafeCSS(
+                contentDivClass,
+            )}.${unsafeCSS(contentDivClass)} {
+                ul {
+                    ${noNativeSpacing}
+                    flex-grow: 1;
+                    max-width: 100%;
+                    display: flex;
+                    flex-direction: column;
+                    gap: 2px;
+                }
+            }
+
+            li {
+                display: flex;
+                flex-direction: column;
+
+                &:not(.list-item-with-icon) > *:first-child::before {
+                    content: '•';
+                    flex-shrink: 0;
+                    width: 24px;
+                    margin-right: ${iconRightMargin};
+                    line-height: 24px;
+                    display: flex;
+                    justify-content: center;
+                }
+            }
+
+            pre {
+                flex-grow: 1;
+                font-family: monospace;
+            }
+
+            .icon-section {
+                display: inline-flex;
+                vertical-align: middle;
+            }
+
+            .text-section {
+                display: inline-flex;
+            }
+
+            .icon-section:first-child:has(+ *) {
+                margin-right: ${iconRightMargin};
+            }
+
+            .processing-section .source-content-wrapper {
+                display: flex;
                 gap: 4px;
-
-                & .risk-count-number {
-                    font-size: 16px;
-                    font-family: monospace;
-                    width: 3ch;
-                    text-align: left;
-                }
             }
-        }
 
-        .text-style-${unsafeCSS(StructuredRenderTextStyle.Faint)}.text-style-${unsafeCSS(
-                StructuredRenderTextStyle.Faint,
-            )}.text-style-${unsafeCSS(StructuredRenderTextStyle.Faint)}.text-style-${unsafeCSS(
-                StructuredRenderTextStyle.Faint,
-            )} {
-            color: ${viraTheme.colors['vira-grey-foreground-non-body'].foreground.value};
-        }
-        .text-style-${unsafeCSS(StructuredRenderTextStyle.Bold)}.text-style-${unsafeCSS(
-                StructuredRenderTextStyle.Bold,
-            )}.text-style-${unsafeCSS(StructuredRenderTextStyle.Bold)}.text-style-${unsafeCSS(
-                StructuredRenderTextStyle.Bold,
-            )} {
-            font-weight: bold;
-        }
-        .text-style-${unsafeCSS(StructuredRenderTextStyle.Small)}.text-style-${unsafeCSS(
-                StructuredRenderTextStyle.Small,
-            )}.text-style-${unsafeCSS(StructuredRenderTextStyle.Small)}.text-style-${unsafeCSS(
-                StructuredRenderTextStyle.Small,
-            )} {
-            font-size: ${cssVars['vir-structured-render-small-font-size'].value};
-        }
+            .list-item-content-column {
+                display: flex;
+                flex-direction: column;
+            }
 
-        table {
-            border-collapse: collapse;
-            max-width: 100%;
+            .collapsible-section {
+                align-items: flex-start;
+            }
 
-            & th,
-            & td {
-                padding: 16px;
-                padding-left: 24px;
+            .copy-card-wrapper.copy-card-wrapper {
+                display: flex;
+                flex-direction: column;
+                border: 1px solid
+                    ${viraTheme.colors['vira-grey-foreground-decoration'].foreground.value};
+                border-radius: 8px;
+                padding: 16px 20px 20px;
+                gap: 8px;
 
-                &:has(+ .source-cell) {
-                    border-right: none;
-                    padding-right: 0;
+                & .copy-card-top {
+                    display: flex;
+                    align-items: center;
+                    gap: 8px;
+
+                    & ${VirCopy} {
+                        margin-left: auto;
+                        margin-right: -8px;
+                    }
                 }
 
-                &.source-cell {
-                    border-left: none !important;
-                    padding: 0;
-                    padding-left: 4px;
+                & .copy-card-header {
+                    font-weight: bold;
+                    font-size: inherit;
+                }
+
+                & .copy-card-body::first-line {
+                    line-height: unset;
                 }
             }
 
-            & td {
-                word-break: break-word;
+            .tag-section {
+                display: inline-flex;
+                vertical-align: middle;
+            }
+            .processing-section {
+                display: inline-flex;
+                vertical-align: middle;
+                flex-direction: row;
+                gap: 4px;
             }
 
-            & th {
-                text-align: left;
-                font-weight: normal;
-                white-space: nowrap;
-                vertical-align: top;
-            }
+            ${hostClasses['vir-structured-render-phone-size'].selector} {
+                font-size: ${cssVars['vir-structured-render-small-font-size'].value};
 
-            &.wide-table {
-                font-size: 14px;
+                & h2 {
+                    font-size: ${cssVars['vir-structured-render-h3-font-size'].value};
+                }
+
+                .view-header {
+                    flex-direction: column;
+                }
 
                 & th,
                 & td {
                     padding: 4px;
-                    padding-left: 8px;
                 }
-            }
 
-            &.vertical {
-                align-self: flex-start;
-
-                & th {
-                    font-weight: bold;
-                }
-            }
-
-            &.horizontal {
-                align-self: flex-start;
-            }
-
-            & .th-content {
-                display: inline-flex;
-                align-items: center;
-                gap: 2px;
-            }
-
-            & th.sortable {
-                cursor: pointer;
-                user-select: none;
-            }
-
-            & .sort-icon {
-                display: inline-flex;
-                align-items: center;
-                opacity: 0.25;
-                transition: opacity 0.15s;
-
-                &.sort-icon-active {
-                    opacity: 0.8;
+                & ul {
+                    padding-left: 1em;
                 }
 
                 & ${ViraIcon} {
-                    width: 16px;
-                    height: 16px;
-                }
-            }
-
-            & th.sortable:hover .sort-icon {
-                opacity: 0.6;
-
-                &.sort-icon-active {
-                    opacity: 1;
-                }
-            }
-
-            & .source-row td {
-                border: none !important;
-                padding: 0 !important;
-            }
-
-            & tfoot {
-                font-size: ${cssVars['vir-structured-render-h2-font-size'].value};
-                font-weight: bold;
-
-                & td {
-                    border: none;
+                    width: 18px;
+                    height: 18px;
                 }
 
-                & td.right-aligned-footer-cell {
-                    text-align: right;
-                    & > .section-wrapper {
-                        display: inline-flex;
+                & li::marker {
+                    font-size: 0.7em;
+                }
+
+                & .phone-table-cards {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 12px;
+
+                    & .phone-table-card {
+                        padding: 8px 16px;
+
+                        & th,
+                        & td {
+                            border: none;
+                            background-color: transparent;
+                        }
                     }
                 }
             }
-        }
 
-        .card-title-with-icon {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .raw-collapsible-card.raw-collapsible-card.raw-collapsible-card.raw-collapsible-card {
-            display: flex;
-            padding: 0 16px;
-            border-top: 1px solid
-                ${viraTheme.colors['vira-grey-foreground-decoration'].foreground.value};
-
-            & h2 {
-                font-weight: normal;
-                padding: 8px 0;
-            }
-
-            &:not(:first-child) {
-                margin-top: -24px;
-            }
-
-            &:first-child {
-                border-top: none;
-            }
-
-            ${ViraCollapsibleCard.cssVars['vira-collapsible-card-content-gap'].name}: 8px;
-        }
-
-        *::first-line {
-            /* this height must match the icon size */
-            line-height: 24px;
-        }
-
-        .processing-wrapper {
-            display: flex;
-            gap: 8px;
-            align-items: center;
-        }
-
-        .section-wrapper {
-            display: flex;
-            flex-direction: column;
-
-            & .text-section-text-content {
-                flex-grow: 1;
-                vertical-align: middle;
-            }
-        }
-
-        ${sourceWrapperStyles}
-
-        .${unsafeCSS(contentDivClass)}.${unsafeCSS(contentDivClass)}.${unsafeCSS(
-            contentDivClass,
-        )}.${unsafeCSS(contentDivClass)} {
-            ul {
-                ${noNativeSpacing}
-                flex-grow: 1;
-                max-width: 100%;
-                display: flex;
-                flex-direction: column;
-                gap: 2px;
-            }
-        }
-
-        li {
-            display: flex;
-            flex-direction: column;
-
-            &:not(.list-item-with-icon) > *:first-child::before {
-                content: '•';
-                flex-shrink: 0;
-                width: 24px;
-                margin-right: ${iconRightMargin};
-                line-height: 24px;
-                display: flex;
-                justify-content: center;
-            }
-        }
-
-        pre {
-            flex-grow: 1;
-            font-family: monospace;
-        }
-
-        .icon-section {
-            display: inline-flex;
-            vertical-align: middle;
-        }
-
-        .text-section {
-            display: inline-flex;
-        }
-
-        .icon-section:first-child:has(+ *) {
-            margin-right: ${iconRightMargin};
-        }
-
-        .processing-section .source-content-wrapper {
-            display: flex;
-            gap: 4px;
-        }
-
-        .list-item-content-column {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .collapsible-section {
-            align-items: flex-start;
-        }
-
-        .copy-card-wrapper.copy-card-wrapper {
-            display: flex;
-            flex-direction: column;
-            border: 1px solid
-                ${viraTheme.colors['vira-grey-foreground-decoration'].foreground.value};
-            border-radius: 8px;
-            padding: 16px 20px 20px;
-            gap: 8px;
-
-            & .copy-card-top {
-                display: flex;
-                align-items: center;
-                gap: 8px;
-
-                & ${VirCopy} {
-                    margin-left: auto;
-                    margin-right: -8px;
+            ${hostClasses['vir-structured-render-tablet-size'].selector} {
+                .view-header {
+                    flex-wrap: wrap;
                 }
             }
-
-            & .copy-card-header {
-                font-weight: bold;
-                font-size: inherit;
-            }
-
-            & .copy-card-body::first-line {
-                line-height: unset;
-            }
-        }
-
-        .tag-section {
-            display: inline-flex;
-            vertical-align: middle;
-        }
-        .processing-section {
-            display: inline-flex;
-            vertical-align: middle;
-            flex-direction: row;
-            gap: 4px;
-        }
-
-        ${hostClasses['vir-structured-render-phone-size'].selector} {
-            font-size: ${cssVars['vir-structured-render-small-font-size'].value};
-
-            & h2 {
-                font-size: ${cssVars['vir-structured-render-h3-font-size'].value};
-            }
-
-            .view-header {
-                flex-direction: column;
-            }
-
-            & th,
-            & td {
-                padding: 4px;
-            }
-
-            & ul {
-                padding-left: 1em;
-            }
-
-            & ${ViraIcon} {
-                width: 18px;
-                height: 18px;
-            }
-
-            & li::marker {
-                font-size: 0.7em;
-            }
-
-            & .phone-table-cards {
-                display: flex;
-                flex-direction: column;
-                gap: 12px;
-
-                & .phone-table-card {
-                    padding: 8px 16px;
-
-                    & th,
-                    & td {
-                        border: none;
-                        background-color: transparent;
-                    }
-                }
-            }
-        }
-
-        ${hostClasses['vir-structured-render-tablet-size'].selector} {
-            .view-header {
-                flex-wrap: wrap;
-            }
-        }
-    `,
+        `;
+    },
     render({inputs, state, updateState, host}) {
         const styles = String(inputs.options?.markdownStyles || defaultMarkdownRenderStyles);
 

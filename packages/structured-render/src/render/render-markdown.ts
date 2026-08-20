@@ -78,9 +78,9 @@ function buildVerticalTableRows({
         const headerText = wrapCell(
             header.text ? renderStructuredMarkdown(header.text, options) : header.key,
         );
-        const cells = section.entries.map((entry) =>
-            wrapCell(renderStructuredMarkdown(entry.data[header.key], options)),
-        );
+        const cells = section.entries.map((entry) => {
+            return wrapCell(renderStructuredMarkdown(entry.data[header.key], options));
+        });
 
         return [
             headerText,
@@ -105,15 +105,15 @@ function buildHorizontalTableRows({
     options: Readonly<RenderOptions>;
     wrapCell: (text: string) => string;
 }>): AtLeastTuple<string[], 1> {
-    const headerRow = visibleHeaders.map((header) =>
-        wrapCell(header.text ? renderStructuredMarkdown(header.text, options) : header.key),
-    );
+    const headerRow = visibleHeaders.map((header) => {
+        return wrapCell(header.text ? renderStructuredMarkdown(header.text, options) : header.key);
+    });
 
-    const dataRows = section.entries.map((entry) =>
-        visibleHeaders.map((header) =>
-            wrapCell(renderStructuredMarkdown(entry.data[header.key], options)),
-        ),
-    );
+    const dataRows = section.entries.map((entry) => {
+        return visibleHeaders.map((header) => {
+            return wrapCell(renderStructuredMarkdown(entry.data[header.key], options));
+        });
+    });
 
     return [
         headerRow,
@@ -232,13 +232,14 @@ const markdownRenderers: Record<
     table(section: Readonly<StructuredRenderTable>, options) {
         const visibleHeaders = section.headers.filter((header) => !header.hidden);
         const styleWrapper = (section.style && markdownStyleWrapper[section.style]) || '';
-        const wrapCell = (text: string): string =>
-            text && styleWrapper
+        const wrapCell = (text: string): string => {
+            return text && styleWrapper
                 ? wrapString({
                       value: text,
                       wrapper: styleWrapper,
                   })
                 : text;
+        };
 
         const rows = tableRowBuilders[section.direction]({
             section,
@@ -340,9 +341,9 @@ function structuredRenderToMarkdownArray(
     } else if ('sections' in data) {
         return [
             data.cardTitle && `## ${data.cardTitle}`,
-            ...data.sections.flatMap((section, index) =>
-                structuredRenderToMarkdownArray(section, options, index === 0),
-            ),
+            ...data.sections.flatMap((section, index) => {
+                return structuredRenderToMarkdownArray(section, options, index === 0);
+            }),
         ].filter(check.isTruthy);
     } else {
         assert.tsType(data).equals<never>();

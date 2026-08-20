@@ -118,11 +118,11 @@ export function doesSectionHaveContent(
     if (!section) {
         return false;
     } else if (section.type === StructuredRenderSectionType.list) {
-        return section.items.some((item) =>
-            ensureArray(item.content).some((content) => {
+        return section.items.some((item) => {
+            return ensureArray(item.content).some((content) => {
                 return doesSectionHaveContent(content);
-            }),
-        );
+            });
+        });
     } else if (
         section.type === StructuredRenderSectionType.empty ||
         section.type === StructuredRenderSectionType.processing
@@ -140,9 +140,9 @@ export function doesSectionHaveContent(
         return !!section.markdown;
     } else if (section.type === StructuredRenderSectionType.table) {
         return section.entries.some((entry) => {
-            return Object.values(entry.data).some((value) =>
-                ensureArray(value).some((innerValue) => doesSectionHaveContent(innerValue)),
-            );
+            return Object.values(entry.data).some((value) => {
+                return ensureArray(value).some((innerValue) => doesSectionHaveContent(innerValue));
+            });
         });
     } else if (
         section.type === StructuredRenderSectionType.text ||
