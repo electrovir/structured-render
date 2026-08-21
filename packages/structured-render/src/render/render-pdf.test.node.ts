@@ -10,6 +10,7 @@ import {pdf} from 'pdf-to-img';
 import {ViraColorVariant} from 'vira';
 import {renderToPdf, StructuredRenderSectionType, type StructuredRenderData} from '../index.js';
 import {exampleCard} from '../structured-render-data/structured-render-data.mock.js';
+import {PdfDocumentBuilder} from './pdf/pdf-document-builder.js';
 import {getPdfTagColors} from './pdf/pdf-section-renderers.js';
 
 const monoRepoDirPath = resolve(import.meta.dirname, '..', '..', '..', '..');
@@ -113,7 +114,7 @@ describe(renderToPdf.name, () => {
         );
     });
 
-    it('renders consumer-defined headers on every page', async (testContext) => {
+    it('renders consumer-defined headers only on pages selected by the callback', async (testContext) => {
         const headerPageNumbers = new Set<number>();
         const pdfBytes = await renderToPdf(
             [
@@ -135,25 +136,31 @@ describe(renderToPdf.name, () => {
                     create({pdfDocument, fonts}) {
                         pdfDocument.setAuthor('Test report generator');
 
-                        return ({page, pageNumber, headerBounds}) => {
-                            headerPageNumbers.add(pageNumber);
-                            page.drawText(`Example header ${pageNumber}`, {
-                                x: headerBounds.x + 6,
-                                y: headerBounds.y + headerBounds.height - 14,
-                                font: fonts.bold,
-                                size: 10,
-                            });
-                            page.drawLine({
-                                start: {
-                                    x: headerBounds.x,
-                                    y: headerBounds.y + 2,
-                                },
-                                end: {
-                                    x: headerBounds.x + headerBounds.width,
-                                    y: headerBounds.y + 2,
-                                },
-                                thickness: 1,
-                            });
+                        return ({pageNumber}) => {
+                            if (pageNumber !== 1) {
+                                return undefined;
+                            }
+
+                            return ({page, headerBounds}) => {
+                                headerPageNumbers.add(pageNumber);
+                                page.drawText(`Example header ${pageNumber}`, {
+                                    x: headerBounds.x + 6,
+                                    y: headerBounds.y + headerBounds.height - 14,
+                                    font: fonts.bold,
+                                    size: 10,
+                                });
+                                page.drawLine({
+                                    start: {
+                                        x: headerBounds.x,
+                                        y: headerBounds.y + 2,
+                                    },
+                                    end: {
+                                        x: headerBounds.x + headerBounds.width,
+                                        y: headerBounds.y + 2,
+                                    },
+                                    thickness: 1,
+                                });
+                            };
                         };
                     },
                 },
@@ -172,13 +179,27 @@ describe(renderToPdf.name, () => {
         );
 
         const pdfDocument = await PDFDocument.load(pdfBytes);
-        const pageNumbers = createArray(pdfDocument.getPageCount(), (index) => {
-            return index + 1;
-        });
-
         assert.isLengthAtLeast(pdfDocument.getPages(), 2);
         assert.strictEquals(pdfDocument.getAuthor(), 'Test report generator');
-        assert.deepEquals([...headerPageNumbers], pageNumbers);
+        assert.deepEquals([...headerPageNumbers], [1]);
+    });
+
+    it('does not reserve header space when the callback returns undefined', async () => {
+        const builder = await PdfDocumentBuilder.create({
+            pageHeader: {
+                height: 36,
+                create() {
+                    return ({pageNumber}) => {
+                        return pageNumber === 1 ? () => {} : undefined;
+                    };
+                },
+            },
+        });
+        const headerPageCursorY = builder.getCursorY();
+
+        builder.newPage();
+
+        assert.isApproximately(builder.getCursorY() - headerPageCursorY, 36, 0.001);
     });
 
     /**

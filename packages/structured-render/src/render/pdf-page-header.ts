@@ -32,12 +32,17 @@ export type PdfPageHeaderRenderContext = Readonly<{
     headerBounds: PdfPageHeaderBounds;
 }>;
 
-/** Draws a prepared header on a single PDF page. */
+/** Draws a header selected for a single PDF page. */
 export type PdfPageHeaderRenderer = (context: Readonly<PdfPageHeaderRenderContext>) => void;
 
+/** Selects whether a page has a header and, if it does, supplies its drawer. */
+export type PdfPageHeaderCallback = (
+    context: Readonly<{pageNumber: number}>,
+) => PdfPageHeaderRenderer | undefined;
+
 /**
- * A consumer-defined header rendered on every PDF page. Its fixed height is reserved above report
- * content, while its renderer receives the raw pdf-lib page for custom drawing.
+ * A consumer-defined header. Its height is reserved above report content only on pages whose
+ * callback returns a drawer, which receives the raw pdf-lib page for custom drawing.
  */
 export type PdfPageHeader = Readonly<{
     height: number;
@@ -45,5 +50,5 @@ export type PdfPageHeader = Readonly<{
     create(
         this: void,
         context: Readonly<PdfPageHeaderCreateContext>,
-    ): MaybePromise<PdfPageHeaderRenderer>;
+    ): MaybePromise<PdfPageHeaderCallback>;
 }>;
