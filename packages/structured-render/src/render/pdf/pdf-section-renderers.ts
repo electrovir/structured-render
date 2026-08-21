@@ -1,7 +1,14 @@
 import {check} from '@augment-vir/assert';
 import {createArray, ensureArray, type MaybePromise} from '@augment-vir/common';
 import {type Color, type PDFFont} from '@cantoo/pdf-lib';
+import {ContrastLevelName, Color as CssColor} from '@electrovir/color';
 import {convertTemplateToString} from 'element-vir';
+import {
+    ViraColorVariant,
+    ViraThemeColorName,
+    viraColorVariantToHostClassKey,
+    viraThemeByKeys,
+} from 'vira';
 import {
     createStructuredRenderIcon,
     type StructuredRenderIcon,
@@ -14,6 +21,7 @@ import {
     StructuredRenderCellDirection,
     type StructuredRenderTable,
 } from '../../structured-render-data/sections/table.section.js';
+import {type StructuredRenderTag} from '../../structured-render-data/sections/tag.section.js';
 import {StructuredRenderTextStyle} from '../../structured-render-data/sections/text.section.js';
 import {
     StructuredRenderSectionType,
@@ -35,6 +43,16 @@ type PdfSectionRenderer = (
     builder: PdfDocumentBuilder,
     options: Readonly<RenderOptions>,
 ) => MaybePromise<void>;
+
+type PdfTagColors = Readonly<{
+    backgroundColor: Color;
+    foregroundColor: Color;
+}>;
+
+const pdfTagVariantThemeColorNames: Partial<Record<ViraColorVariant, ViraThemeColorName>> = {
+    ...viraColorVariantToHostClassKey,
+    [ViraColorVariant.Neutral]: ViraThemeColorName.grey,
+};
 
 /** Renders a single section to the PDF document. */
 export async function renderSectionToPdf(
@@ -75,6 +93,87 @@ export function extractSectionText(
     } else {
         return '';
     }
+}
+
+async function convertCssColorToPdf(
+    cssColor: string | undefined | null,
+    fallbackColor: Color,
+): Promise<Color> {
+    if (!cssColor || !CssColor.isValidColorString(cssColor)) {
+        return fallbackColor;
+    }
+
+    const cssRgbColor = new CssColor(cssColor).rgb;
+    const {rgb} = await import('@cantoo/pdf-lib');
+
+    return rgb(cssRgbColor.r / 255, cssRgbColor.g / 255, cssRgbColor.b / 255);
+}
+
+function extractCssColorDefault(colorInit: unknown): string | undefined {
+    if (check.isString(colorInit)) {
+        return colorInit;
+    } else if (
+        check.isObject(colorInit) &&
+        'default' in colorInit &&
+        check.isString(colorInit.default)
+    ) {
+        return colorInit.default;
+    } else {
+        return undefined;
+    }
+}
+
+export async function getPdfTagColors(
+    tagColor: StructuredRenderTag['color'],
+): Promise<PdfTagColors> {
+    const pdfColors = await getPdfColors();
+    const defaultTagColors: PdfTagColors = {
+        backgroundColor: pdfColors.lightGray,
+        foregroundColor: pdfColors.black,
+    };
+
+    if (!tagColor) {
+        return defaultTagColors;
+    } else if ('custom' in tagColor) {
+        const [
+            backgroundColor,
+            foregroundColor,
+        ] = await Promise.all([
+            convertCssColorToPdf(tagColor.custom.backgroundColor, defaultTagColors.backgroundColor),
+            convertCssColorToPdf(tagColor.custom.foregroundColor, defaultTagColors.foregroundColor),
+        ]);
+
+        return {
+            backgroundColor,
+            foregroundColor,
+        };
+    }
+
+    const themeColorName = pdfTagVariantThemeColorNames[tagColor.variant];
+
+    if (!themeColorName) {
+        return defaultTagColors;
+    }
+
+    const themeColors = viraThemeByKeys[themeColorName]['on-self'][ContrastLevelName.BodyText];
+    const [
+        backgroundColor,
+        foregroundColor,
+    ] = await Promise.all([
+        convertCssColorToPdf(
+            extractCssColorDefault(themeColors.init.background),
+            defaultTagColors.backgroundColor,
+        ),
+        convertCssColorToPdf(
+            extractCssColorDefault(themeColors.init.foreground),
+            defaultTagColors.foregroundColor,
+        ),
+    ]);
+
+    return {
+        backgroundColor,
+        foregroundColor,
+    };
 }
 
 async function renderSource(
@@ -211,6 +310,7 @@ const pdfSectionRenderers: Record<StructuredRenderSection['type'], PdfSectionRen
         const textWidth = measureTextWidth(text, builder.fonts.regular, fontSize);
         const tagWidth = textWidth + padding * 2;
         const tagHeight = builder.lineHeight(fontSize) + padding;
+        const tagColors = await getPdfTagColors(rawSection.color);
 
         builder.ensureSpace(tagHeight);
 
@@ -219,12 +319,13 @@ const pdfSectionRenderers: Record<StructuredRenderSection['type'], PdfSectionRen
             y: builder.getCursorY() - tagHeight,
             width: tagWidth,
             height: tagHeight,
-            fillColor: (await getPdfColors()).lightGray,
+            fillColor: tagColors.backgroundColor,
         });
 
         await builder.drawTextLine(text, {
             font: builder.fonts.regular,
             size: fontSize,
+            color: tagColors.foregroundColor,
             x: builder.contentX + padding,
             y: builder.getCursorY() - tagHeight + padding / 2,
         });

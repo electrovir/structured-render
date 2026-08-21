@@ -1,14 +1,16 @@
 import {assert} from '@augment-vir/assert';
 import {createArray} from '@augment-vir/common';
 import {describe, extractTestNameAsDir, it} from '@augment-vir/test';
-import {PDFDocument} from '@cantoo/pdf-lib';
+import {ColorTypes, PDFDocument} from '@cantoo/pdf-lib';
 import {compareImages} from '@virmator/test/dist/web-screenshot-plugin/compare-images.js';
 import {existsSync} from 'node:fs';
 import {cp, mkdir, readFile, writeFile} from 'node:fs/promises';
 import {join, resolve} from 'node:path';
 import {pdf} from 'pdf-to-img';
+import {ViraColorVariant} from 'vira';
 import {renderToPdf, StructuredRenderSectionType, type StructuredRenderData} from '../index.js';
 import {exampleCard} from '../structured-render-data/structured-render-data.mock.js';
+import {getPdfTagColors} from './pdf/pdf-section-renderers.js';
 
 const monoRepoDirPath = resolve(import.meta.dirname, '..', '..', '..', '..');
 const notCommittedDirPath = join(monoRepoDirPath, '.not-committed');
@@ -28,6 +30,89 @@ async function renderPdfToFirstPagePng(pdfBytes: Uint8Array): Promise<Buffer> {
 }
 
 describe(renderToPdf.name, () => {
+    it('renders configured tag colors', async (testContext) => {
+        const pdfBytes = await renderToPdf(
+            [
+                {
+                    cardTitle: 'Tag colors',
+                    sections: [
+                        {
+                            type: StructuredRenderSectionType.tag,
+                            text: 'Warning tag',
+                            color: {
+                                variant: ViraColorVariant.Warning,
+                            },
+                        },
+                        {
+                            type: StructuredRenderSectionType.tag,
+                            text: 'Custom tag',
+                            color: {
+                                custom: {
+                                    backgroundColor: '#123456',
+                                    foregroundColor: '#fedcba',
+                                },
+                            },
+                        },
+                    ],
+                },
+            ],
+            'tag-colors.pdf',
+        );
+        const pdfFileName = extractTestNameAsDir(testContext) + '.pdf';
+        const pngFileName = extractTestNameAsDir(testContext) + '.png';
+
+        await mkdir(testOutputDirPath, {
+            recursive: true,
+        });
+        await writeFile(join(testOutputDirPath, pdfFileName), pdfBytes);
+        await writeFile(
+            join(testOutputDirPath, pngFileName),
+            await renderPdfToFirstPagePng(pdfBytes),
+        );
+
+        assert.deepEquals(
+            await getPdfTagColors({
+                variant: ViraColorVariant.Warning,
+            }),
+            {
+                backgroundColor: {
+                    type: ColorTypes.RGB,
+                    red: 253 / 255,
+                    green: 216 / 255,
+                    blue: 155 / 255,
+                },
+                foregroundColor: {
+                    type: ColorTypes.RGB,
+                    red: 91 / 255,
+                    green: 51 / 255,
+                    blue: 1 / 255,
+                },
+            },
+        );
+        assert.deepEquals(
+            await getPdfTagColors({
+                custom: {
+                    backgroundColor: '#123456',
+                    foregroundColor: '#fedcba',
+                },
+            }),
+            {
+                backgroundColor: {
+                    type: ColorTypes.RGB,
+                    red: 18 / 255,
+                    green: 52 / 255,
+                    blue: 86 / 255,
+                },
+                foregroundColor: {
+                    type: ColorTypes.RGB,
+                    red: 254 / 255,
+                    green: 220 / 255,
+                    blue: 186 / 255,
+                },
+            },
+        );
+    });
+
     it('renders consumer-defined headers on every page', async (testContext) => {
         const headerPageNumbers = new Set<number>();
         const pdfBytes = await renderToPdf(
