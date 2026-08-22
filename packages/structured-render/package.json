@@ -1,6 +1,6 @@
 {
     "name": "structured-render",
-    "version": "2.11.1",
+    "version": "2.11.2",
     "description": "A library for safely rendering arbitrary data generated from any source.",
     "keywords": [
         "render",
@@ -42,15 +42,14 @@
         "@augment-vir/assert": "^32.2.3",
         "@augment-vir/common": "^32.2.3",
         "@augment-vir/web": "^32.2.3",
-        "@cantoo/pdf-lib": "^2.8.3",
+        "@cantoo/pdf-lib": "^2.8.4",
         "@electrovir/color": "^1.7.11",
         "dompurify": "^3.4.13",
-        "element-vir": "^26.17.3",
         "lit-css-vars": "^3.6.3",
         "marked": "^18.0.9",
         "object-shape-tester": "^6.15.0",
         "theme-vir": "^28.25.1",
-        "vira": "^31.31.2"
+        "vira": "^31.31.5"
     },
     "devDependencies": {
         "@augment-vir/test": "^32.2.3",
@@ -64,6 +63,9 @@
         "typedoc": "^0.28.20",
         "typescript": "^6.0.3",
         "vite": "^8.2.1"
+    },
+    "peerDependencies": {
+        "element-vir": "^26"
     },
     "engines": {
         "node": ">=22"

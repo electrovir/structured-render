@@ -1,6 +1,6 @@
 {
     "name": "@evir/scripts",
-    "version": "2.11.1",
+    "version": "2.11.2",
     "private": true,
     "homepage": "https://github.com/electrovir/structured-render",
     "bugs": {
