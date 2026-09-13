@@ -1,4 +1,4 @@
-import {defineTypedEvent} from 'element-vir';
+import {defineTypedCustomEvent} from 'element-vir';
 
 /**
  * Sort direction for table columns.
@@ -25,7 +25,7 @@ export type TableSortState = Readonly<{
  *
  * @category Internal
  */
-export const TableSortEvent = defineTypedEvent<
+export const TableSortEvent = defineTypedCustomEvent<
     Readonly<{
         tableKey: string;
         sort: TableSortState | undefined;

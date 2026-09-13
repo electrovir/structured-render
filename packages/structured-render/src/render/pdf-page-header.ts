@@ -1,7 +1,11 @@
 import {type MaybePromise} from '@augment-vir/common';
 import {type PDFDocument, type PDFFont, type PDFPage} from '@cantoo/pdf-lib';
 
-/** The built-in PDF fonts available to a page header. */
+/**
+ * The built-in PDF fonts available to a page header.
+ *
+ * @category Internal
+ */
 export type PdfPageHeaderFonts = Readonly<{
     regular: PDFFont;
     bold: PDFFont;
@@ -11,7 +15,11 @@ export type PdfPageHeaderFonts = Readonly<{
     monoBold: PDFFont;
 }>;
 
-/** The rectangular area reserved for a page header, using PDF coordinates. */
+/**
+ * The rectangular area reserved for a page header, using PDF coordinates.
+ *
+ * @category Internal
+ */
 export type PdfPageHeaderBounds = Readonly<{
     x: number;
     y: number;
@@ -19,23 +27,39 @@ export type PdfPageHeaderBounds = Readonly<{
     height: number;
 }>;
 
-/** Values available while preparing a PDF page header once per document. */
+/**
+ * Values available while preparing a PDF page header once per document.
+ *
+ * @category Internal
+ */
 export type PdfPageHeaderCreateContext = Readonly<{
     pdfDocument: PDFDocument;
     fonts: PdfPageHeaderFonts;
 }>;
 
-/** Values available while rendering a PDF page header for an individual page. */
+/**
+ * Values available while rendering a PDF page header for an individual page.
+ *
+ * @category Internal
+ */
 export type PdfPageHeaderRenderContext = Readonly<{
     page: PDFPage;
     pageNumber: number;
     headerBounds: PdfPageHeaderBounds;
 }>;
 
-/** Draws a header selected for a single PDF page. */
+/**
+ * Draws a header selected for a single PDF page.
+ *
+ * @category Internal
+ */
 export type PdfPageHeaderRenderer = (context: Readonly<PdfPageHeaderRenderContext>) => void;
 
-/** Selects whether a page has a header and, if it does, supplies its drawer. */
+/**
+ * Selects whether a page has a header and, if it does, supplies its drawer.
+ *
+ * @category Internal
+ */
 export type PdfPageHeaderCallback = (
     context: Readonly<{pageNumber: number}>,
 ) => PdfPageHeaderRenderer | undefined;
@@ -43,6 +67,8 @@ export type PdfPageHeaderCallback = (
 /**
  * A consumer-defined header. Its height is reserved above report content only on pages whose
  * callback returns a drawer, which receives the raw pdf-lib page for custom drawing.
+ *
+ * @category Internal
  */
 export type PdfPageHeader = Readonly<{
     height: number;

@@ -27,7 +27,9 @@ export const VirSource = defineElement<{
 }>()({
     tagName: 'vir-source',
     hostClasses: {
-        'vir-source-phone-size': ({inputs}) => !!inputs.options?.isPhoneSize,
+        'vir-source-phone-size'({inputs}) {
+            return !!inputs.options?.isPhoneSize;
+        },
     },
     events: {
         viewOnPageClick: defineElementEvent<StructuredRenderSource>(),
@@ -45,7 +47,7 @@ export const VirSource = defineElement<{
         'vir-source-font-size': '14px',
         'vir-source-phone-font-size': '14px',
     },
-    styles: ({hostClasses, cssVars}) => {
+    styles({hostClasses, cssVars}) {
         return css`
             ${ViraCard} {
                 background: ${cssVars['vir-source-background-color'].value};
@@ -162,7 +164,11 @@ export const VirSource = defineElement<{
                                           class="view-on-page-button"
                                           title=${entry.fileName}
                                           ${listen('click', () => {
-                                              dispatch(new events.viewOnPageClick(entry));
+                                              dispatch(
+                                                  new events.viewOnPageClick({
+                                                      detail: entry,
+                                                  }),
+                                              );
                                           })}
                                       >
                                           <${ViraIcon.assign({

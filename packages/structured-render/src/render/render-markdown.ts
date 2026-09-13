@@ -232,14 +232,14 @@ const markdownRenderers: Record<
     table(section: Readonly<StructuredRenderTable>, options) {
         const visibleHeaders = section.headers.filter((header) => !header.hidden);
         const styleWrapper = (section.style && markdownStyleWrapper[section.style]) || '';
-        const wrapCell = (text: string): string => {
+        function wrapCell(text: string): string {
             return text && styleWrapper
                 ? wrapString({
                       value: text,
                       wrapper: styleWrapper,
                   })
                 : text;
-        };
+        }
 
         const rows = tableRowBuilders[section.direction]({
             section,

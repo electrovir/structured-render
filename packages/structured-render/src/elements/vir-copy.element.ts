@@ -28,7 +28,7 @@ export const VirCopy = defineElement<{
             display: inline-flex;
         }
     `,
-    state: () => {
+    state() {
         return {
             justCopied: false,
             pendingResetCount: 0,

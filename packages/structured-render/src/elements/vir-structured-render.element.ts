@@ -60,10 +60,14 @@ export const VirStructuredRender = defineElement<{
         'vir-structured-render-small-font-size': '12px',
     },
     hostClasses: {
-        'vir-structured-render-phone-size': ({inputs}) => !!inputs.options?.isPhoneSize,
-        'vir-structured-render-tablet-size': ({inputs}) => !!inputs.options?.isTabletSize,
+        'vir-structured-render-phone-size'({inputs}) {
+            return !!inputs.options?.isPhoneSize;
+        },
+        'vir-structured-render-tablet-size'({inputs}) {
+            return !!inputs.options?.isTabletSize;
+        },
     },
-    styles: ({cssVars, hostClasses}) => {
+    styles({cssVars, hostClasses}) {
         return css`
             :host {
                 ${colorCss(viraTheme.colors[themeDefaultKey])}

@@ -512,7 +512,7 @@ const htmlRenderers: Record<
                 check.isTruthy,
             ),
             originalData: sortedEntries,
-            dataMap: (row, rowIndex) => {
+            dataMap(row, rowIndex) {
                 return mapObjectValues(row.data, (key, content) => {
                     const contents = ensureArray(content).filter(check.isTruthy);
                     if (!contents.length) {
@@ -657,7 +657,7 @@ const htmlRenderers: Record<
                                               ${isColumnSortable
                                                   ? listen('click', (event) => {
                                                         const nextSort =
-                                                            columnSortState === undefined
+                                                            columnSortState == undefined
                                                                 ? TableSortDirection.Ascending
                                                                 : columnSortState ===
                                                                     TableSortDirection.Ascending
@@ -671,16 +671,18 @@ const htmlRenderers: Record<
 
                                                         eventTarget.dispatchEvent(
                                                             new TableSortEvent({
-                                                                tableKey,
-                                                                sort: nextSort
-                                                                    ? {
-                                                                          columnKey:
-                                                                              assertWrap.isString(
-                                                                                  headerCell.key,
-                                                                              ),
-                                                                          direction: nextSort,
-                                                                      }
-                                                                    : undefined,
+                                                                detail: {
+                                                                    tableKey,
+                                                                    sort: nextSort
+                                                                        ? {
+                                                                              columnKey:
+                                                                                  assertWrap.isString(
+                                                                                      headerCell.key,
+                                                                                  ),
+                                                                              direction: nextSort,
+                                                                          }
+                                                                        : undefined,
+                                                                },
                                                             }),
                                                         );
                                                     })
@@ -1050,8 +1052,10 @@ function createSourceTrigger({
 
                               eventTarget.dispatchEvent(
                                   new SourceExpansionEvent({
-                                      expanded: !isSourceExpanded,
-                                      key: makeChainKey(sourceKeyChain),
+                                      detail: {
+                                          expanded: !isSourceExpanded,
+                                          key: makeChainKey(sourceKeyChain),
+                                      },
                                   }),
                               );
                           })}
@@ -1102,8 +1106,10 @@ function createExpandingSource(
 
                     eventTarget.dispatchEvent(
                         new SourceExpansionEvent({
-                            expanded: false,
-                            key: sourceKey,
+                            detail: {
+                                expanded: false,
+                                key: sourceKey,
+                            },
                         }),
                     );
                 })}

@@ -1,4 +1,4 @@
-import {defineTypedEvent} from 'element-vir';
+import {defineTypedCustomEvent} from 'element-vir';
 
 /**
  * This event is emitted when source sections have been expanded and can be used to track which
@@ -6,7 +6,7 @@ import {defineTypedEvent} from 'element-vir';
  *
  * @category Internal
  */
-export const SourceExpansionEvent = defineTypedEvent<
+export const SourceExpansionEvent = defineTypedCustomEvent<
     Readonly<{
         expanded: boolean;
         key: string;
