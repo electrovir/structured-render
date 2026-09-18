@@ -1,6 +1,6 @@
 {
     "name": "@evir/demo",
-    "version": "2.12.0",
+    "version": "2.13.0",
     "private": true,
     "homepage": "https://github.com/electrovir/structured-render",
     "bugs": {
@@ -27,7 +27,7 @@
         "@augment-vir/common": "^32.3.1",
         "element-book": "^27.0.0",
         "element-vir": "^27.0.1",
-        "structured-render": "^2.12.0",
+        "structured-render": "^2.13.0",
         "vira": "^32.1.2"
     },
     "devDependencies": {

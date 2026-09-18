@@ -22,29 +22,28 @@ const iconRightMargin = css`4px`;
  *
  * @category Elements
  */
-export const VirStructuredRender = defineElement<{
-    data: Readonly<RenderInput>;
-    options?:
-        | Readonly<
-              PartialWithUndefined<
-                  RenderHtmlOptions & {
-                      /**
-                       * If `true`, smaller, tablet-compatible styles are used.
-                       *
-                       * @default false
-                       */
-                      isTabletSize: boolean;
-                      /**
-                       * If `true`, smaller, phone-compatible styles are used.
-                       *
-                       * @default false
-                       */
-                      isPhoneSize: boolean;
-                  }
-              >
-          >
-        | undefined;
-}>()({
+export const VirStructuredRender = defineElement<
+    {data: Readonly<RenderInput>} & PartialWithUndefined<{
+        options: Readonly<
+            PartialWithUndefined<
+                RenderHtmlOptions & {
+                    /**
+                     * If `true`, smaller, tablet-compatible styles are used.
+                     *
+                     * @default false
+                     */
+                    isTabletSize: boolean;
+                    /**
+                     * If `true`, smaller, phone-compatible styles are used.
+                     *
+                     * @default false
+                     */
+                    isPhoneSize: boolean;
+                }
+            >
+        >;
+    }>
+>()({
     tagName: 'vir-structured-render',
     state() {
         return {
@@ -488,6 +487,7 @@ export const VirStructuredRender = defineElement<{
 
         const templates = renderStructuredHtml(inputs.data, {
             ...inputs.options,
+            devDebug: inputs.options?.devDebug,
             currentlyExpanded: {
                 ...inputs.options?.currentlyExpanded,
                 ...state.currentlyExpanded,

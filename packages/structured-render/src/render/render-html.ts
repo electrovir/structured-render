@@ -310,6 +310,7 @@ const htmlRenderers: Record<
     markdown(section, options) {
         return html`
             <${VirMarkdown.assign({
+                allowDevDebug: options.devDebug,
                 markdownString: section.markdown,
                 renderStyles: options.markdownStyles,
             })}></${VirMarkdown}>

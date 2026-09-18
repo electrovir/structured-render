@@ -63,5 +63,25 @@ export const markdownSectionBookPage = defineBookPage({
                 `;
             },
         });
+
+        defineExample({
+            title: 'with Markdown file upload',
+            render() {
+                return html`
+                    <${VirStructuredRender.assign({
+                        data: {
+                            type: StructuredRenderSectionType.markdown,
+                            sectionTitle: 'Markdown File Upload',
+                            markdown:
+                                '## Upload a Markdown file\n\nChoose a local `.md` file to replace this content.',
+                        },
+                        options: {
+                            devDebug: true,
+                            useCardStyles: true,
+                        },
+                    })}></${VirStructuredRender}>
+                `;
+            },
+        });
     },
 });

@@ -167,6 +167,12 @@ export type RenderHtmlOptions = RenderOptions & {
     /** CSS styles for rendering internal Markdown. */
     markdownStyles: string | CSSResult;
     /**
+     * Passed to section types that support dev debugging.
+     *
+     * @default false
+     */
+    devDebug: boolean;
+    /**
      * If set to `true`, all cards will start out expanded.
      *
      * @default false
@@ -217,6 +223,7 @@ export const defaultRenderHtmlOptions: Readonly<RenderHtmlOptions> = {
     isPhoneSize: false,
     useDrawerForSources: false,
     markdownStyles: defaultMarkdownRenderStyles,
+    devDebug: false,
     createViewOnPageString(pageNumber) {
         return `View on page ${pageNumber}`;
     },
