@@ -263,17 +263,52 @@ export function configureDefaultMarkdownRenderStyles(
                 margin-top: 16px;
             }
 
-            /*
-                Children of details elements are nested below the top level flex gap, so they need
-                their own spacing.
-            */
-            & details > * + * {
-                margin-block-start: 12px;
+            /* Section title sitting directly on top of a collapsible section. */
+            & h2:has(+ details) {
+                padding: 12px 16px;
+                background-color: color-mix(in srgb, currentColor 5%, transparent);
+                border-block-end: 1px solid color-mix(in srgb, currentColor 18%, transparent);
+                align-self: stretch;
             }
 
-            & details > h3,
-            & details > h4 {
-                margin-block-start: 20px;
+            & details {
+                align-self: stretch;
+
+                & > summary {
+                    padding: 12px 16px;
+                    border: 1px solid color-mix(in srgb, currentColor 15%, transparent);
+                    border-radius: 6px;
+                    background-color: color-mix(in srgb, currentColor 4%, transparent);
+                    cursor: pointer;
+                    list-style-position: inside;
+
+                    &:hover {
+                        background-color: color-mix(in srgb, currentColor 7%, transparent);
+                    }
+
+                    &:focus-visible {
+                        outline: 2px solid currentColor;
+                        outline-offset: 3px;
+                    }
+                }
+
+                /*
+                    Children of details elements are nested below the top level flex gap, so they
+                    need their own spacing.
+                */
+                & > :not(summary, style, hr) {
+                    margin-block-start: 12px;
+                }
+
+                & > h3 {
+                    margin-block-start: 24px;
+                    padding-inline-start: 12px;
+                    border-inline-start: 3px solid color-mix(in srgb, currentColor 24%, transparent);
+                }
+
+                & > h4 {
+                    margin-block-start: 20px;
+                }
             }
 
             & table,
