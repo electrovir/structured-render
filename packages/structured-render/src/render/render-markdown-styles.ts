@@ -263,6 +263,19 @@ export function configureDefaultMarkdownRenderStyles(
                 margin-top: 16px;
             }
 
+            /*
+                Children of details elements are nested below the top level flex gap, so they need
+                their own spacing.
+            */
+            & details > * + * {
+                margin-block-start: 12px;
+            }
+
+            & details > h3,
+            & details > h4 {
+                margin-block-start: 20px;
+            }
+
             & table,
             & pre,
             & blockquote,
