@@ -1020,6 +1020,32 @@ function structuredRenderToHtmlArray({
     }
 }
 
+/**
+ * Keeps scrolling the element into view as it grows until at least 100px of it is visible (or it
+ * stops growing for 100ms). Scrolling once on click is not enough: the panel is still collapsed
+ * then, so the page is often not yet tall enough to scroll to it.
+ */
+function revealWhileExpanding(element: Readonly<Element>) {
+    const timeout: {id?: ReturnType<typeof setTimeout> | undefined} = {};
+
+    const resizeObserver = new ResizeObserver((entries) => {
+        element.scrollIntoView({
+            block: 'nearest',
+        });
+        clearTimeout(timeout.id);
+
+        if (entries.some((entry) => entry.contentRect.height >= 100)) {
+            resizeObserver.disconnect();
+        } else {
+            timeout.id = setTimeout(() => {
+                resizeObserver.disconnect();
+            }, 100);
+        }
+    });
+
+    resizeObserver.observe(element);
+}
+
 function createSourceTrigger({
     content,
     options,
@@ -1059,6 +1085,18 @@ function createSourceTrigger({
                                       },
                                   }),
                               );
+
+                              const expandingSource =
+                                  eventTarget.closest(
+                                      '.source-content-wrapper',
+                                  )?.nextElementSibling;
+
+                              if (
+                                  !isSourceExpanded &&
+                                  expandingSource?.classList.contains('collapsible-source-wrapper')
+                              ) {
+                                  revealWhileExpanding(expandingSource);
+                              }
                           })}
                       ></${ViraIcon}>
                   </button>
