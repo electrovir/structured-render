@@ -1,12 +1,21 @@
-import {assert} from '@augment-vir/assert';
-import {type ArrayElement} from '@augment-vir/common';
-import {describe, it} from '@augment-vir/test';
+import {assert, assertWrap, waitUntil} from '@augment-vir/assert';
+import {mergeDefinedProperties, type ArrayElement} from '@augment-vir/common';
+import {describe, it, testWeb} from '@augment-vir/test';
+import {css, defineElement, html, listen} from 'element-vir';
 import {
     StructuredRenderCellDirection,
     type StructuredRenderTable,
 } from '../structured-render-data/sections/table.section.js';
 import {StructuredRenderSectionType} from '../structured-render-data/structured-render-section.js';
-import {sortTableEntries} from './render-html.js';
+import {
+    createExpandingSource,
+    createSourceButton,
+    sortTableEntries,
+    type SourceTemplateParams,
+} from './render-html.js';
+import {defaultRenderHtmlOptions} from './render-types.js';
+import {SourceExpansionEvent} from './source-expansion-event.js';
+import {sourceWrapperStyles} from './source-styles.js';
 import {TableSortDirection} from './table-sort-event.js';
 
 function createMonthEntry({
@@ -141,5 +150,80 @@ describe(sortTableEntries.name, () => {
         });
 
         assert.deepEquals(result, unsortedEntries);
+    });
+});
+
+const SplitSourceTest = defineElement()({
+    tagName: 'split-source-test',
+    state() {
+        return {
+            currentlyExpanded: {} as Record<string, boolean>,
+        };
+    },
+    styles: sourceWrapperStyles,
+    render({state, updateState}) {
+        const params = {
+            options: mergeDefinedProperties(defaultRenderHtmlOptions, {
+                currentlyExpanded: state.currentlyExpanded,
+            }),
+            rawKeyChain: [
+                'split',
+            ],
+            rawSources: {
+                type: StructuredRenderSectionType.source,
+                fileName: 'example.pdf',
+                pageNumbers: [
+                    3,
+                ],
+                fileBoundingBoxes: null,
+                quote: 'A quoted passage.',
+            },
+        } satisfies SourceTemplateParams;
+
+        return html`
+            <div
+                ${listen(SourceExpansionEvent, (event) => {
+                    updateState({
+                        currentlyExpanded: {
+                            ...state.currentlyExpanded,
+                            [event.detail.key]: event.detail.expanded,
+                        },
+                    });
+                })}
+            >
+                <header>${createSourceButton(params)}</header>
+                <div
+                    style=${css`
+                        height: ${window.innerHeight - 20}px;
+                    `}
+                >
+                    Tall content
+                </div>
+                ${createExpandingSource(params)}
+            </div>
+        `;
+    },
+});
+
+describe(createSourceButton.name, () => {
+    it('expands and scrolls to an expanding source placed apart from it', async () => {
+        const splitSource = assertWrap.instanceOf(
+            await testWeb.render(html`
+                <${SplitSourceTest}></${SplitSourceTest}>
+            `),
+            SplitSourceTest,
+        );
+
+        await testWeb.click(
+            assertWrap.isDefined(splitSource.shadowRoot.querySelector('.source-icon-button')),
+        );
+
+        await waitUntil.isTrue(() => {
+            const sourceRect = assertWrap
+                .isDefined(splitSource.shadowRoot.querySelector('.collapsible-source-wrapper'))
+                .getBoundingClientRect();
+
+            return sourceRect.height > 0 && sourceRect.top <= window.innerHeight - 50;
+        });
     });
 });

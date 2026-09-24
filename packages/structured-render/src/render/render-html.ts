@@ -22,8 +22,10 @@ import {
     type HtmlInterpolation,
 } from 'element-vir';
 import {
+    createSizedIcon,
     defineTable,
     lucideIcons,
+    ViraButton,
     ViraCard,
     ViraCollapsibleCard,
     ViraCollapsibleWrapper,
@@ -747,7 +749,11 @@ const htmlRenderers: Record<
                             ? html`
                                   <tr class="source-row">
                                       <td colspan=${cells.length}>
-                                          ${createExpandingSource(options, rowKeyChain, rowSources)}
+                                          ${createExpandingSource({
+                                              options,
+                                              rawKeyChain: rowKeyChain,
+                                              rawSources: rowSources,
+                                          })}
                                       </td>
                                   </tr>
                               `
@@ -1046,61 +1052,88 @@ function revealWhileExpanding(element: Readonly<Element>) {
     resizeObserver.observe(element);
 }
 
-function createSourceTrigger({
-    content,
-    options,
-    rawKeyChain,
-    rawSources,
-}: Readonly<{
-    content: HtmlInterpolation;
+/**
+ * Parameters for {@link createSourceButton} and {@link createExpandingSource}.
+ *
+ * @category Internal
+ */
+export type SourceTemplateParams = Readonly<{
     options: Readonly<RenderHtmlOptions>;
+    /** Must match between a source button and the expanding source that it toggles. */
     rawKeyChain: ReadonlyArray<PropertyKey>;
     rawSources: SourcesInput;
-}>) {
-    const sources = createCleanSources(rawSources);
+}>;
 
-    const sourceKeyChain = [
-        ...rawKeyChain,
-        'source-icon',
-    ];
-    const sourceKey = makeChainKey(sourceKeyChain);
+/**
+ * The source icon button from {@link createSourceWrapper}, without the content wrapper around it, so
+ * it can be placed anywhere. Pair it with {@link createExpandingSource} using the same
+ * `rawKeyChain`, rendered in the same shadow root. Clicking it dispatches a
+ * {@link SourceExpansionEvent} that the caller must store into `options.currentlyExpanded`. Renders
+ * nothing when there are no sources. Style it with `sourceWrapperStyles`.
+ *
+ * @category Internal
+ */
+export function createSourceButton({options, rawKeyChain, rawSources}: SourceTemplateParams) {
+    if (!createCleanSources(rawSources)) {
+        return nothing;
+    }
+
+    const sourceKey = makeSourceKey(rawKeyChain);
     const isSourceExpanded = !!options.currentlyExpanded[sourceKey];
 
-    const sourceIconTemplate = sources
+    return html`
+        <${ViraButton.assign({
+            icon: createSizedIcon(options.sourceIcon, 20),
+            color: ViraColorVariant.Plain,
+            buttonEmphasis: ViraEmphasis.Subtle,
+            buttonSize: ViraSize.Small,
+        })}
+            class="source-icon-button"
+            ${listen('click', (event) => {
+                const eventTarget = extractEventTarget(event, HTMLElement);
+
+                eventTarget.dispatchEvent(
+                    new SourceExpansionEvent({
+                        detail: {
+                            expanded: !isSourceExpanded,
+                            key: sourceKey,
+                        },
+                    }),
+                );
+
+                const root = eventTarget.getRootNode();
+                const expandingSource =
+                    root instanceof Document || root instanceof ShadowRoot
+                        ? root.querySelector(
+                              `.collapsible-source-wrapper[data-source-key="${sourceKey}"]`,
+                          )
+                        : undefined;
+
+                if (!isSourceExpanded && expandingSource) {
+                    revealWhileExpanding(expandingSource);
+                }
+            })}
+        ></${ViraButton}>
+    `;
+}
+
+function makeSourceKey(rawKeyChain: ReadonlyArray<PropertyKey>) {
+    return makeChainKey([
+        ...rawKeyChain,
+        'source-icon',
+    ]);
+}
+
+function createSourceTrigger({
+    content,
+    ...params
+}: SourceTemplateParams &
+    Readonly<{
+        content: HtmlInterpolation;
+    }>) {
+    const sourceIconTemplate = createCleanSources(params.rawSources)
         ? html`
-              <div class="source-icon-wrapper">
-                  <button class="source-icon-button">
-                      <${ViraIcon.assign({
-                          icon: options.sourceIcon,
-                          fitContainer: true,
-                      })}
-                          ${listen('click', (event) => {
-                              const eventTarget = extractEventTarget(event, HTMLElement);
-
-                              eventTarget.dispatchEvent(
-                                  new SourceExpansionEvent({
-                                      detail: {
-                                          expanded: !isSourceExpanded,
-                                          key: makeChainKey(sourceKeyChain),
-                                      },
-                                  }),
-                              );
-
-                              const expandingSource =
-                                  eventTarget.closest(
-                                      '.source-content-wrapper',
-                                  )?.nextElementSibling;
-
-                              if (
-                                  !isSourceExpanded &&
-                                  expandingSource?.classList.contains('collapsible-source-wrapper')
-                              ) {
-                                  revealWhileExpanding(expandingSource);
-                              }
-                          })}
-                      ></${ViraIcon}>
-                  </button>
-              </div>
+              <div class="source-icon-wrapper">${createSourceButton(params)}</div>
           `
         : nothing;
 
@@ -1109,22 +1142,22 @@ function createSourceTrigger({
     `;
 }
 
-function createExpandingSource(
-    options: Readonly<RenderHtmlOptions>,
-    rawKeyChain: ReadonlyArray<PropertyKey>,
-    rawSources: SourcesInput,
-) {
+/**
+ * The expanding source panel from {@link createSourceWrapper}: a collapsible panel, or a drawer when
+ * `options.useDrawerForSources` is set. It is open when `options.currentlyExpanded` marks its key
+ * as expanded, which {@link createSourceButton} toggles. Closing the drawer dispatches a
+ * {@link SourceExpansionEvent}. Renders nothing when there are no sources.
+ *
+ * @category Internal
+ */
+export function createExpandingSource({options, rawKeyChain, rawSources}: SourceTemplateParams) {
     const sources = createCleanSources(rawSources);
 
     if (!sources) {
         return undefined;
     }
 
-    const sourceKeyChain = [
-        ...rawKeyChain,
-        'source-icon',
-    ];
-    const sourceKey = makeChainKey(sourceKeyChain);
+    const sourceKey = makeSourceKey(rawKeyChain);
     const isSourceExpanded = !!options.currentlyExpanded[sourceKey];
 
     const sourceTemplate = html`
@@ -1166,6 +1199,7 @@ function createExpandingSource(
             class="collapsible-source-wrapper ${classMap({
                 'expanded-source': isSourceExpanded,
             })}"
+            data-source-key=${sourceKey}
         >
             <span
                 slot=${ViraCollapsibleWrapper.slotNames['vira-collapsible-wrapper-header']}
@@ -1187,12 +1221,10 @@ export function createSourceWrapper({
     options,
     rawKeyChain,
     rawSources,
-}: Readonly<{
-    content: HtmlInterpolation;
-    options: Readonly<RenderHtmlOptions>;
-    rawKeyChain: ReadonlyArray<PropertyKey>;
-    rawSources: SourcesInput;
-}>) {
+}: SourceTemplateParams &
+    Readonly<{
+        content: HtmlInterpolation;
+    }>) {
     if (options.hideSources) {
         return html`
             <div class="source-content-wrapper">${content}</div>
@@ -1206,7 +1238,11 @@ export function createSourceWrapper({
             rawKeyChain,
             rawSources,
         })}
-        ${createExpandingSource(options, rawKeyChain, rawSources)}
+        ${createExpandingSource({
+            options,
+            rawKeyChain,
+            rawSources,
+        })}
     `;
 }
 

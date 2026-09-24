@@ -3,6 +3,7 @@ import {type CSSResult} from 'element-vir';
 import {
     type ViraIconSvg,
     allIconsByName,
+    createSizedIcon,
     DocumentSearch24Icon,
     EyeOpen24Icon,
     LoaderAnimated24Icon,
@@ -205,6 +206,8 @@ export type RenderHtmlOptions = RenderOptions & {
     hideCardTitles: boolean;
 };
 
+const eyeOpen16Icon = createSizedIcon(EyeOpen24Icon, 16);
+
 /**
  * Default option values for Structured Render rendering to HTML.
  *
@@ -216,7 +219,7 @@ export const defaultRenderHtmlOptions: Readonly<RenderHtmlOptions> = {
     currentlyExpanded: {},
     tableSortStates: {},
     sourceIcon: DocumentSearch24Icon,
-    viewOnPageIcon: EyeOpen24Icon,
+    viewOnPageIcon: eyeOpen16Icon,
     processingIcon: LoaderAnimated24Icon,
     expandSourcesOnPrint: false,
     hideViewOnPageButtons: false,

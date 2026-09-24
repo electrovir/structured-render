@@ -2,11 +2,14 @@ import {mergeDefinedProperties, type PartialWithUndefined} from '@augment-vir/co
 import {css, defineElement, defineElementEvent, html, listen, nothing} from 'element-vir';
 import {themeDefaultKey} from 'theme-vir/dist/color-theme/color-theme.js';
 import {
-    noNativeFormStyles,
     noNativeSpacing,
+    ViraButton,
     ViraCard,
+    ViraColorVariant,
+    ViraEmphasis,
     viraFormCssVars,
     ViraIcon,
+    ViraSize,
     viraTheme,
 } from 'vira';
 import {defaultRenderHtmlOptions, type RenderHtmlOptions} from '../render/render-types.js';
@@ -38,12 +41,6 @@ export const VirSource = defineElement<{
         'vir-source-background-color': viraTheme.colors[themeDefaultKey].background.value,
         'vir-source-borer-radius': viraFormCssVars['vira-form-radius'].value,
         'vir-source-header-color': viraTheme.colors['vira-grey-foreground-header'].foreground.value,
-        'vir-source-view-on-page-icon-color':
-            viraFormCssVars['vira-form-accent-primary-color'].value,
-        'vir-source-view-on-page-hover-background-color':
-            viraTheme.colors['vira-grey-behind-fg-small-body'].background.value,
-        'vir-source-view-on-page-active-background-color':
-            viraTheme.colors['vira-grey-behind-fg-body'].background.value,
         'vir-source-font-size': '14px',
         'vir-source-phone-font-size': '14px',
     },
@@ -84,35 +81,6 @@ export const VirSource = defineElement<{
                     & .source-text {
                         margin: 0;
                         line-height: 1.5em;
-                    }
-
-                    & .view-on-page-button {
-                        ${noNativeFormStyles};
-                        cursor: pointer;
-                        color: ${cssVars['vir-source-view-on-page-icon-color'].value};
-                        display: inline-flex;
-                        align-items: center;
-                        vertical-align: middle;
-                        gap: 4px;
-                        padding: 2px 6px;
-                        border-radius: 4px;
-
-                        &:hover {
-                            background-color: ${cssVars[
-                                'vir-source-view-on-page-hover-background-color'
-                            ].value};
-                        }
-
-                        &:active {
-                            background-color: ${cssVars[
-                                'vir-source-view-on-page-active-background-color'
-                            ].value};
-                        }
-
-                        & ${ViraIcon} {
-                            width: ${cssVars['vir-source-font-size'].value};
-                            height: ${cssVars['vir-source-font-size'].value};
-                        }
                     }
                 }
             }
@@ -160,8 +128,15 @@ export const VirSource = defineElement<{
                             entry.fileName &&
                             entry.pageNumbers?.length
                                 ? html`
-                                      <button
-                                          class="view-on-page-button"
+                                      <${ViraButton.assign({
+                                          text: options.createViewOnPageString(
+                                              entry.pageNumbers[0] ?? 1,
+                                          ),
+                                          icon: options.viewOnPageIcon,
+                                          buttonEmphasis: ViraEmphasis.Subtle,
+                                          buttonSize: ViraSize.Small,
+                                          color: ViraColorVariant.Brand,
+                                      })}
                                           title=${entry.fileName}
                                           ${listen('click', () => {
                                               dispatch(
@@ -170,15 +145,7 @@ export const VirSource = defineElement<{
                                                   }),
                                               );
                                           })}
-                                      >
-                                          <${ViraIcon.assign({
-                                              icon: options.viewOnPageIcon,
-                                              fitContainer: true,
-                                          })}></${ViraIcon}>
-                                          ${options.createViewOnPageString(
-                                              entry.pageNumbers[0] ?? 1,
-                                          )}
-                                      </button>
+                                      ></${ViraButton}>
                                   `
                                 : undefined;
                         const trimmedQuote = entry.quote?.trim() || '';

@@ -1,5 +1,5 @@
 import {css} from 'element-vir';
-import {noNativeFormStyles, noUserSelect, viraFormCssVars, ViraIcon, viraTheme} from 'vira';
+import {noUserSelect, ViraIcon} from 'vira';
 
 /**
  * Shared CSS styles for source icon buttons, source wrappers, and expandable source panels.
@@ -28,25 +28,10 @@ export const sourceWrapperStyles = css`
     }
 
     .source-icon-button {
-        ${noNativeFormStyles};
-        cursor: pointer;
-        color: ${viraTheme.colors['vira-grey-foreground-header'].foreground.value};
-        padding: 2px;
-        border-radius: 4px;
-
-        & ${ViraIcon} {
-            display: flex;
-        }
+        opacity: 0.5;
 
         &:hover {
-            background-color: ${viraTheme.colors['vira-grey-behind-fg-small-body'].background
-                .value};
-            color: ${viraFormCssVars['vira-form-accent-primary-color'].value};
-        }
-
-        &:active {
-            background-color: ${viraTheme.colors['vira-grey-behind-fg-body'].background.value};
-            color: ${viraFormCssVars['vira-form-accent-primary-color'].value};
+            opacity: 1;
         }
     }
 
