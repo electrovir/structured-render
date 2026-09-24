@@ -171,7 +171,7 @@ export const multiCardMock: StructuredRenderData = [
                                 pageNumbers: [
                                     7,
                                 ],
-                                quote: 'CLS spike correlated with hero image carousel added in v3.12.0.',
+                                quote: 'CLS spike correlated with hero image carousel added in v3.12.0. CLS spike correlated with hero image carousel added in v3.12.0. CLS spike correlated with hero image carousel added in v3.12.0.',
                             },
                         ],
                     },

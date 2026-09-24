@@ -247,6 +247,16 @@ export const VirStructuredRender = defineElement<
                     padding: 0 !important;
                 }
 
+                /**
+                 * A collapsed ViraCollapsibleWrapper pins its content's last measured pixel
+                 * width, which would otherwise set the table's minimum width and overflow narrow
+                 * containers.
+                 */
+                & .source-row > td > .collapsible-source-wrapper {
+                    width: 0;
+                    min-width: 100%;
+                }
+
                 & tfoot {
                     font-size: ${cssVars['vir-structured-render-h2-font-size'].value};
                     font-weight: bold;
