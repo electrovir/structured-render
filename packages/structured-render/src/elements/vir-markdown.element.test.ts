@@ -1,5 +1,4 @@
 import {assert, assertWrap, check, waitUntil} from '@augment-vir/assert';
-import {wait} from '@augment-vir/common';
 import {describe, it, testWeb} from '@augment-vir/test';
 import {css, unsafeCSS} from 'element-vir';
 import {contentDivClass, defaultMarkdownRenderStyles} from '../render/render-markdown-styles.js';
@@ -108,18 +107,15 @@ describe('vir-markdown.element.ts', () => {
         await testWeb.click(
             assertWrap.instanceOf(renderedElement.querySelector('a'), HTMLAnchorElement),
         );
-        await wait({
-            milliseconds: 600,
+        await waitUntil.isTrue(() => {
+            return (
+                Math.abs(
+                    assertWrap
+                        .isDefined(renderedElement.querySelector('#source-1'))
+                        .getBoundingClientRect().top,
+                ) < 1
+            );
         });
-
-        assert.isBelow(
-            Math.abs(
-                assertWrap
-                    .isDefined(renderedElement.querySelector('#source-1'))
-                    .getBoundingClientRect().top,
-            ),
-            1,
-        );
     });
 
     it('extracts Markdown data attributes from a click target and its ancestors', async () => {

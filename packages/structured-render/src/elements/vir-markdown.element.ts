@@ -143,6 +143,7 @@ function scrollToWhileResizing({
 
     const resizeObserver = new ResizeObserver(() => {
         target.scrollIntoView({
+            behavior: 'smooth',
             block: 'start',
         });
         clearTimeout(timeout.id);
