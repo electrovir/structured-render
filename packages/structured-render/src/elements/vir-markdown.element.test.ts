@@ -1,6 +1,8 @@
 import {assert, assertWrap, check, waitUntil} from '@augment-vir/assert';
+import {wait} from '@augment-vir/common';
 import {describe, it, testWeb} from '@augment-vir/test';
-import {contentDivClass} from '../render/render-markdown-styles.js';
+import {css, unsafeCSS} from 'element-vir';
+import {contentDivClass, defaultMarkdownRenderStyles} from '../render/render-markdown-styles.js';
 import {extractMarkdownDataAttributes, VirMarkdown} from './vir-markdown.element.js';
 
 async function renderMarkdown({
@@ -60,6 +62,64 @@ describe('vir-markdown.element.ts', () => {
         );
         assert.isTrue(clickEvent.defaultPrevented);
         assert.isTrue(details.open);
+    });
+
+    it('keeps an anchor target on screen while its details element animates open', async () => {
+        const markdownElement = await testWeb.renderElement(VirMarkdown, {
+            markdownString: [
+                '[Jump to source](#source-1)',
+                '',
+                '<div style="height: 2000px">spacer</div>',
+                '',
+                '<details><summary>Sources</summary>',
+                '',
+                '<div style="height: 1000px">filler</div>',
+                '',
+                '### Source 1',
+                '',
+                '<div style="height: 2000px">filler</div>',
+                '',
+                '</details>',
+            ].join('\n'),
+            renderStyles: css`
+                ${unsafeCSS(defaultMarkdownRenderStyles)}
+
+                .${unsafeCSS(contentDivClass)} {
+                    interpolate-size: allow-keywords;
+                }
+
+                details::details-content {
+                    height: 0;
+                    overflow: clip;
+                    transition:
+                        height 300ms,
+                        content-visibility 300ms allow-discrete;
+                }
+
+                details[open]::details-content {
+                    height: auto;
+                }
+            `,
+        });
+        const renderedElement = await waitUntil.instanceOf(HTMLElement, () => {
+            return markdownElement.shadowRoot.querySelector(`.${contentDivClass}`);
+        });
+
+        await testWeb.click(
+            assertWrap.instanceOf(renderedElement.querySelector('a'), HTMLAnchorElement),
+        );
+        await wait({
+            milliseconds: 600,
+        });
+
+        assert.isBelow(
+            Math.abs(
+                assertWrap
+                    .isDefined(renderedElement.querySelector('#source-1'))
+                    .getBoundingClientRect().top,
+            ),
+            1,
+        );
     });
 
     it('extracts Markdown data attributes from a click target and its ancestors', async () => {

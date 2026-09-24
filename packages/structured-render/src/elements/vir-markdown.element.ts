@@ -118,9 +118,40 @@ function handleMarkdownAnchorClick({
             details.open = true;
         }
     });
-    target.scrollIntoView({
-        block: 'start',
+
+    if (renderedElement) {
+        scrollToWhileResizing({
+            target,
+            container: renderedElement,
+        });
+    }
+}
+
+/**
+ * Keeps scrolling the target into view until the container stops resizing for 100ms. Scrolling once
+ * is not enough: a just-opened details element may still be growing (from an open animation or lots
+ * of content), which leaves the target off screen when it finishes.
+ */
+function scrollToWhileResizing({
+    target,
+    container,
+}: Readonly<{
+    target: Element;
+    container: Element;
+}>) {
+    const timeout: {id?: ReturnType<typeof setTimeout> | undefined} = {};
+
+    const resizeObserver = new ResizeObserver(() => {
+        target.scrollIntoView({
+            block: 'start',
+        });
+        clearTimeout(timeout.id);
+        timeout.id = setTimeout(() => {
+            resizeObserver.disconnect();
+        }, 100);
     });
+
+    resizeObserver.observe(container);
 }
 
 /**
