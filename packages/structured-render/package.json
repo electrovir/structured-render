@@ -1,6 +1,6 @@
 {
     "name": "structured-render",
-    "version": "2.15.3",
+    "version": "2.15.4",
     "description": "A library for safely rendering arbitrary data generated from any source.",
     "keywords": [
         "render",
@@ -39,21 +39,20 @@
         "test:web": "virmator test web"
     },
     "dependencies": {
-        "@augment-vir/assert": "^32.3.1",
-        "@augment-vir/common": "^32.3.1",
-        "@augment-vir/web": "^32.3.1",
-        "@cantoo/pdf-lib": "^2.11.0",
+        "@augment-vir/assert": "^32.5.0",
+        "@augment-vir/common": "^32.5.0",
+        "@augment-vir/web": "^32.5.0",
+        "@cantoo/pdf-lib": "^2.11.1",
         "@electrovir/color": "^2.0.0",
-        "dompurify": "^3.4.15",
+        "dompurify": "^3.4.16",
         "lit-css-vars": "^3.6.3",
-        "marked": "^18.0.13",
-        "object-shape-tester": "^6.15.0",
-        "theme-vir": "^29.0.0",
-        "vira": "^32.1.2"
+        "marked": "^18.0.14",
+        "object-shape-tester": "^6.15.1",
+        "theme-vir": "^29.0.0"
     },
     "devDependencies": {
-        "@augment-vir/test": "^32.3.1",
-        "@virmator/test": "^14.36.3",
+        "@augment-vir/test": "^32.5.0",
+        "@virmator/test": "^14.37.0",
         "@web/dev-server-esbuild": "^2.0.0",
         "@web/test-runner": "^1.0.0",
         "@web/test-runner-playwright": "^1.0.0",
@@ -62,10 +61,12 @@
         "pdf-to-img": "^7.0.0",
         "typedoc": "^0.28.20",
         "typescript": "^6.0.3",
-        "vite": "^8.3.0"
+        "vira": "^33.0.0",
+        "vite": "^8.3.1"
     },
     "peerDependencies": {
-        "element-vir": "^27"
+        "element-vir": "^27",
+        "vira": "^32 || ^33"
     },
     "engines": {
         "node": ">=22"
