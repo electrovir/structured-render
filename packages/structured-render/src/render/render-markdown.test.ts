@@ -1009,6 +1009,7 @@ describe(renderStructuredMarkdown.name, () => {
                     // @ts-expect-error: intentionally invalid direction type
                     {
                         type: StructuredRenderSectionType.table,
+                        // eslint-disable-next-line @typescript-eslint/no-unsafe-enum-assignment
                         direction: 'diagonal',
                         headers: [
                             {

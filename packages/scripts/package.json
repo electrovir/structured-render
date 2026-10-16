@@ -1,6 +1,6 @@
 {
     "name": "@evir/scripts",
-    "version": "2.15.4",
+    "version": "2.16.0",
     "private": true,
     "homepage": "https://github.com/electrovir/structured-render",
     "bugs": {
@@ -29,7 +29,7 @@
         "tsx": "^4.23.15"
     },
     "devDependencies": {
-        "@types/node": "^26.6.2"
+        "@types/node": "^26.6.5"
     },
     "engines": {
         "node": ">=22"
