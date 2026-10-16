@@ -76,7 +76,7 @@ const textWithIcon = {
     text: 'Completed task.',
     icon: {
         type: StructuredRenderSectionType.icon,
-        iconKey: 'StatusSuccess24Icon',
+        iconKey: 'CircleCheck',
         strokeColor: 'green',
     },
 };
@@ -201,7 +201,7 @@ const list = {
             },
             icon: {
                 type: StructuredRenderSectionType.icon,
-                iconKey: 'StatusWarning24Icon',
+                iconKey: 'CircleAlert',
                 strokeColor: 'orange',
             },
         },
@@ -310,7 +310,7 @@ const data: StructuredRenderData = [
         cardTitle: 'Project Health Report',
         cardTitleIcon: {
             type: StructuredRenderSectionType.icon,
-            iconKey: 'StatusSuccess24Icon',
+            iconKey: 'CircleCheck',
             strokeColor: 'green',
         },
         sections: [
@@ -385,14 +385,14 @@ All options are optional and have sensible defaults.
 | `expandSourcesOnPrint`   | `false`                   | Auto-expand sources when printing                        |
 | `hideViewOnPageButtons`  | `false`                   | Hide "view on page" buttons in sources                   |
 | `currentlyExpanded`      | `{}`                      | Track which sections/sources are expanded                |
-| `icons`                  | Vira's `allIconsByName`   | Override the icon set for `iconKey` lookups              |
-| `sourceIcon`             | `DocumentSearch24Icon`    | Icon shown for source expansion                          |
+| `icons`                  | `lucideIcons`             | Override the icon set for `iconKey` lookups              |
+| `sourceIcon`             | `lucideIcons.FileSearch`  | Icon shown for source expansion                          |
 | `processingIcon`         | `LoaderAnimated24Icon`    | Icon shown next to processing text                       |
-| `viewOnPageIcon`         | `EyeOpen24Icon`           | Icon for "view on page" buttons                          |
+| `viewOnPageIcon`         | `lucideIcons.Eye`         | Icon for "view on page" buttons                          |
 | `markdownStyles`         | Built-in styles           | CSS for internal markdown rendering                      |
 | `createViewOnPageString` | `` `View on page ${n}` `` | Custom text for page navigation buttons                  |
 
-The element emits `SourceExpansionEvent` when a source is expanded or collapsed. You can also provide custom icons by passing an `icons` map keyed by icon name.
+The element emits `SourceExpansionEvent` when a source is expanded or collapsed. You can also provide custom icons by passing an `icons` map keyed by icon name. By default, `iconKey` is any [Lucide](https://lucide.dev) icon name.
 
 ##### CSS variables
 

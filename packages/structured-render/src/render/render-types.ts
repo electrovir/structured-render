@@ -1,13 +1,6 @@
 import {type MaybeArray} from '@augment-vir/common';
 import {type CSSResult} from 'element-vir';
-import {
-    type ViraIconSvg,
-    allIconsByName,
-    createSizedIcon,
-    DocumentSearch24Icon,
-    EyeOpen24Icon,
-    LoaderAnimated24Icon,
-} from 'vira';
+import {LoaderAnimated24Icon, type ViraIconSvg, createSizedIcon, lucideIcons} from 'vira';
 import {type StructuredRenderCard} from '../structured-render-data/structured-render-card.js';
 import {type StructuredRenderData} from '../structured-render-data/structured-render-data.js';
 import {type StructuredRenderSection} from '../structured-render-data/structured-render-section.js';
@@ -31,8 +24,8 @@ export type RenderInput = MaybeArray<
  */
 export type RenderOptions = Readonly<{
     /**
-     * Override the default icon set. The default icon set is provided by
-     * [Vira](https://www.npmjs.com/package/vira).
+     * Override the default icon set. The default icon set is every [Lucide](https://lucide.dev)
+     * icon, keyed by its Lucide name (such as `'CircleCheck'`).
      */
     icons: Readonly<{[IconKey in string]: ViraIconSvg}>;
     /**
@@ -61,7 +54,7 @@ export type RenderOptions = Readonly<{
  * @category Internal
  */
 export const defaultRenderOptions: Readonly<RenderOptions> = {
-    icons: allIconsByName,
+    icons: lucideIcons,
     sourceString: 'Source',
     pluralSourcesString: 'Sources',
     hideSources: false,
@@ -120,7 +113,7 @@ export type RenderHtmlOptions = RenderOptions & {
     /**
      * The icon shown for source expansion.
      *
-     * @default DocumentSearch24Icon
+     * @default lucideIcons.FileSearch
      */
     sourceIcon: ViraIconSvg;
     /**
@@ -132,7 +125,7 @@ export type RenderHtmlOptions = RenderOptions & {
     /**
      * The icon used for "view on page" buttons.
      *
-     * @default EyeOpen24Icon
+     * @default lucideIcons.Eye
      */
     viewOnPageIcon: ViraIconSvg;
     /**
@@ -206,8 +199,6 @@ export type RenderHtmlOptions = RenderOptions & {
     hideCardTitles: boolean;
 };
 
-const eyeOpen16Icon = createSizedIcon(EyeOpen24Icon, 16);
-
 /**
  * Default option values for Structured Render rendering to HTML.
  *
@@ -218,8 +209,8 @@ export const defaultRenderHtmlOptions: Readonly<RenderHtmlOptions> = {
     processingString: 'Processing',
     currentlyExpanded: {},
     tableSortStates: {},
-    sourceIcon: DocumentSearch24Icon,
-    viewOnPageIcon: eyeOpen16Icon,
+    sourceIcon: lucideIcons.FileSearch,
+    viewOnPageIcon: createSizedIcon(lucideIcons.Eye, 16),
     processingIcon: LoaderAnimated24Icon,
     expandSourcesOnPrint: false,
     hideViewOnPageButtons: false,

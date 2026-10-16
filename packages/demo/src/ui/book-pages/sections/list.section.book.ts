@@ -1,7 +1,7 @@
 import {defineBookPage} from 'element-book';
 import {html} from 'element-vir';
 import {StructuredRenderSectionType, VirStructuredRender} from 'structured-render';
-import {StatusSuccess24Icon, ViraColorVariant} from 'vira';
+import {ViraColorVariant, lucideIcons} from 'vira';
 import {sectionsBookPage} from '../sections.book.js';
 
 export const listSectionBookPage = defineBookPage({
@@ -64,7 +64,7 @@ export const listSectionBookPage = defineBookPage({
                                     },
                                     icon: {
                                         type: StructuredRenderSectionType.icon,
-                                        iconKey: StatusSuccess24Icon.name,
+                                        iconKey: lucideIcons.CircleCheck.name,
                                         strokeColor: 'green',
                                     },
                                 },
@@ -75,7 +75,7 @@ export const listSectionBookPage = defineBookPage({
                                     },
                                     icon: {
                                         type: StructuredRenderSectionType.icon,
-                                        iconKey: StatusSuccess24Icon.name,
+                                        iconKey: lucideIcons.CircleCheck.name,
                                         strokeColor: 'green',
                                     },
                                 },

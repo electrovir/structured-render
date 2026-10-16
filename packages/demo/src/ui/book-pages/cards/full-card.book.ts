@@ -6,7 +6,7 @@ import {
     StructuredRenderTextStyle,
     VirStructuredRender,
 } from 'structured-render';
-import {StatusSuccess24Icon, StatusWarning24Icon, ViraColorVariant} from 'vira';
+import {ViraColorVariant, lucideIcons} from 'vira';
 import {cardsBookPage} from '../cards.book.js';
 
 export const fullCardBookPage = defineBookPage({
@@ -199,7 +199,7 @@ export const fullCardBookPage = defineBookPage({
                                                 },
                                                 icon: {
                                                     type: StructuredRenderSectionType.icon,
-                                                    iconKey: StatusWarning24Icon.name,
+                                                    iconKey: lucideIcons.CircleAlert.name,
                                                     strokeColor: 'orange',
                                                 },
                                             },
@@ -210,7 +210,7 @@ export const fullCardBookPage = defineBookPage({
                                                 },
                                                 icon: {
                                                     type: StructuredRenderSectionType.icon,
-                                                    iconKey: StatusWarning24Icon.name,
+                                                    iconKey: lucideIcons.CircleAlert.name,
                                                     strokeColor: 'orange',
                                                 },
                                             },
@@ -233,7 +233,7 @@ export const fullCardBookPage = defineBookPage({
                                                 },
                                                 icon: {
                                                     type: StructuredRenderSectionType.icon,
-                                                    iconKey: StatusSuccess24Icon.name,
+                                                    iconKey: lucideIcons.CircleCheck.name,
                                                     strokeColor: 'green',
                                                 },
                                             },

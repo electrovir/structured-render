@@ -1,4 +1,4 @@
-import {Star24Icon, StatusSuccess24Icon, ViraColorVariant} from 'vira';
+import {ViraColorVariant, lucideIcons} from 'vira';
 import {StructuredRenderCellDirection} from './sections/table.section.js';
 import {StructuredRenderTextStyle} from './sections/text.section.js';
 import {type StructuredRenderData} from './structured-render-data.js';
@@ -83,7 +83,7 @@ export const exampleCard: StructuredRenderData = [
                         },
                         icon: {
                             type: StructuredRenderSectionType.icon,
-                            iconKey: StatusSuccess24Icon.name,
+                            iconKey: lucideIcons.CircleCheck.name,
                             strokeColor: 'green',
                         },
                     },
@@ -114,7 +114,7 @@ export const exampleCard: StructuredRenderData = [
                         ],
                         icon: {
                             type: StructuredRenderSectionType.icon,
-                            iconKey: StatusSuccess24Icon.name,
+                            iconKey: lucideIcons.CircleCheck.name,
                             strokeColor: 'green',
                         },
                     },
@@ -122,7 +122,7 @@ export const exampleCard: StructuredRenderData = [
             },
             {
                 type: StructuredRenderSectionType.icon,
-                iconKey: Star24Icon.name,
+                iconKey: lucideIcons.Star.name,
                 strokeColor: 'yellow',
             },
         ],

@@ -5,7 +5,7 @@ import {
     StructuredRenderTextStyle,
     VirStructuredRender,
 } from 'structured-render';
-import {Star24Icon} from 'vira';
+import {lucideIcons} from 'vira';
 import {sectionsBookPage} from '../sections.book.js';
 
 export const textSectionBookPage = defineBookPage({
@@ -97,7 +97,7 @@ export const textSectionBookPage = defineBookPage({
                             text: 'Text with icon.',
                             icon: {
                                 type: StructuredRenderSectionType.icon,
-                                iconKey: Star24Icon.name,
+                                iconKey: lucideIcons.Star.name,
                                 strokeColor: 'gold',
                             },
                         },

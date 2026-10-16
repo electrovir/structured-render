@@ -1,6 +1,6 @@
 import {assert} from '@augment-vir/assert';
 import {describe, itCases} from '@augment-vir/test';
-import {ArrowUp24Icon} from 'vira';
+import {lucideIcons} from 'vira';
 import {type StructuredRenderCodeBlock} from '../structured-render-data/sections/code-block.section.js';
 import {type StructuredRenderEmpty} from '../structured-render-data/sections/empty.section.js';
 import {type StructuredRenderInlineCode} from '../structured-render-data/sections/inline-code.section.js';
@@ -70,13 +70,13 @@ describe(renderStructuredMarkdown.name, () => {
                         text: 'This is a text section',
                         icon: {
                             type: StructuredRenderSectionType.icon,
-                            iconKey: ArrowUp24Icon.name,
+                            iconKey: lucideIcons.ArrowUp.name,
                         },
                     } satisfies StructuredRenderText,
                 ],
                 expect: `${renderStructuredMarkdown({
                     type: StructuredRenderSectionType.icon,
-                    iconKey: ArrowUp24Icon.name,
+                    iconKey: lucideIcons.ArrowUp.name,
                 })} This is a text section`,
             },
             {

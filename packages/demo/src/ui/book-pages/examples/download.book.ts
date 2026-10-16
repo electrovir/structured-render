@@ -2,7 +2,7 @@ import {log} from '@augment-vir/common';
 import {defineBookPage} from 'element-book';
 import {html, listen} from 'element-vir';
 import {downloadPdf} from 'structured-render';
-import {LoaderAnimated24Icon, StatusFailure24Icon, ViraButton} from 'vira';
+import {LoaderAnimated24Icon, ViraButton, createSizedIcon, lucideIcons} from 'vira';
 import {multiCardMock} from '../cards/multi-card.book.js';
 import {examplesBookPage} from '../examples.book.js';
 
@@ -27,7 +27,7 @@ export const downloadBookPage = defineBookPage({
                         text: 'Download',
                         isDisabled: state.isLoading,
                         icon: state.isError
-                            ? StatusFailure24Icon
+                            ? createSizedIcon(lucideIcons.CircleX, 24)
                             : state.isLoading
                               ? LoaderAnimated24Icon
                               : undefined,

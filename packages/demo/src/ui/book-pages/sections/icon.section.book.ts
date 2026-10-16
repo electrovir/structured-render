@@ -1,7 +1,7 @@
 import {defineBookPage} from 'element-book';
 import {html} from 'element-vir';
 import {StructuredRenderSectionType, VirStructuredRender} from 'structured-render';
-import {Star24Icon, StatusSuccess24Icon} from 'vira';
+import {lucideIcons} from 'vira';
 import {sectionsBookPage} from '../sections.book.js';
 
 export const iconSectionBookPage = defineBookPage({
@@ -18,7 +18,7 @@ export const iconSectionBookPage = defineBookPage({
                         },
                         data: {
                             type: StructuredRenderSectionType.icon,
-                            iconKey: Star24Icon.name,
+                            iconKey: lucideIcons.Star.name,
                         },
                     })}></${VirStructuredRender}>
                 `;
@@ -34,7 +34,7 @@ export const iconSectionBookPage = defineBookPage({
                         },
                         data: {
                             type: StructuredRenderSectionType.icon,
-                            iconKey: Star24Icon.name,
+                            iconKey: lucideIcons.Star.name,
                             strokeColor: 'gold',
                         },
                     })}></${VirStructuredRender}>
@@ -52,7 +52,7 @@ export const iconSectionBookPage = defineBookPage({
                         },
                         data: {
                             type: StructuredRenderSectionType.icon,
-                            iconKey: StatusSuccess24Icon.name,
+                            iconKey: lucideIcons.CircleCheck.name,
                             fillColor: 'lime',
                         },
                     })}></${VirStructuredRender}>
