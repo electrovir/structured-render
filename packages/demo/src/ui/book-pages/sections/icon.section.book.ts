@@ -1,7 +1,7 @@
 import {defineBookPage} from 'element-book';
 import {html} from 'element-vir';
 import {StructuredRenderSectionType, VirStructuredRender} from 'structured-render';
-import {lucideIcons} from 'vira';
+import {demoIcons} from '../../demo-icons.js';
 import {sectionsBookPage} from '../sections.book.js';
 
 export const iconSectionBookPage = defineBookPage({
@@ -14,11 +14,12 @@ export const iconSectionBookPage = defineBookPage({
                 return html`
                     <${VirStructuredRender.assign({
                         options: {
+                            icons: demoIcons,
                             useCardStyles: true,
                         },
                         data: {
                             type: StructuredRenderSectionType.icon,
-                            iconKey: lucideIcons.Star.name,
+                            iconKey: demoIcons.Star.name,
                         },
                     })}></${VirStructuredRender}>
                 `;
@@ -30,11 +31,12 @@ export const iconSectionBookPage = defineBookPage({
                 return html`
                     <${VirStructuredRender.assign({
                         options: {
+                            icons: demoIcons,
                             useCardStyles: true,
                         },
                         data: {
                             type: StructuredRenderSectionType.icon,
-                            iconKey: lucideIcons.Star.name,
+                            iconKey: demoIcons.Star.name,
                             strokeColor: 'gold',
                         },
                     })}></${VirStructuredRender}>
@@ -48,11 +50,12 @@ export const iconSectionBookPage = defineBookPage({
                 return html`
                     <${VirStructuredRender.assign({
                         options: {
+                            icons: demoIcons,
                             useCardStyles: true,
                         },
                         data: {
                             type: StructuredRenderSectionType.icon,
-                            iconKey: lucideIcons.CircleCheck.name,
+                            iconKey: demoIcons.CircleCheck.name,
                             fillColor: 'lime',
                         },
                     })}></${VirStructuredRender}>

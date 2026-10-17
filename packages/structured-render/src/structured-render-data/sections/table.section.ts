@@ -1,12 +1,23 @@
 import {type ArrayElement} from '@augment-vir/common';
-import {enumShape, nullableShape, recordShape, unionShape} from 'object-shape-tester';
+import {
+    enumShape,
+    nullableShape,
+    recordShape,
+    unionShape,
+    type UnsafeShape,
+} from 'object-shape-tester';
 import {createStructuredRenderSection, type SectionType} from '../create-section.js';
 import {structuredRenderEmptyShape, type StructuredRenderEmpty} from './empty.section.js';
+import {structuredRenderIconShape, type StructuredRenderIcon} from './icon.section.js';
 import {
     structuredRenderInlineCodeShape,
     type StructuredRenderInlineCode,
 } from './inline-code.section.js';
-import {structuredRenderListShape, type StructuredRenderList} from './list.section.js';
+import {
+    createStructuredRenderListShape,
+    structuredRenderListShape,
+    type StructuredRenderList,
+} from './list.section.js';
 import {renderDataMarkdownShape, type RenderDataMarkdown} from './markdown.section.js';
 import {
     structuredRenderProcessingShape,
@@ -16,6 +27,7 @@ import {structuredRenderSourceShape, type StructuredRenderSource} from './source
 import {structuredRenderTagShape, type StructuredRenderTag} from './tag.section.js';
 import {
     StructuredRenderTextStyle,
+    createStructuredRenderTextShape,
     structuredRenderTextShape,
     type StructuredRenderText,
 } from './text.section.js';
@@ -57,12 +69,12 @@ export enum StructuredRenderCellDirection {
  *
  * @category Internal
  */
-export type StructuredRenderShapesAllowedInTable =
-    | StructuredRenderText
+export type StructuredRenderShapesAllowedInTable<IconKey extends string = string> =
+    | StructuredRenderText<IconKey>
     | StructuredRenderInlineCode
     | RenderDataMarkdown
     | StructuredRenderTag
-    | StructuredRenderList
+    | StructuredRenderList<IconKey>
     | StructuredRenderEmpty
     | StructuredRenderProcessing;
 
@@ -86,7 +98,7 @@ export const structuredRenderShapesAllowedInTableShape = unionShape(
  *
  * @category Section
  */
-export type StructuredRenderTable = SectionType<
+export type StructuredRenderTable<IconKey extends string = string> = SectionType<
     'table',
     {
         direction: StructuredRenderCellDirection;
@@ -94,7 +106,7 @@ export type StructuredRenderTable = SectionType<
         style?: StructuredRenderTextStyle | null | undefined;
         headers: {
             key: string;
-            text?: StructuredRenderText | null | undefined;
+            text?: StructuredRenderText<IconKey> | null | undefined;
             /**
              * If `true`, all data associated with this header (the column / row) is not rendered at
              * all.
@@ -118,8 +130,8 @@ export type StructuredRenderTable = SectionType<
         entries: {
             data: Record<
                 string,
-                | (StructuredRenderShapesAllowedInTable | null | undefined)
-                | (StructuredRenderShapesAllowedInTable | null | undefined)[]
+                | (StructuredRenderShapesAllowedInTable<IconKey> | null | undefined)
+                | (StructuredRenderShapesAllowedInTable<IconKey> | null | undefined)[]
             >;
             sources?: (StructuredRenderSource | null | undefined)[] | null | undefined;
         }[];
@@ -128,8 +140,8 @@ export type StructuredRenderTable = SectionType<
                   /** @default StructuredRenderTableFooterAlignment.Left */
                   alignment?: StructuredRenderTableFooterAlignment | null | undefined;
                   cells:
-                      | (StructuredRenderShapesAllowedInTable | null | undefined)
-                      | (StructuredRenderShapesAllowedInTable | null | undefined)[];
+                      | (StructuredRenderShapesAllowedInTable<IconKey> | null | undefined)
+                      | (StructuredRenderShapesAllowedInTable<IconKey> | null | undefined)[];
               }[]
             | null
             | undefined;
@@ -137,67 +149,93 @@ export type StructuredRenderTable = SectionType<
 >;
 
 /**
+ * Creates a shape for {@link StructuredRenderTable} with the given icon shape.
+ *
+ * @category Internal
+ */
+export function createStructuredRenderTableShape<IconKey extends string>(
+    iconShape: UnsafeShape<StructuredRenderIcon<IconKey>>,
+) {
+    const textShape = createStructuredRenderTextShape(iconShape);
+    const cellShape = unionShape(
+        textShape,
+        structuredRenderInlineCodeShape,
+        renderDataMarkdownShape,
+        structuredRenderTagShape,
+        createStructuredRenderListShape(iconShape),
+        structuredRenderEmptyShape,
+        structuredRenderProcessingShape,
+    );
+
+    return createStructuredRenderSection('table')<StructuredRenderTable<IconKey>>({
+        direction: enumShape(StructuredRenderCellDirection),
+        style: nullableShape(enumShape(StructuredRenderTextStyle)),
+        headers: [
+            {
+                key: '',
+                text: nullableShape(textShape),
+                hidden: nullableShape(false),
+                sortKey: nullableShape(''),
+                disableSort: nullableShape(false),
+            },
+        ],
+        entries: [
+            {
+                data: recordShape({
+                    keys: '',
+                    values: unionShape(nullableShape(cellShape), [
+                        nullableShape(cellShape),
+                    ]),
+                }),
+                sources: nullableShape([nullableShape(structuredRenderSourceShape)]),
+            },
+        ],
+        footerRows: nullableShape([
+            {
+                alignment: nullableShape(enumShape(StructuredRenderTableFooterAlignment)),
+                cells: unionShape(nullableShape(cellShape), [
+                    nullableShape(cellShape),
+                ]),
+            },
+        ]),
+    });
+}
+
+/**
  * Shape definition for {@link StructuredRenderTable}.
  *
  * @category Internal
  */
-export const structuredRenderTableShape = createStructuredRenderSection(
-    'table',
-)<StructuredRenderTable>({
-    direction: enumShape(StructuredRenderCellDirection),
-    style: nullableShape(enumShape(StructuredRenderTextStyle)),
-    headers: [
-        {
-            key: '',
-            text: nullableShape(structuredRenderTextShape),
-            hidden: nullableShape(false),
-            sortKey: nullableShape(''),
-            disableSort: nullableShape(false),
-        },
-    ],
-    entries: [
-        {
-            data: recordShape({
-                keys: '',
-                values: unionShape(nullableShape(structuredRenderShapesAllowedInTableShape), [
-                    nullableShape(structuredRenderShapesAllowedInTableShape),
-                ]),
-            }),
-            sources: nullableShape([nullableShape(structuredRenderSourceShape)]),
-        },
-    ],
-    footerRows: nullableShape([
-        {
-            alignment: nullableShape(enumShape(StructuredRenderTableFooterAlignment)),
-            cells: unionShape(nullableShape(structuredRenderShapesAllowedInTableShape), [
-                nullableShape(structuredRenderShapesAllowedInTableShape),
-            ]),
-        },
-    ]),
-});
+export const structuredRenderTableShape =
+    createStructuredRenderTableShape(structuredRenderIconShape);
 
 /**
  * A helper for defining a {@link StructuredRenderTable} instance.
  *
  * @category Util
  */
-export function createRenderDataTable<const Headers extends StructuredRenderTable['headers']>({
+export function createRenderDataTable<
+    const HeaderKey extends string,
+    const IconKey extends string = never,
+>({
     direction,
     headers,
     entries,
     footerRows,
 }: Readonly<{
     direction: StructuredRenderCellDirection;
-    headers: Headers;
+    /**
+     * Header keys are inferred as their own type parameter, rather than read from a generic
+     * `headers` type, because a `data` key type derived from another inferred type parameter blocks
+     * TypeScript from inferring `IconKey` from `data`.
+     */
+    headers: (ArrayElement<StructuredRenderTable<IconKey>['headers']> & {key: HeaderKey})[];
     entries: {
-        data: Record<
-            ArrayElement<Headers>['key'],
-            StructuredRenderShapesAllowedInTable | undefined
-        >;
+        data: Record<HeaderKey, StructuredRenderShapesAllowedInTable<IconKey> | undefined>;
         sources?: (StructuredRenderSource | undefined)[] | undefined;
     }[];
-    footerRows?: StructuredRenderTable['footerRows'];
-}>): StructuredRenderTable {
+    footerRows?: StructuredRenderTable<IconKey>['footerRows'];
+}>): StructuredRenderTable<IconKey> {
     return {
         type: 'table',
         direction,

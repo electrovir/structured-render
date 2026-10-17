@@ -1,4 +1,3 @@
-import {type PartialWithUndefined} from '@augment-vir/common';
 import {colorCss} from '@electrovir/color';
 import {css, defineElement, html, listen, unsafeCSS} from 'element-vir';
 import {themeDefaultKey} from 'theme-vir';
@@ -6,7 +5,11 @@ import {noNativeSpacing, ViraCollapsibleCard, ViraIcon, ViraTag, viraTheme} from
 import {insertStyleSheet} from '../augments/shadow-styles.js';
 import {renderStructuredHtml} from '../render/render-html.js';
 import {contentDivClass, defaultMarkdownRenderStyles} from '../render/render-markdown-styles.js';
-import {type RenderHtmlOptions, type RenderInput} from '../render/render-types.js';
+import {
+    type RenderHtmlOptions,
+    type RenderInput,
+    type WithRequiredIcons,
+} from '../render/render-types.js';
 import {SourceExpansionEvent} from '../render/source-expansion-event.js';
 import {sourceWrapperStyles} from '../render/source-styles.js';
 import {TableSortEvent, type TableSortState} from '../render/table-sort-event.js';
@@ -16,34 +19,40 @@ import {VirCopy} from './vir-copy.element.js';
 const iconRightMargin = css`4px`;
 
 /**
+ * Options for {@link VirStructuredRender}.
+ *
+ * @category Internal
+ */
+export type VirStructuredRenderOptions<IconKey extends string = string> = WithRequiredIcons<
+    RenderHtmlOptions<IconKey> & {
+        /**
+         * If `true`, smaller, tablet-compatible styles are used.
+         *
+         * @default false
+         */
+        isTabletSize: boolean;
+        /**
+         * If `true`, smaller, phone-compatible styles are used.
+         *
+         * @default false
+         */
+        isPhoneSize: boolean;
+    }
+>;
+
+/**
  * Used to render Structured Render data to the DOM. This is the easiest way, if you use
  * element-vir, to include Structured Render data in your web app. You can also use
- * {@link renderStructuredHtml} to render Structured Render data to raw HTML.
+ * {@link renderStructuredHtml} to render Structured Render data to raw HTML. Accepts any icon keys.
+ * For icon keys checked against an icons object, use the `VirStructuredRender` returned by
+ * `createStructuredRender`.
  *
  * @category Elements
  */
-export const VirStructuredRender = defineElement<
-    {data: Readonly<RenderInput>} & PartialWithUndefined<{
-        options: Readonly<
-            PartialWithUndefined<
-                RenderHtmlOptions & {
-                    /**
-                     * If `true`, smaller, tablet-compatible styles are used.
-                     *
-                     * @default false
-                     */
-                    isTabletSize: boolean;
-                    /**
-                     * If `true`, smaller, phone-compatible styles are used.
-                     *
-                     * @default false
-                     */
-                    isPhoneSize: boolean;
-                }
-            >
-        >;
-    }>
->()({
+export const VirStructuredRender = defineElement<{
+    data: Readonly<RenderInput>;
+    options: VirStructuredRenderOptions;
+}>()({
     tagName: 'vir-structured-render',
     state() {
         return {
@@ -60,10 +69,10 @@ export const VirStructuredRender = defineElement<
     },
     hostClasses: {
         'vir-structured-render-phone-size'({inputs}) {
-            return !!inputs.options?.isPhoneSize;
+            return !!inputs.options.isPhoneSize;
         },
         'vir-structured-render-tablet-size'({inputs}) {
-            return !!inputs.options?.isTabletSize;
+            return !!inputs.options.isTabletSize;
         },
     },
     styles({cssVars, hostClasses}) {
@@ -480,7 +489,7 @@ export const VirStructuredRender = defineElement<
         `;
     },
     render({inputs, state, updateState, host}) {
-        const styles = String(inputs.options?.markdownStyles || defaultMarkdownRenderStyles);
+        const styles = String(inputs.options.markdownStyles || defaultMarkdownRenderStyles);
 
         if (
             insertStyleSheet({
@@ -497,13 +506,13 @@ export const VirStructuredRender = defineElement<
 
         const templates = renderStructuredHtml(inputs.data, {
             ...inputs.options,
-            devDebug: inputs.options?.devDebug,
+            devDebug: inputs.options.devDebug,
             currentlyExpanded: {
-                ...inputs.options?.currentlyExpanded,
+                ...inputs.options.currentlyExpanded,
                 ...state.currentlyExpanded,
             },
             tableSortStates: {
-                ...inputs.options?.tableSortStates,
+                ...inputs.options.tableSortStates,
                 ...state.tableSortStates,
             },
         });

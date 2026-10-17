@@ -1,10 +1,16 @@
-import {ViraColorVariant, lucideIcons} from 'vira';
+import {LucideCircleCheckIcon, LucideStarIcon, ViraColorVariant} from 'vira';
+import {mapIconsByName} from '../render/icon-map.js';
 import {StructuredRenderCellDirection} from './sections/table.section.js';
 import {StructuredRenderTextStyle} from './sections/text.section.js';
 import {type StructuredRenderData} from './structured-render-data.js';
 import {StructuredRenderSectionType} from './structured-render-section.js';
 
-export const exampleCard: StructuredRenderData = [
+export const exampleIcons = mapIconsByName({
+    LucideCircleCheckIcon,
+    LucideStarIcon,
+});
+
+export const exampleCard: StructuredRenderData<keyof typeof exampleIcons> = [
     {
         sections: [
             {
@@ -83,7 +89,7 @@ export const exampleCard: StructuredRenderData = [
                         },
                         icon: {
                             type: StructuredRenderSectionType.icon,
-                            iconKey: lucideIcons.CircleCheck.name,
+                            iconKey: LucideCircleCheckIcon.name,
                             strokeColor: 'green',
                         },
                     },
@@ -114,7 +120,7 @@ export const exampleCard: StructuredRenderData = [
                         ],
                         icon: {
                             type: StructuredRenderSectionType.icon,
-                            iconKey: lucideIcons.CircleCheck.name,
+                            iconKey: LucideCircleCheckIcon.name,
                             strokeColor: 'green',
                         },
                     },
@@ -122,7 +128,7 @@ export const exampleCard: StructuredRenderData = [
             },
             {
                 type: StructuredRenderSectionType.icon,
-                iconKey: lucideIcons.Star.name,
+                iconKey: LucideStarIcon.name,
                 strokeColor: 'yellow',
             },
         ],

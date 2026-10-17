@@ -14,6 +14,7 @@ export const markdownSectionBookPage = defineBookPage({
                 return html`
                     <${VirStructuredRender.assign({
                         options: {
+                            icons: {},
                             useCardStyles: true,
                         },
                         data: {
@@ -33,6 +34,7 @@ export const markdownSectionBookPage = defineBookPage({
                 return html`
                     <${VirStructuredRender.assign({
                         options: {
+                            icons: {},
                             useCardStyles: true,
                         },
                         data: {
@@ -52,6 +54,7 @@ export const markdownSectionBookPage = defineBookPage({
                 return html`
                     <${VirStructuredRender.assign({
                         options: {
+                            icons: {},
                             useCardStyles: true,
                         },
                         data: {
@@ -71,6 +74,7 @@ export const markdownSectionBookPage = defineBookPage({
                 return html`
                     <${VirStructuredRender.assign({
                         options: {
+                            icons: {},
                             useCardStyles: true,
                         },
                         data: {
@@ -165,6 +169,7 @@ ${createArray(60, (index) => {
                                 '## Upload a Markdown file\n\nChoose a local `.md` file to replace this content.',
                         },
                         options: {
+                            icons: {},
                             devDebug: true,
                             useCardStyles: true,
                         },

@@ -12,6 +12,7 @@ describe('vir-structured-render.element.ts', () => {
                 type: StructuredRenderSectionType.markdown,
             },
             options: {
+                icons: {},
                 devDebug: true,
             },
         });

@@ -13,6 +13,7 @@ export const inlineCodeSectionBookPage = defineBookPage({
                 return html`
                     <${VirStructuredRender.assign({
                         options: {
+                            icons: {},
                             useCardStyles: true,
                         },
                         data: {

@@ -1,7 +1,7 @@
-import {nullableShape, unsafeShape} from 'object-shape-tester';
+import {nullableShape, unionShape, unsafeShape, type UnsafeShape} from 'object-shape-tester';
 import {structuredRenderIconShape, type StructuredRenderIcon} from './sections/icon.section.js';
 import {
-    structuredRenderSectionShape,
+    createAllStructuredRenderSectionShapes,
     type StructuredRenderSection,
 } from './structured-render-section.js';
 
@@ -10,19 +10,32 @@ import {
  *
  * @category Structured Render Data
  */
-export type StructuredRenderCard = {
+export type StructuredRenderCard<IconKey extends string = string> = {
     cardTitle?: string | null | undefined;
-    cardTitleIcon?: StructuredRenderIcon | null | undefined;
-    sections: (StructuredRenderSection | null | undefined)[];
+    cardTitleIcon?: StructuredRenderIcon<IconKey> | null | undefined;
+    sections: (StructuredRenderSection<IconKey> | null | undefined)[];
 };
+
+/**
+ * Creates a shape for {@link StructuredRenderCard} with the given icon shape.
+ *
+ * @category Internal
+ */
+export function createStructuredRenderCardShape<IconKey extends string>(
+    iconShape: UnsafeShape<StructuredRenderIcon<IconKey>>,
+) {
+    return unsafeShape<StructuredRenderCard<IconKey>>({
+        cardTitle: nullableShape(''),
+        cardTitleIcon: nullableShape(iconShape),
+        sections: [
+            nullableShape(unionShape(...createAllStructuredRenderSectionShapes(iconShape))),
+        ],
+    });
+}
 
 /**
  * Shape definition for {@link StructuredRenderCard}.
  *
  * @category Internal
  */
-export const structuredRenderCardShape = unsafeShape<StructuredRenderCard>({
-    cardTitle: nullableShape(''),
-    cardTitleIcon: nullableShape(structuredRenderIconShape),
-    sections: [nullableShape(structuredRenderSectionShape)],
-});
+export const structuredRenderCardShape = createStructuredRenderCardShape(structuredRenderIconShape);

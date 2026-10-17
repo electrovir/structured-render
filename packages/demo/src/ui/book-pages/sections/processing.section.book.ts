@@ -13,6 +13,7 @@ export const processingSectionBookPage = defineBookPage({
                 return html`
                     <${VirStructuredRender.assign({
                         options: {
+                            icons: {},
                             useCardStyles: true,
                         },
                         data: {

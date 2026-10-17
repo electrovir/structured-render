@@ -2,7 +2,8 @@ import {log} from '@augment-vir/common';
 import {defineBookPage} from 'element-book';
 import {html, listen} from 'element-vir';
 import {downloadPdf} from 'structured-render';
-import {LoaderAnimated24Icon, ViraButton, createSizedIcon, lucideIcons} from 'vira';
+import {createSizedIcon, LoaderAnimated24Icon, LucideCircleXIcon, ViraButton} from 'vira';
+import {demoIcons} from '../../demo-icons.js';
 import {multiCardMock} from '../cards/multi-card.book.js';
 import {examplesBookPage} from '../examples.book.js';
 
@@ -27,7 +28,7 @@ export const downloadBookPage = defineBookPage({
                         text: 'Download',
                         isDisabled: state.isLoading,
                         icon: state.isError
-                            ? createSizedIcon(lucideIcons.CircleX, 24)
+                            ? createSizedIcon(LucideCircleXIcon, 24)
                             : state.isLoading
                               ? LoaderAnimated24Icon
                               : undefined,
@@ -37,7 +38,9 @@ export const downloadBookPage = defineBookPage({
                                 isLoading: true,
                             });
                             try {
-                                await downloadPdf(multiCardMock, 'structured-render-download.pdf');
+                                await downloadPdf(multiCardMock, 'structured-render-download.pdf', {
+                                    icons: demoIcons,
+                                });
                             } catch (error) {
                                 log.error('Failed to download PDF', error);
                                 updateState({

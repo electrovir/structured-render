@@ -2,7 +2,7 @@ import {wait} from '@augment-vir/common';
 import {css, defineElement, html, listen} from 'element-vir';
 import {
     createSizedIcon,
-    lucideIcons,
+    LucideCopyIcon,
     ViraButton,
     ViraColorVariant,
     ViraEmphasis,
@@ -41,7 +41,7 @@ export const VirCopy = defineElement<{
         return html`
             <${ViraButton.assign({
                 text: state.justCopied ? copiedLabel : defaultLabel,
-                icon: createSizedIcon(lucideIcons.Copy, 16),
+                icon: createSizedIcon(LucideCopyIcon, 16),
                 buttonEmphasis: ViraEmphasis.Subtle,
                 color: ViraColorVariant.Neutral,
                 buttonSize: ViraSize.Small,

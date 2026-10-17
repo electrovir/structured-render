@@ -8,7 +8,7 @@ import {renderToPdf} from './render-pdf.js';
 const monoRepoDirPath = resolve(import.meta.dirname, '..', '..', '..', '..');
 const outputPath = join(monoRepoDirPath, '.not-committed', 'test-image-pdf.pdf');
 
-const testData: StructuredRenderData = [
+const testData: StructuredRenderData<never> = [
     {
         cardTitle: 'Image Embedding Test',
         sections: [
@@ -62,7 +62,9 @@ const testData: StructuredRenderData = [
 
 try {
     log.info(`Rendering PDF to ${outputPath}...`);
-    const pdfBytes = await renderToPdf(testData, 'test-file.pdf');
+    const pdfBytes = await renderToPdf(testData, 'test-file.pdf', {
+        icons: {},
+    });
     await mkdir(dirname(outputPath), {
         recursive: true,
     });

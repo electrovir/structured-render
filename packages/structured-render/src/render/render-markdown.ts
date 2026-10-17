@@ -7,7 +7,6 @@ import {
     wrapString,
     type ArrayElement,
     type AtLeastTuple,
-    type PartialWithUndefined,
 } from '@augment-vir/common';
 import {convertTemplateToString} from 'element-vir';
 import {type StructuredRenderCodeBlock} from '../structured-render-data/sections/code-block.section.js';
@@ -36,6 +35,7 @@ import {
     type RenderInput,
     type RenderMarkdownOptions,
     type RenderOptions,
+    type WithRequiredIcons,
 } from './render-types.js';
 
 /**
@@ -43,9 +43,9 @@ import {
  *
  * @category Render
  */
-export function renderStructuredMarkdown(
-    data: Readonly<RenderInput>,
-    options?: Readonly<PartialWithUndefined<RenderMarkdownOptions>> | undefined,
+export function renderStructuredMarkdown<const IconKey extends string>(
+    data: Readonly<RenderInput<NoInfer<IconKey>>>,
+    options: WithRequiredIcons<RenderMarkdownOptions<IconKey>>,
 ): string {
     const finalOptions: Readonly<RenderMarkdownOptions> = mergeDefinedProperties(
         defaultRenderMarkdownOptions,

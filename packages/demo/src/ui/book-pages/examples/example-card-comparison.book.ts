@@ -2,6 +2,7 @@ import {defineBookPage} from 'element-book';
 import {css, html} from 'element-vir';
 import {VirStructuredRender} from 'structured-render';
 import {exampleCard} from 'structured-render/src/structured-render-data/structured-render-data.mock.js';
+import {demoIcons} from '../../demo-icons.js';
 import {examplesBookPage} from '../examples.book.js';
 
 export const exampleCardComparisonBookPage = defineBookPage({
@@ -21,6 +22,9 @@ export const exampleCardComparisonBookPage = defineBookPage({
             render() {
                 return html`
                     <${VirStructuredRender.assign({
+                        options: {
+                            icons: demoIcons,
+                        },
                         data: exampleCard,
                     })}></${VirStructuredRender}>
                 `;

@@ -1,6 +1,12 @@
-import {type MaybeArray} from '@augment-vir/common';
+import {type MaybeArray, type PartialWithUndefined} from '@augment-vir/common';
 import {type CSSResult} from 'element-vir';
-import {LoaderAnimated24Icon, type ViraIconSvg, createSizedIcon, lucideIcons} from 'vira';
+import {
+    createSizedIcon,
+    LoaderAnimated24Icon,
+    LucideEyeIcon,
+    LucideFileSearchIcon,
+    type ViraIconSvg,
+} from 'vira';
 import {type StructuredRenderCard} from '../structured-render-data/structured-render-card.js';
 import {type StructuredRenderData} from '../structured-render-data/structured-render-data.js';
 import {type StructuredRenderSection} from '../structured-render-data/structured-render-section.js';
@@ -13,8 +19,12 @@ import {type TableSortState} from './table-sort-event.js';
  *
  * @category Internal
  */
-export type RenderInput = MaybeArray<
-    StructuredRenderData | StructuredRenderCard | StructuredRenderSection | null | undefined
+export type RenderInput<IconKey extends string = string> = MaybeArray<
+    | StructuredRenderData<IconKey>
+    | StructuredRenderCard<IconKey>
+    | StructuredRenderSection<IconKey>
+    | null
+    | undefined
 >;
 
 /**
@@ -22,12 +32,12 @@ export type RenderInput = MaybeArray<
  *
  * @category Internal
  */
-export type RenderOptions = Readonly<{
+export type RenderOptions<IconKey extends string = string> = Readonly<{
     /**
-     * Override the default icon set. The default icon set is every [Lucide](https://lucide.dev)
-     * icon, keyed by its Lucide name (such as `'CircleCheck'`).
+     * Icons that icon sections can reference, keyed by each section's `iconKey`. Icon sections
+     * whose `iconKey` is missing from this object render nothing.
      */
-    icons: Readonly<{[IconKey in string]: ViraIconSvg}>;
+    icons: Readonly<Record<IconKey, ViraIconSvg>>;
     /**
      * The prefix used when rendering a source.
      *
@@ -49,12 +59,22 @@ export type RenderOptions = Readonly<{
 }>;
 
 /**
+ * Render options as accepted by the public render entry points: every option is optional except
+ * `icons`.
+ *
+ * @category Internal
+ */
+export type WithRequiredIcons<Options extends Pick<RenderOptions<any>, 'icons'>> = Readonly<
+    PartialWithUndefined<Options> & Pick<Options, 'icons'>
+>;
+
+/**
  * Default base option values for Structured Render rendering.
  *
  * @category Internal
  */
 export const defaultRenderOptions: Readonly<RenderOptions> = {
-    icons: lucideIcons,
+    icons: {},
     sourceString: 'Source',
     pluralSourcesString: 'Sources',
     hideSources: false,
@@ -65,7 +85,7 @@ export const defaultRenderOptions: Readonly<RenderOptions> = {
  *
  * @category Internal
  */
-export type RenderPdfOptions = RenderOptions & {
+export type RenderPdfOptions<IconKey extends string = string> = RenderOptions<IconKey> & {
     /** An optional consumer-defined header rendered on every PDF page. */
     pageHeader?: PdfPageHeader | undefined;
 };
@@ -75,7 +95,7 @@ export type RenderPdfOptions = RenderOptions & {
  *
  * @category Internal
  */
-export type RenderMarkdownOptions = RenderOptions & {
+export type RenderMarkdownOptions<IconKey extends string = string> = RenderOptions<IconKey> & {
     /**
      * CSS styles for the rendering.
      *
@@ -99,7 +119,7 @@ export const defaultRenderMarkdownOptions: Readonly<RenderMarkdownOptions> = {
  *
  * @category Internal
  */
-export type RenderHtmlOptions = RenderOptions & {
+export type RenderHtmlOptions<IconKey extends string = string> = RenderOptions<IconKey> & {
     /** Currently expanded sections and sources. */
     currentlyExpanded: {[SectionKey in string]: boolean};
     /** Current sort state for each table, keyed by the table's key chain. */
@@ -113,7 +133,7 @@ export type RenderHtmlOptions = RenderOptions & {
     /**
      * The icon shown for source expansion.
      *
-     * @default lucideIcons.FileSearch
+     * @default LucideFileSearchIcon
      */
     sourceIcon: ViraIconSvg;
     /**
@@ -125,7 +145,7 @@ export type RenderHtmlOptions = RenderOptions & {
     /**
      * The icon used for "view on page" buttons.
      *
-     * @default lucideIcons.Eye
+     * @default LucideEyeIcon
      */
     viewOnPageIcon: ViraIconSvg;
     /**
@@ -209,8 +229,8 @@ export const defaultRenderHtmlOptions: Readonly<RenderHtmlOptions> = {
     processingString: 'Processing',
     currentlyExpanded: {},
     tableSortStates: {},
-    sourceIcon: lucideIcons.FileSearch,
-    viewOnPageIcon: createSizedIcon(lucideIcons.Eye, 16),
+    sourceIcon: LucideFileSearchIcon,
+    viewOnPageIcon: createSizedIcon(LucideEyeIcon, 16),
     processingIcon: LoaderAnimated24Icon,
     expandSourcesOnPrint: false,
     hideViewOnPageButtons: false,

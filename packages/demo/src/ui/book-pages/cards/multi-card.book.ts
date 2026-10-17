@@ -8,10 +8,11 @@ import {
     VirStructuredRender,
     type StructuredRenderData,
 } from 'structured-render';
-import {lucideIcons, ViraColorVariant} from 'vira';
+import {ViraColorVariant} from 'vira';
+import {demoIcons} from '../../demo-icons.js';
 import {cardsBookPage} from '../cards.book.js';
 
-export const multiCardMock: StructuredRenderData = [
+export const multiCardMock: StructuredRenderData<keyof typeof demoIcons> = [
     {
         sections: [
             {
@@ -24,7 +25,7 @@ export const multiCardMock: StructuredRenderData = [
         cardTitle: 'Frontend Performance',
         cardTitleIcon: {
             type: StructuredRenderSectionType.icon,
-            iconKey: lucideIcons.CircleCheck.name,
+            iconKey: demoIcons.CircleCheck.name,
             strokeColor: 'green',
         },
         sections: [
@@ -216,7 +217,7 @@ export const multiCardMock: StructuredRenderData = [
                         },
                         icon: {
                             type: StructuredRenderSectionType.icon,
-                            iconKey: lucideIcons.CircleAlert.name,
+                            iconKey: demoIcons.CircleAlert.name,
                             strokeColor: 'red',
                         },
                         sources: [
@@ -238,7 +239,7 @@ export const multiCardMock: StructuredRenderData = [
                     {
                         icon: {
                             type: StructuredRenderSectionType.icon,
-                            iconKey: lucideIcons.CircleAlert.name,
+                            iconKey: demoIcons.CircleAlert.name,
                             strokeColor: 'red',
                         },
                         content: {
@@ -297,7 +298,7 @@ export const multiCardMock: StructuredRenderData = [
                         ],
                         icon: {
                             type: StructuredRenderSectionType.icon,
-                            iconKey: lucideIcons.CircleAlert.name,
+                            iconKey: demoIcons.CircleAlert.name,
                             strokeColor: 'orange',
                         },
                         sources: [
@@ -321,7 +322,7 @@ export const multiCardMock: StructuredRenderData = [
                         },
                         icon: {
                             type: StructuredRenderSectionType.icon,
-                            iconKey: lucideIcons.CircleAlert.name,
+                            iconKey: demoIcons.CircleAlert.name,
                             strokeColor: 'orange',
                         },
                     },
@@ -332,7 +333,7 @@ export const multiCardMock: StructuredRenderData = [
                         },
                         icon: {
                             type: StructuredRenderSectionType.icon,
-                            iconKey: lucideIcons.CircleCheck.name,
+                            iconKey: demoIcons.CircleCheck.name,
                             strokeColor: 'green',
                         },
                     },
@@ -343,7 +344,7 @@ export const multiCardMock: StructuredRenderData = [
                         },
                         icon: {
                             type: StructuredRenderSectionType.icon,
-                            iconKey: lucideIcons.CircleCheck.name,
+                            iconKey: demoIcons.CircleCheck.name,
                             strokeColor: 'green',
                         },
                     },
@@ -761,7 +762,7 @@ export const multiCardMock: StructuredRenderData = [
                 text: 'The CI/CD pipeline is fully automated with staging and production environments.',
                 icon: {
                     type: StructuredRenderSectionType.icon,
-                    iconKey: lucideIcons.CircleCheck.name,
+                    iconKey: demoIcons.CircleCheck.name,
                     strokeColor: 'green',
                 },
             },
@@ -933,7 +934,7 @@ export const multiCardMock: StructuredRenderData = [
                         },
                         icon: {
                             type: StructuredRenderSectionType.icon,
-                            iconKey: lucideIcons.CircleCheck.name,
+                            iconKey: demoIcons.CircleCheck.name,
                             strokeColor: 'green',
                         },
                     },
@@ -944,7 +945,7 @@ export const multiCardMock: StructuredRenderData = [
                         },
                         icon: {
                             type: StructuredRenderSectionType.icon,
-                            iconKey: lucideIcons.CircleCheck.name,
+                            iconKey: demoIcons.CircleCheck.name,
                             strokeColor: 'green',
                         },
                     },
@@ -955,7 +956,7 @@ export const multiCardMock: StructuredRenderData = [
                         },
                         icon: {
                             type: StructuredRenderSectionType.icon,
-                            iconKey: lucideIcons.CircleCheck.name,
+                            iconKey: demoIcons.CircleCheck.name,
                             strokeColor: 'green',
                         },
                     },
@@ -966,7 +967,7 @@ export const multiCardMock: StructuredRenderData = [
                         },
                         icon: {
                             type: StructuredRenderSectionType.icon,
-                            iconKey: lucideIcons.CircleCheck.name,
+                            iconKey: demoIcons.CircleCheck.name,
                             strokeColor: 'green',
                         },
                     },
@@ -977,7 +978,7 @@ export const multiCardMock: StructuredRenderData = [
                         },
                         icon: {
                             type: StructuredRenderSectionType.icon,
-                            iconKey: lucideIcons.CircleCheck.name,
+                            iconKey: demoIcons.CircleCheck.name,
                             strokeColor: 'green',
                         },
                     },
@@ -988,7 +989,7 @@ export const multiCardMock: StructuredRenderData = [
                         },
                         icon: {
                             type: StructuredRenderSectionType.icon,
-                            iconKey: lucideIcons.CircleCheck.name,
+                            iconKey: demoIcons.CircleCheck.name,
                             strokeColor: 'green',
                         },
                     },
@@ -1111,7 +1112,7 @@ export const multiCardMock: StructuredRenderData = [
                                 },
                                 icon: {
                                     type: StructuredRenderSectionType.icon,
-                                    iconKey: lucideIcons.CircleCheck.name,
+                                    iconKey: demoIcons.CircleCheck.name,
                                     strokeColor: 'green',
                                 },
                             },
@@ -1122,7 +1123,7 @@ export const multiCardMock: StructuredRenderData = [
                                 },
                                 icon: {
                                     type: StructuredRenderSectionType.icon,
-                                    iconKey: lucideIcons.CircleAlert.name,
+                                    iconKey: demoIcons.CircleAlert.name,
                                     strokeColor: 'orange',
                                 },
                             },
@@ -1133,7 +1134,7 @@ export const multiCardMock: StructuredRenderData = [
                                 },
                                 icon: {
                                     type: StructuredRenderSectionType.icon,
-                                    iconKey: lucideIcons.CircleCheck.name,
+                                    iconKey: demoIcons.CircleCheck.name,
                                     strokeColor: 'green',
                                 },
                             },
@@ -1164,6 +1165,7 @@ export const multiCardBookPage = defineBookPage({
                     <${VirStructuredRender.assign({
                         data: multiCardMock,
                         options: {
+                            icons: demoIcons,
                             useCardStyles: true,
                         },
                     })}></${VirStructuredRender}>
@@ -1183,6 +1185,7 @@ export const multiCardBookPage = defineBookPage({
                     <${VirStructuredRender.assign({
                         data: multiCardMock,
                         options: {
+                            icons: demoIcons,
                             useCardStyles: true,
                             isPhoneSize: true,
                             useDrawerForSources: true,

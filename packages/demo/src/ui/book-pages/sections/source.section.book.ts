@@ -13,6 +13,7 @@ export const sourceSectionBookPage = defineBookPage({
                 return html`
                     <${VirStructuredRender.assign({
                         options: {
+                            icons: {},
                             useCardStyles: true,
                         },
                         data: {
@@ -33,6 +34,7 @@ export const sourceSectionBookPage = defineBookPage({
                 return html`
                     <${VirStructuredRender.assign({
                         options: {
+                            icons: {},
                             useCardStyles: true,
                         },
                         data: {
@@ -56,6 +58,7 @@ export const sourceSectionBookPage = defineBookPage({
                 return html`
                     <${VirStructuredRender.assign({
                         options: {
+                            icons: {},
                             useCardStyles: true,
                         },
                         data: {

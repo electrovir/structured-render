@@ -1,7 +1,8 @@
 import {defineBookPage} from 'element-book';
 import {html} from 'element-vir';
 import {StructuredRenderSectionType, VirStructuredRender} from 'structured-render';
-import {ViraColorVariant, lucideIcons} from 'vira';
+import {ViraColorVariant} from 'vira';
+import {demoIcons} from '../../demo-icons.js';
 import {sectionsBookPage} from '../sections.book.js';
 
 export const listSectionBookPage = defineBookPage({
@@ -14,6 +15,7 @@ export const listSectionBookPage = defineBookPage({
                 return html`
                     <${VirStructuredRender.assign({
                         options: {
+                            icons: demoIcons,
                             useCardStyles: true,
                         },
                         data: {
@@ -51,6 +53,7 @@ export const listSectionBookPage = defineBookPage({
                 return html`
                     <${VirStructuredRender.assign({
                         options: {
+                            icons: demoIcons,
                             useCardStyles: true,
                         },
                         data: {
@@ -64,7 +67,7 @@ export const listSectionBookPage = defineBookPage({
                                     },
                                     icon: {
                                         type: StructuredRenderSectionType.icon,
-                                        iconKey: lucideIcons.CircleCheck.name,
+                                        iconKey: demoIcons.CircleCheck.name,
                                         strokeColor: 'green',
                                     },
                                 },
@@ -75,7 +78,7 @@ export const listSectionBookPage = defineBookPage({
                                     },
                                     icon: {
                                         type: StructuredRenderSectionType.icon,
-                                        iconKey: lucideIcons.CircleCheck.name,
+                                        iconKey: demoIcons.CircleCheck.name,
                                         strokeColor: 'green',
                                     },
                                 },
@@ -92,6 +95,7 @@ export const listSectionBookPage = defineBookPage({
                 return html`
                     <${VirStructuredRender.assign({
                         options: {
+                            icons: demoIcons,
                             useCardStyles: true,
                         },
                         data: {

@@ -9,7 +9,7 @@ import {join, resolve} from 'node:path';
 import {pdf} from 'pdf-to-img';
 import {ViraColorVariant} from 'vira';
 import {renderToPdf, StructuredRenderSectionType, type StructuredRenderData} from '../index.js';
-import {exampleCard} from '../structured-render-data/structured-render-data.mock.js';
+import {exampleCard, exampleIcons} from '../structured-render-data/structured-render-data.mock.js';
 import {PdfDocumentBuilder} from './pdf/pdf-document-builder.js';
 import {getPdfTagColors} from './pdf/pdf-section-renderers.js';
 
@@ -58,6 +58,9 @@ describe(renderToPdf.name, () => {
                 },
             ],
             'tag-colors.pdf',
+            {
+                icons: {},
+            },
         );
         const pdfFileName = extractTestNameAsDir(testContext) + '.pdf';
         const pngFileName = extractTestNameAsDir(testContext) + '.png';
@@ -131,6 +134,7 @@ describe(renderToPdf.name, () => {
             ],
             'custom-page-header.pdf',
             {
+                icons: {},
                 pageHeader: {
                     height: 36,
                     create({pdfDocument, fonts}) {
@@ -211,7 +215,9 @@ describe(renderToPdf.name, () => {
         const pngFileName = extractTestNameAsDir(testContext) + '.png';
         const comparisonOutputPath = join(testComparisonDirPath, pngFileName);
 
-        const pdfBytes = await renderToPdf(exampleCard, 'test');
+        const pdfBytes = await renderToPdf(exampleCard, 'test', {
+            icons: exampleIcons,
+        });
 
         await mkdir(testOutputDirPath, {
             recursive: true,
@@ -241,7 +247,7 @@ describe(renderToPdf.name, () => {
         const pngFileName = extractTestNameAsDir(testContext) + '.png';
         const comparisonOutputPath = join(testComparisonDirPath, pngFileName);
 
-        const dataWithImage: StructuredRenderData = [
+        const dataWithImage: StructuredRenderData<never> = [
             {
                 cardTitle: 'Image Embedding',
                 sections: [
@@ -262,7 +268,9 @@ describe(renderToPdf.name, () => {
             },
         ];
 
-        const pdfBytes = await renderToPdf(dataWithImage, 'test');
+        const pdfBytes = await renderToPdf(dataWithImage, 'test', {
+            icons: {},
+        });
 
         await mkdir(testOutputDirPath, {
             recursive: true,

@@ -1,5 +1,5 @@
 import {type Primitive} from '@augment-vir/assert';
-import {nullableShape, primitiveShape} from 'object-shape-tester';
+import {nullableShape, primitiveShape, type UnsafeShape} from 'object-shape-tester';
 import {createStructuredRenderSection, type SectionType} from '../create-section.js';
 import {structuredRenderIconShape, type StructuredRenderIcon} from './icon.section.js';
 
@@ -8,23 +8,33 @@ import {structuredRenderIconShape, type StructuredRenderIcon} from './icon.secti
  *
  * @category Section
  */
-export type StructuredRenderTitle = SectionType<
+export type StructuredRenderTitle<IconKey extends string = string> = SectionType<
     'title',
     {
         text?: Primitive | null | undefined;
         /** Rendered before the text. */
-        icon?: StructuredRenderIcon | null | undefined;
+        icon?: StructuredRenderIcon<IconKey> | null | undefined;
     }
 >;
+
+/**
+ * Creates a shape for {@link StructuredRenderTitle} with the given icon shape.
+ *
+ * @category Internal
+ */
+export function createStructuredRenderTitleShape<IconKey extends string>(
+    iconShape: UnsafeShape<StructuredRenderIcon<IconKey>>,
+) {
+    return createStructuredRenderSection('title')<StructuredRenderTitle<IconKey>>({
+        text: nullableShape(primitiveShape()),
+        icon: nullableShape(iconShape),
+    });
+}
 
 /**
  * Shape definition for {@link StructuredRenderTitle}.
  *
  * @category Internal
  */
-export const structuredRenderTitleShape = createStructuredRenderSection(
-    'title',
-)<StructuredRenderTitle>({
-    text: nullableShape(primitiveShape()),
-    icon: nullableShape(structuredRenderIconShape),
-});
+export const structuredRenderTitleShape =
+    createStructuredRenderTitleShape(structuredRenderIconShape);

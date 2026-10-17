@@ -6,7 +6,8 @@ import {
     StructuredRenderTextStyle,
     VirStructuredRender,
 } from 'structured-render';
-import {ViraColorVariant, lucideIcons} from 'vira';
+import {ViraColorVariant} from 'vira';
+import {demoIcons} from '../../demo-icons.js';
 import {cardsBookPage} from '../cards.book.js';
 
 export const fullCardBookPage = defineBookPage({
@@ -27,6 +28,7 @@ export const fullCardBookPage = defineBookPage({
                 return html`
                     <${VirStructuredRender.assign({
                         options: {
+                            icons: demoIcons,
                             useCardStyles: true,
                         },
                         data: [
@@ -199,7 +201,7 @@ export const fullCardBookPage = defineBookPage({
                                                 },
                                                 icon: {
                                                     type: StructuredRenderSectionType.icon,
-                                                    iconKey: lucideIcons.CircleAlert.name,
+                                                    iconKey: demoIcons.CircleAlert.name,
                                                     strokeColor: 'orange',
                                                 },
                                             },
@@ -210,7 +212,7 @@ export const fullCardBookPage = defineBookPage({
                                                 },
                                                 icon: {
                                                     type: StructuredRenderSectionType.icon,
-                                                    iconKey: lucideIcons.CircleAlert.name,
+                                                    iconKey: demoIcons.CircleAlert.name,
                                                     strokeColor: 'orange',
                                                 },
                                             },
@@ -233,7 +235,7 @@ export const fullCardBookPage = defineBookPage({
                                                 },
                                                 icon: {
                                                     type: StructuredRenderSectionType.icon,
-                                                    iconKey: lucideIcons.CircleCheck.name,
+                                                    iconKey: demoIcons.CircleCheck.name,
                                                     strokeColor: 'green',
                                                 },
                                             },

@@ -6,7 +6,8 @@ import {
     StructuredRenderTextStyle,
     VirStructuredRender,
 } from 'structured-render';
-import {ViraColorVariant, lucideIcons} from 'vira';
+import {ViraColorVariant} from 'vira';
+import {demoIcons} from '../../demo-icons.js';
 import {cardsBookPage} from '../cards.book.js';
 
 export const denseDataBookPage = defineBookPage({
@@ -27,6 +28,7 @@ export const denseDataBookPage = defineBookPage({
                 return html`
                     <${VirStructuredRender.assign({
                         options: {
+                            icons: demoIcons,
                             useCardStyles: true,
                         },
                         data: [
@@ -306,7 +308,7 @@ export const denseDataBookPage = defineBookPage({
                                                 },
                                                 icon: {
                                                     type: StructuredRenderSectionType.icon,
-                                                    iconKey: lucideIcons.CircleAlert.name,
+                                                    iconKey: demoIcons.CircleAlert.name,
                                                     strokeColor: 'orange',
                                                 },
                                             },
@@ -317,7 +319,7 @@ export const denseDataBookPage = defineBookPage({
                                                 },
                                                 icon: {
                                                     type: StructuredRenderSectionType.icon,
-                                                    iconKey: lucideIcons.Star.name,
+                                                    iconKey: demoIcons.Star.name,
                                                     strokeColor: 'gold',
                                                 },
                                             },
@@ -328,7 +330,7 @@ export const denseDataBookPage = defineBookPage({
                                                 },
                                                 icon: {
                                                     type: StructuredRenderSectionType.icon,
-                                                    iconKey: lucideIcons.CircleAlert.name,
+                                                    iconKey: demoIcons.CircleAlert.name,
                                                     strokeColor: 'orange',
                                                 },
                                             },
@@ -339,7 +341,7 @@ export const denseDataBookPage = defineBookPage({
                                                 },
                                                 icon: {
                                                     type: StructuredRenderSectionType.icon,
-                                                    iconKey: lucideIcons.Star.name,
+                                                    iconKey: demoIcons.Star.name,
                                                     strokeColor: 'gold',
                                                 },
                                             },
@@ -350,7 +352,7 @@ export const denseDataBookPage = defineBookPage({
                                                 },
                                                 icon: {
                                                     type: StructuredRenderSectionType.icon,
-                                                    iconKey: lucideIcons.CircleAlert.name,
+                                                    iconKey: demoIcons.CircleAlert.name,
                                                     strokeColor: 'red',
                                                 },
                                             },
@@ -579,7 +581,7 @@ export const denseDataBookPage = defineBookPage({
                                                 },
                                                 icon: {
                                                     type: StructuredRenderSectionType.icon,
-                                                    iconKey: lucideIcons.CircleAlert.name,
+                                                    iconKey: demoIcons.CircleAlert.name,
                                                     strokeColor: 'red',
                                                 },
                                             },
@@ -590,7 +592,7 @@ export const denseDataBookPage = defineBookPage({
                                                 },
                                                 icon: {
                                                     type: StructuredRenderSectionType.icon,
-                                                    iconKey: lucideIcons.CircleAlert.name,
+                                                    iconKey: demoIcons.CircleAlert.name,
                                                     strokeColor: 'orange',
                                                 },
                                             },
@@ -607,7 +609,7 @@ export const denseDataBookPage = defineBookPage({
                                                 },
                                                 icon: {
                                                     type: StructuredRenderSectionType.icon,
-                                                    iconKey: lucideIcons.CircleAlert.name,
+                                                    iconKey: demoIcons.CircleAlert.name,
                                                     strokeColor: 'orange',
                                                 },
                                             },

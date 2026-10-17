@@ -5,7 +5,7 @@ import {
     StructuredRenderTextStyle,
     VirStructuredRender,
 } from 'structured-render';
-import {lucideIcons} from 'vira';
+import {demoIcons} from '../../demo-icons.js';
 import {sectionsBookPage} from '../sections.book.js';
 
 export const textSectionBookPage = defineBookPage({
@@ -18,6 +18,7 @@ export const textSectionBookPage = defineBookPage({
                 return html`
                     <${VirStructuredRender.assign({
                         options: {
+                            icons: demoIcons,
                             useCardStyles: true,
                         },
                         data: {
@@ -36,6 +37,7 @@ export const textSectionBookPage = defineBookPage({
                 return html`
                     <${VirStructuredRender.assign({
                         options: {
+                            icons: demoIcons,
                             useCardStyles: true,
                         },
                         data: {
@@ -54,6 +56,7 @@ export const textSectionBookPage = defineBookPage({
                 return html`
                     <${VirStructuredRender.assign({
                         options: {
+                            icons: demoIcons,
                             useCardStyles: true,
                         },
                         data: {
@@ -72,6 +75,7 @@ export const textSectionBookPage = defineBookPage({
                 return html`
                     <${VirStructuredRender.assign({
                         options: {
+                            icons: demoIcons,
                             useCardStyles: true,
                         },
                         data: {
@@ -90,6 +94,7 @@ export const textSectionBookPage = defineBookPage({
                 return html`
                     <${VirStructuredRender.assign({
                         options: {
+                            icons: demoIcons,
                             useCardStyles: true,
                         },
                         data: {
@@ -97,7 +102,7 @@ export const textSectionBookPage = defineBookPage({
                             text: 'Text with icon.',
                             icon: {
                                 type: StructuredRenderSectionType.icon,
-                                iconKey: lucideIcons.Star.name,
+                                iconKey: demoIcons.Star.name,
                                 strokeColor: 'gold',
                             },
                         },

@@ -6,7 +6,6 @@ import {
     mapObjectValues,
     mergeDefinedProperties,
     stringify,
-    type PartialWithUndefined,
 } from '@augment-vir/common';
 import {extractEventTarget} from '@augment-vir/web';
 import {
@@ -24,7 +23,9 @@ import {
 import {
     createSizedIcon,
     defineTable,
-    lucideIcons,
+    LucideArrowDownWideNarrowIcon,
+    LucideArrowUpNarrowWideIcon,
+    LucideChevronsUpDownIcon,
     ViraButton,
     ViraCard,
     ViraCollapsibleCard,
@@ -59,6 +60,7 @@ import {
     defaultRenderHtmlOptions,
     type RenderHtmlOptions,
     type RenderInput,
+    type WithRequiredIcons,
 } from './render-types.js';
 import {SourceExpansionEvent} from './source-expansion-event.js';
 import {TableSortDirection, TableSortEvent, type TableSortState} from './table-sort-event.js';
@@ -68,9 +70,9 @@ import {TableSortDirection, TableSortEvent, type TableSortState} from './table-s
  *
  * @category Render
  */
-export function renderStructuredHtml(
-    data: Readonly<RenderInput>,
-    options?: Readonly<PartialWithUndefined<RenderHtmlOptions>> | undefined,
+export function renderStructuredHtml<const IconKey extends string>(
+    data: Readonly<RenderInput<NoInfer<IconKey>>>,
+    options: WithRequiredIcons<RenderHtmlOptions<IconKey>>,
 ): HtmlInterpolation {
     const finalOptions: Readonly<RenderHtmlOptions> = mergeDefinedProperties(
         defaultRenderHtmlOptions,
@@ -632,10 +634,10 @@ const htmlRenderers: Record<
 
                                       const sortIcon =
                                           columnSortState === TableSortDirection.Ascending
-                                              ? lucideIcons.SortAsc
+                                              ? LucideArrowUpNarrowWideIcon
                                               : columnSortState === TableSortDirection.Descending
-                                                ? lucideIcons.SortDesc
-                                                : lucideIcons.ChevronsUpDown;
+                                                ? LucideArrowDownWideNarrowIcon
+                                                : LucideChevronsUpDownIcon;
 
                                       const sortIconTemplate = isColumnSortable
                                           ? html`

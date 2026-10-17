@@ -18,6 +18,7 @@ export const tableSectionBookPage = defineBookPage({
                 return html`
                     <${VirStructuredRender.assign({
                         options: {
+                            icons: {},
                             useCardStyles: true,
                         },
                         data: {
@@ -70,6 +71,7 @@ export const tableSectionBookPage = defineBookPage({
                 return html`
                     <${VirStructuredRender.assign({
                         options: {
+                            icons: {},
                             useCardStyles: true,
                         },
                         data: {
@@ -183,6 +185,7 @@ export const tableSectionBookPage = defineBookPage({
                                 ],
                             },
                             options: {
+                                icons: {},
                                 useCardStyles: true,
                                 isPhoneSize: true,
                                 useDrawerForSources: true,
@@ -199,6 +202,7 @@ export const tableSectionBookPage = defineBookPage({
                 return html`
                     <${VirStructuredRender.assign({
                         options: {
+                            icons: {},
                             useCardStyles: true,
                         },
                         data: {

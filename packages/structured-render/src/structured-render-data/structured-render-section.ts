@@ -1,11 +1,14 @@
 import {assert} from '@augment-vir/assert';
 import {arrayToObject, ensureArray, type AnyObject} from '@augment-vir/common';
-import {unionShape} from 'object-shape-tester';
+import {unionShape, type UnsafeShape} from 'object-shape-tester';
 import {
     structuredRenderCodeBlockShape,
     type StructuredRenderCodeBlock,
 } from './sections/code-block.section.js';
-import {collapsibleSectionShape, type CollapsibleSection} from './sections/collapsible.section.js';
+import {
+    createCollapsibleSectionShape,
+    type CollapsibleSection,
+} from './sections/collapsible.section.js';
 import {
     structuredRenderCopyCardShape,
     type StructuredRenderCopyCard,
@@ -16,7 +19,10 @@ import {
     structuredRenderInlineCodeShape,
     type StructuredRenderInlineCode,
 } from './sections/inline-code.section.js';
-import {structuredRenderListShape, type StructuredRenderList} from './sections/list.section.js';
+import {
+    createStructuredRenderListShape,
+    type StructuredRenderList,
+} from './sections/list.section.js';
 import {renderDataMarkdownShape, type RenderDataMarkdown} from './sections/markdown.section.js';
 import {
     structuredRenderProcessingShape,
@@ -27,53 +33,74 @@ import {
     structuredRenderSourceShape,
     type StructuredRenderSource,
 } from './sections/source.section.js';
-import {structuredRenderTableShape, type StructuredRenderTable} from './sections/table.section.js';
+import {
+    createStructuredRenderTableShape,
+    type StructuredRenderTable,
+} from './sections/table.section.js';
 import {structuredRenderTagShape, type StructuredRenderTag} from './sections/tag.section.js';
-import {structuredRenderTextShape, type StructuredRenderText} from './sections/text.section.js';
-import {structuredRenderTitleShape, type StructuredRenderTitle} from './sections/title.section.js';
+import {
+    createStructuredRenderTextShape,
+    type StructuredRenderText,
+} from './sections/text.section.js';
+import {
+    createStructuredRenderTitleShape,
+    type StructuredRenderTitle,
+} from './sections/title.section.js';
+
+/**
+ * Creates all structured render section shapes with the given icon shape.
+ *
+ * @category Internal
+ */
+export function createAllStructuredRenderSectionShapes<IconKey extends string>(
+    iconShape: UnsafeShape<StructuredRenderIcon<IconKey>>,
+) {
+    return [
+        createCollapsibleSectionShape(iconShape),
+        renderDataMarkdownShape,
+        structuredRenderCodeBlockShape,
+        structuredRenderCopyCardShape,
+        structuredRenderEmptyShape,
+        createStructuredRenderTitleShape(iconShape),
+        iconShape,
+        structuredRenderInlineCodeShape,
+        createStructuredRenderListShape(iconShape),
+        structuredRenderProcessingShape,
+        structuredRenderSourceShape,
+        createStructuredRenderTableShape(iconShape),
+        structuredRenderTagShape,
+        createStructuredRenderTextShape(iconShape),
+    ] as const;
+}
 
 /**
  * All structured render section shapes.
  *
  * @category Internal
  */
-export const allStructuredRenderSectionShapes = [
-    collapsibleSectionShape,
-    renderDataMarkdownShape,
-    structuredRenderCodeBlockShape,
-    structuredRenderCopyCardShape,
-    structuredRenderEmptyShape,
-    structuredRenderTitleShape,
-    structuredRenderIconShape,
-    structuredRenderInlineCodeShape,
-    structuredRenderListShape,
-    structuredRenderProcessingShape,
-    structuredRenderSourceShape,
-    structuredRenderTableShape,
-    structuredRenderTagShape,
-    structuredRenderTextShape,
-] as const;
+export const allStructuredRenderSectionShapes =
+    createAllStructuredRenderSectionShapes(structuredRenderIconShape);
 
 /**
  * Any supported structured render section.
  *
  * @category Internal
  */
-export type StructuredRenderSection =
-    | CollapsibleSection
+export type StructuredRenderSection<IconKey extends string = string> =
+    | CollapsibleSection<IconKey>
     | RenderDataMarkdown
     | StructuredRenderCodeBlock
     | StructuredRenderCopyCard
     | StructuredRenderEmpty
-    | StructuredRenderTitle
-    | StructuredRenderIcon
+    | StructuredRenderTitle<IconKey>
+    | StructuredRenderIcon<IconKey>
     | StructuredRenderInlineCode
-    | StructuredRenderList
+    | StructuredRenderList<IconKey>
     | StructuredRenderProcessing
     | StructuredRenderSource
-    | StructuredRenderTable
+    | StructuredRenderTable<IconKey>
     | StructuredRenderTag
-    | StructuredRenderText;
+    | StructuredRenderText<IconKey>;
 
 /**
  * A union of all structured render section shapes.
@@ -170,18 +197,19 @@ export function doesSectionHaveContent(
  * @category Util
  */
 export function emptyStructuredRenderTableFallback<
-    Fallback extends Omit<StructuredRenderSection, 'sectionTitle'>,
+    Fallback extends Omit<StructuredRenderSection<IconKey>, 'sectionTitle'>,
+    const IconKey extends string = never,
 >({
     table,
     fallback,
     sectionTitle,
 }: {
-    table: Omit<StructuredRenderTable, 'sectionTitle'>;
+    table: Omit<StructuredRenderTable<IconKey>, 'sectionTitle'>;
     fallback: Fallback;
     sectionTitle: string;
-}): StructuredRenderSection {
+}): StructuredRenderSection<IconKey> {
     return {
         ...(doesSectionHaveContent(table) ? table : fallback),
         sectionTitle,
-    } as StructuredRenderSection;
+    } as StructuredRenderSection<IconKey>;
 }

@@ -1,6 +1,6 @@
 import {assert} from '@augment-vir/assert';
 import {describe, itCases} from '@augment-vir/test';
-import {lucideIcons} from 'vira';
+import {LucideArrowUpIcon} from 'vira';
 import {type StructuredRenderCodeBlock} from '../structured-render-data/sections/code-block.section.js';
 import {type StructuredRenderEmpty} from '../structured-render-data/sections/empty.section.js';
 import {type StructuredRenderInlineCode} from '../structured-render-data/sections/inline-code.section.js';
@@ -20,10 +20,18 @@ import {
 import {type StructuredRenderCard} from '../structured-render-data/structured-render-card.js';
 import {StructuredRenderSectionType} from '../structured-render-data/structured-render-section.js';
 import {renderStructuredMarkdown} from './render-markdown.js';
+import {type RenderInput} from './render-types.js';
 
 describe(renderStructuredMarkdown.name, () => {
     itCases(
-        renderStructuredMarkdown,
+        (
+            data: Readonly<RenderInput>,
+            options: Parameters<typeof renderStructuredMarkdown<string>>[1] = {
+                icons: {},
+            },
+        ) => {
+            return renderStructuredMarkdown<string>(data, options);
+        },
         (actual, expected) => {
             const expectedNoExtractWhiteSpace = expected
                 .split('\n')
@@ -70,14 +78,19 @@ describe(renderStructuredMarkdown.name, () => {
                         text: 'This is a text section',
                         icon: {
                             type: StructuredRenderSectionType.icon,
-                            iconKey: lucideIcons.ArrowUp.name,
+                            iconKey: LucideArrowUpIcon.name,
                         },
                     } satisfies StructuredRenderText,
                 ],
-                expect: `${renderStructuredMarkdown({
-                    type: StructuredRenderSectionType.icon,
-                    iconKey: lucideIcons.ArrowUp.name,
-                })} This is a text section`,
+                expect: `${renderStructuredMarkdown<string>(
+                    {
+                        type: StructuredRenderSectionType.icon,
+                        iconKey: LucideArrowUpIcon.name,
+                    },
+                    {
+                        icons: {},
+                    },
+                )} This is a text section`,
             },
             {
                 it: 'handles a bold text section',

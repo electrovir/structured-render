@@ -1,6 +1,6 @@
-import {isRuntimeEnv, RuntimeEnv, type PartialWithUndefined} from '@augment-vir/common';
+import {isRuntimeEnv, RuntimeEnv} from '@augment-vir/common';
 import {renderToPdfBytes} from './pdf/render-pdf-bytes.js';
-import {type RenderInput, type RenderPdfOptions} from './render-types.js';
+import {type RenderInput, type RenderPdfOptions, type WithRequiredIcons} from './render-types.js';
 
 /**
  * Ensures that a given file name has a `.pdf` extension (case insensitive).
@@ -16,10 +16,10 @@ export function ensurePdfExtension(fileName: string): string {
  *
  * @category Render
  */
-export async function renderToPdf(
-    renderInput: Readonly<RenderInput>,
+export async function renderToPdf<const IconKey extends string>(
+    renderInput: Readonly<RenderInput<NoInfer<IconKey>>>,
     fileName: string,
-    options?: Readonly<PartialWithUndefined<RenderPdfOptions>> | undefined,
+    options: WithRequiredIcons<RenderPdfOptions<IconKey>>,
 ): Promise<Uint8Array> {
     return await renderToPdfBytes(renderInput, fileName, options);
 }
@@ -33,10 +33,10 @@ export async function renderToPdf(
  *
  * @category Render
  */
-export async function downloadPdf(
-    renderInput: Readonly<RenderInput>,
+export async function downloadPdf<const IconKey extends string>(
+    renderInput: Readonly<RenderInput<NoInfer<IconKey>>>,
     fileName: string,
-    options: PartialWithUndefined<RenderPdfOptions> | undefined = {},
+    options: WithRequiredIcons<RenderPdfOptions<IconKey>>,
 ): Promise<void> {
     if (!isRuntimeEnv(RuntimeEnv.Web)) {
         throw new Error(`${downloadPdf.name} cannot run outside of a browser.`);

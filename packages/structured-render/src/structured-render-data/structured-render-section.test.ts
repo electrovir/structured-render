@@ -1,6 +1,6 @@
 import {assert} from '@augment-vir/assert';
 import {describe, it, itCases} from '@augment-vir/test';
-import {lucideIcons} from 'vira';
+import {LucideStarIcon} from 'vira';
 import {
     StructuredRenderCellDirection,
     type StructuredRenderTable,
@@ -28,7 +28,7 @@ describe(doesSectionHaveContent.name, () => {
                 text: '',
                 icon: {
                     type: StructuredRenderSectionType.icon,
-                    iconKey: lucideIcons.Star.name,
+                    iconKey: LucideStarIcon.name,
                 },
             },
             expect: true,
