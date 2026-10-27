@@ -1,6 +1,6 @@
 {
     "name": "@evir/demo",
-    "version": "2.17.0",
+    "version": "2.17.1",
     "private": true,
     "homepage": "https://github.com/electrovir/structured-render",
     "bugs": {
@@ -24,15 +24,15 @@
         "test": "npm run build"
     },
     "dependencies": {
-        "@augment-vir/common": "^32.5.0",
+        "@augment-vir/common": "^32.6.1",
         "element-book": "^27.0.4",
         "element-vir": "^27.0.2",
-        "structured-render": "^2.17.0",
-        "vira": "^33.5.1"
+        "structured-render": "^2.17.1",
+        "vira": "^33.10.1"
     },
     "devDependencies": {
         "typescript": "^6.0.3",
-        "vite": "^8.3.4"
+        "vite": "^8.3.5"
     },
     "engines": {
         "node": ">=22"

@@ -1,6 +1,6 @@
 {
     "name": "structured-render",
-    "version": "2.17.0",
+    "version": "2.17.1",
     "description": "A library for safely rendering arbitrary data generated from any source.",
     "keywords": [
         "render",
@@ -39,19 +39,19 @@
         "test:web": "virmator test web"
     },
     "dependencies": {
-        "@augment-vir/assert": "^32.5.0",
-        "@augment-vir/common": "^32.5.0",
-        "@augment-vir/web": "^32.5.0",
+        "@augment-vir/assert": "^32.6.1",
+        "@augment-vir/common": "^32.6.1",
+        "@augment-vir/web": "^32.6.1",
         "@cantoo/pdf-lib": "^2.11.1",
         "@electrovir/color": "^2.0.0",
         "dompurify": "^3.4.17",
         "lit-css-vars": "^3.6.3",
         "marked": "^18.1.1",
-        "object-shape-tester": "^6.15.1",
+        "object-shape-tester": "^6.15.2",
         "theme-vir": "^29.0.1"
     },
     "devDependencies": {
-        "@augment-vir/test": "^32.5.0",
+        "@augment-vir/test": "^32.6.1",
         "@virmator/test": "^14.38.0",
         "@web/dev-server-esbuild": "^2.0.0",
         "@web/test-runner": "^1.0.0",
@@ -61,8 +61,8 @@
         "pdf-to-img": "^7.0.1",
         "typedoc": "^0.28.20",
         "typescript": "^6.0.3",
-        "vira": "33.5.1",
-        "vite": "^8.3.4"
+        "vira": "33.10.1",
+        "vite": "^8.3.5"
     },
     "peerDependencies": {
         "element-vir": "^27",

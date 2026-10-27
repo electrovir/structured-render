@@ -159,7 +159,7 @@ export function sortTableEntries({
 
         const numA = Number(textA);
         const numB = Number(textB);
-        const comparison = !isNaN(numA) && !isNaN(numB) ? numA - numB : textA.localeCompare(textB);
+        const comparison = isNaN(numA) || isNaN(numB) ? textA.localeCompare(textB) : numA - numB;
 
         return currentSort.direction === TableSortDirection.Ascending ? comparison : -comparison;
     });
@@ -605,9 +605,7 @@ const htmlRenderers: Record<
                         section.direction === StructuredRenderCellDirection.Horizontal && headerRow
                             ? headerRow.length > 5
                             : section.direction === StructuredRenderCellDirection.Vertical &&
-                                rows[0]
-                              ? rows[0].cells.length > 5
-                              : false,
+                              (rows[0]?.cells.length ?? 0) > 5,
                     ...(tableStyleClass
                         ? {
                               [tableStyleClass]: true,
