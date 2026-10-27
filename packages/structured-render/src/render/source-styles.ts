@@ -1,5 +1,5 @@
 import {css} from 'element-vir';
-import {noUserSelect, ViraIcon} from 'vira';
+import {noUserSelect} from 'vira';
 
 /**
  * Shared CSS styles for source icon buttons, source wrappers, and expandable source panels.
@@ -42,11 +42,6 @@ export const sourceWrapperStyles = css`
         display: flex;
         flex-shrink: 0;
         align-self: top;
-
-        & ${ViraIcon} {
-            width: 20px;
-            height: 20px;
-        }
     }
 
     @media print {

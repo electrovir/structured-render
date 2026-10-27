@@ -1,12 +1,6 @@
 import {type MaybeArray, type PartialWithUndefined} from '@augment-vir/common';
 import {type CSSResult} from 'element-vir';
-import {
-    createSizedIcon,
-    LoaderAnimated24Icon,
-    LucideEyeIcon,
-    LucideFileSearchIcon,
-    type ViraIconSvg,
-} from 'vira';
+import {LoaderAnimated24Icon, LucideEyeIcon, LucideFileSearchIcon, type ViraIconSvg} from 'vira';
 import {type StructuredRenderCard} from '../structured-render-data/structured-render-card.js';
 import {type StructuredRenderData} from '../structured-render-data/structured-render-data.js';
 import {type StructuredRenderSection} from '../structured-render-data/structured-render-section.js';
@@ -230,7 +224,7 @@ export const defaultRenderHtmlOptions: Readonly<RenderHtmlOptions> = {
     currentlyExpanded: {},
     tableSortStates: {},
     sourceIcon: LucideFileSearchIcon,
-    viewOnPageIcon: createSizedIcon(LucideEyeIcon, 16),
+    viewOnPageIcon: LucideEyeIcon,
     processingIcon: LoaderAnimated24Icon,
     expandSourcesOnPrint: false,
     hideViewOnPageButtons: false,

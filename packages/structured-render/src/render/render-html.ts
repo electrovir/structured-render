@@ -21,7 +21,6 @@ import {
     type HtmlInterpolation,
 } from 'element-vir';
 import {
-    createSizedIcon,
     defineTable,
     LucideArrowDownWideNarrowIcon,
     LucideArrowUpNarrowWideIcon,
@@ -1085,7 +1084,7 @@ export function createSourceButton({options, rawKeyChain, rawSources}: SourceTem
 
     return html`
         <${ViraButton.assign({
-            icon: createSizedIcon(options.sourceIcon, 20),
+            icon: options.sourceIcon,
             color: ViraColorVariant.Plain,
             buttonEmphasis: ViraEmphasis.Subtle,
             buttonSize: ViraSize.Small,

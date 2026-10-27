@@ -1,13 +1,6 @@
 import {wait} from '@augment-vir/common';
 import {css, defineElement, html, listen} from 'element-vir';
-import {
-    createSizedIcon,
-    LucideCopyIcon,
-    ViraButton,
-    ViraColorVariant,
-    ViraEmphasis,
-    ViraSize,
-} from 'vira';
+import {LucideCopyIcon, ViraButton, ViraColorVariant, ViraEmphasis, ViraSize} from 'vira';
 
 /**
  * A button that copies the given text to the clipboard when clicked. Briefly changes its label to
@@ -41,7 +34,7 @@ export const VirCopy = defineElement<{
         return html`
             <${ViraButton.assign({
                 text: state.justCopied ? copiedLabel : defaultLabel,
-                icon: createSizedIcon(LucideCopyIcon, 16),
+                icon: LucideCopyIcon,
                 buttonEmphasis: ViraEmphasis.Subtle,
                 color: ViraColorVariant.Neutral,
                 buttonSize: ViraSize.Small,
